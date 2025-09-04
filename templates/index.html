@@ -123,6 +123,11 @@
     Trình duyệt không hỗ trợ video.
   </video>
 
+  <audio id="background-music" autoplay loop>
+    <source src="{{ url_for('static', filename='background.mp3') }}" type="audio/mpeg">
+    Trình duyệt không hỗ trợ audio.
+</audio>
+
   <div class="overlay"></div>
 
   <div class="rainbow-text">development by ttrieu</div>
@@ -134,11 +139,27 @@
     <div class="social">
       <a href="https://facebook.com/ttrieu22" target="_blank"><i class="fab fa-facebook"></i></a>
 <a href="https://t.me/Meomeo11t" target="_blank"><i class="fab fa-telegram"></i></a>
-<a href="113" target="_blank"><i class="fas fa-id-card"></i></a>
+<a href="tiktok" target="_blank"><i class="fas fa-id-card"></i></a>
 
       <button onclick="openModal()" style="margin-left:15px; padding:10px 20px; font-size:1em; cursor:pointer;">Liên hệ</button>
     </div>
   </div>
+       
+      <button onclick="toggleMusic()" style="margin-top:20px; padding:10px 20px; font-size:1em; cursor:pointer;">
+    Bật/Tắt nhạc
+</button>
+
+<script>
+    const music = document.getElementById('background-music');
+    function toggleMusic() {
+        if (music.paused) {
+            music.play();
+        } else {
+            music.pause();
+        }
+    }
+</script>
+
 
   <div class="parallax">Scroll xuống để xem thêm nội dung thú vị...</div>
 
