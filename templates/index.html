@@ -38,6 +38,33 @@
       top:0;
       z-index:2;
     }
+    /* nút */
+    .rainbow-button {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    animation: rainbowButton 5s linear infinite;
+    background-color: red; /* fallback */
+    }
+    @keyframes rainbowButton {
+    0%{background-color: red;}
+    14%{background-color: orange;}
+    28%{background-color: yellow;}
+    42%{background-color: green;}
+    57%{background-color: blue;}
+    71%{background-color: indigo;}
+    85%{background-color: violet;}
+    100%{background-color: red;}
+    }
+
+    .rainbow-button:hover {
+    transform: scale(1.1);
+    transition: 0.3s;
+    }
+
     @keyframes rainbow {
       0%{color:red;}
       14%{color:orange;}
@@ -47,7 +74,7 @@
       71%{color:indigo;}
       85%{color:violet;}
       100%{color:red;}
-    }
+     }
 
     /* Nội dung chính */
     .content {
@@ -123,10 +150,11 @@
     Trình duyệt không hỗ trợ video.
   </video>
 
-  <audio id="background-music" autoplay loop>
+  <audio id="background-music" loop>
     <source src="{{ url_for('static', filename='background.mp3') }}" type="audio/mpeg">
     Trình duyệt không hỗ trợ audio.
 </audio>
+
 
   <div class="overlay"></div>
 
@@ -140,28 +168,30 @@
       <a href="https://facebook.com/ttrieu22" target="_blank"><i class="fab fa-facebook"></i></a>
 <a href="https://t.me/Meomeo11t" target="_blank"><i class="fab fa-telegram"></i></a>
 <a href="tiktok" target="_blank"><i class="fas fa-id-card"></i></a>
-
       <button onclick="openModal()" style="margin-left:15px; padding:10px 20px; font-size:1em; cursor:pointer;">Liên hệ</button>
     </div>
-  </div>
-       
-      <button onclick="toggleMusic()" style="margin-top:20px; padding:10px 20px; font-size:1em; cursor:pointer;">
+      <!-- Nút bật/tắt nhạc nền dưới social -->
+<button onclick="toggleMusic()" class="rainbow-button" style="margin-top:10px;">
     Bật/Tắt nhạc
 </button>
 
-<script>
-    const music = document.getElementById('background-music');
-    function toggleMusic() {
-        if (music.paused) {
-            music.play();
-        } else {
-            music.pause();
-        }
-    }
-</script>
+<!-- Audio nền -->
+<audio id="background-music" loop>
+    <source src="{{ url_for('static', filename='background.mp3') }}" type="audio/mpeg">
+    Trình duyệt không hỗ trợ audio.
+</audio>
+   </div>
+  <div class="parallax">Lê Trần Tấn Triệu – Huyền Thoại Sáng Chói Trong Làng Liên Quân
 
+Trong làng Liên Quân Mobile, hiếm có cái tên nào để lại dấu ấn mạnh mẽ như Lê Trần Tấn Triệu. Với kỹ năng vượt trội, chiến thuật tinh tế và niềm đam mê bất tận với game, anh không chỉ là một game thủ xuất sắc mà còn là nguồn cảm hứng cho hàng ngàn người chơi trẻ.
 
-  <div class="parallax">Scroll xuống để xem thêm nội dung thú vị...</div>
+Từ những trận đấu đầu tiên, Triệu đã thể hiện phong cách chơi đầy bản lĩnh. Mỗi trận đấu của anh đều mang dấu ấn chiến thuật cá nhân, từ việc chọn tướng phù hợp, di chuyển hợp lý trên bản đồ đến những pha combo thần sầu, khiến đối thủ phải “bái phục”. Không ít lần những trận highlight của Triệu trở thành chủ đề bàn tán sôi nổi trên cộng đồng game thủ, từ fanpage đến các kênh streaming.
+
+Không chỉ giỏi về kỹ năng, Triệu còn được biết đến với tinh thần đồng đội tuyệt vời. Anh luôn dẫn dắt team, phối hợp nhịp nhàng, và truyền lửa cho những người xung quanh. Chính sự kết hợp giữa tài năng và tinh thần chiến binh đã giúp anh nhiều lần đứng trên bục vinh quang trong các giải đấu Liên Quân cấp khu vực và quốc gia.
+
+Ngoài màn hình, Triệu cũng là một hình mẫu về tinh thần cống hiến và trách nhiệm. Anh thường xuyên chia sẻ kinh nghiệm, mẹo chơi và động lực cho cộng đồng, giúp nhiều người mới bắt đầu tự tin hơn trên con đường chinh phục Liên Quân.
+
+Không ngoa khi nói rằng Lê Trần Tấn Triệu chính là biểu tượng của sức mạnh, kỹ năng và đam mê trong Liên Quân Mobile. Tên anh không chỉ là niềm tự hào của cộng đồng mà còn là minh chứng cho việc: sự nỗ lực, đam mê và tài năng sẽ luôn được công nhận.</div>
 
   <!-- Modal liên hệ -->
   <div class="modal" id="contactModal">
@@ -174,14 +204,28 @@
   </div>
 
   <script>
-    function openModal(){ document.getElementById('contactModal').style.display='flex'; }
-    function closeModal(){ document.getElementById('contactModal').style.display='none'; }
+function openModal() { 
+    document.getElementById('contactModal').style.display = 'flex'; 
+}
+function closeModal() { 
+    document.getElementById('contactModal').style.display = 'none'; 
+}
 
-    // Đóng modal khi click ngoài
-    window.onclick = function(e){
-      if(e.target == document.getElementById('contactModal')) closeModal();
+// Đóng modal khi click ngoài
+window.onclick = function(e) {
+    if(e.target == document.getElementById('contactModal')) closeModal();
+}
+
+// Nút bật/tắt nhạc
+const music = document.getElementById('background-music');
+function toggleMusic() {
+    if (music.paused) {
+        music.play().catch(e => console.log(e)); // bắt lỗi autoplay bị chặn
+    } else {
+        music.pause();
     }
-  </script>
+}
+</script>
 
 </body>
 </html>
