@@ -1,220 +1,279 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>proflie ttrieu</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile TTrieu</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {margin:0; padding:0; box-sizing:border-box;}
-    body, html {height:100%; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color:white; overflow-x:hidden; scroll-behavior:smooth;}
-
-    /* Video nền */
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%;font-family:"Segoe UI",Tahoma, Geneva, Verdana, sans-serif;color:#fff;scroll-behavior:smooth}
+    /* --- Video nền & overlay --- */
     #background-video {
-      position: fixed; top:0; left:0;
+      position: fixed; inset:0;
       width:100%; height:100%;
       object-fit:cover;
-      z-index:-1;
-      filter: brightness(50%);
+      z-index:-2;
     }
-
-    /* Overlay */
     .overlay {
-      position: fixed; top:0; left:0;
-      width:100%; height:100%;
-      background: rgba(0,0,0,0.3);
-      z-index:0;
+      position: fixed; inset:0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.75));
+      z-index:-1;
     }
 
-    /* Chữ đổi 7 màu */
-    .rainbow-text {
-      font-size: 1.5em;
-      font-weight: bold;
-      text-align:center;
-      padding:10px;
+    /* --- Navbar --- */
+    .navbar{
+      position:fixed; left:0; right:0; top:0;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 28px; gap:10px;
+      background: rgba(0,0,0,0.35); backdrop-filter: blur(6px);
+      z-index:1000;
+    }
+    .navbar .left, .navbar .right{display:flex;align-items:center;gap:12px}
+    .navbar a{color:#fff;text-decoration:none;font-weight:600;margin:0 6px;opacity:0.95}
+    .navbar a:hover{color:#66a0ff}
+
+    /* Rainbow text */
+    .rainbow-text{
+      font-weight:700;font-size:1.02rem;
       animation: rainbow 7s linear infinite;
-      position: fixed;
-      width: 100%;
-      top:0;
-      z-index:2;
     }
-    /* nút */
-    .rainbow-button {
-    padding: 15px 30px;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    color: white;
-    animation: rainbowButton 5s linear infinite;
-    background-color: red; /* fallback */
-    }
-    @keyframes rainbowButton {
-    0%{background-color: red;}
-    14%{background-color: orange;}
-    28%{background-color: yellow;}
-    42%{background-color: green;}
-    57%{background-color: blue;}
-    71%{background-color: indigo;}
-    85%{background-color: violet;}
-    100%{background-color: red;}
+    @keyframes rainbow{
+      0%{color:#ff3b30} 14%{color:#ff9500} 28%{color:#ffcc00}
+      42%{color:#34c759} 57%{color:#007aff} 71%{color:#5856d6}
+      85%{color:#ff2d55} 100%{color:#ff3b30}
     }
 
-    .rainbow-button:hover {
-    transform: scale(1.1);
-    transition: 0.3s;
+    /* --- Hero / Content chính --- */
+    .content{
+      min-height:100vh;
+      display:flex;flex-direction:column;justify-content:center;align-items:center;
+      text-align:center;padding:120px 20px 80px;position:relative;z-index:1;
     }
-
-    @keyframes rainbow {
-      0%{color:red;}
-      14%{color:orange;}
-      28%{color:yellow;}
-      42%{color:green;}
-      57%{color:blue;}
-      71%{color:indigo;}
-      85%{color:violet;}
-      100%{color:red;}
-     }
-
-    /* Nội dung chính */
-    .content {
-      position: relative;
-      z-index:1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height:100vh;
-      text-align:center;
-      padding:20px;
-    }
-
-    h1 { font-size:4em; margin-bottom:20px; text-shadow:2px 2px 10px rgba(0,0,0,0.7); }
-
-    .typewriter {
-      font-size:1.8em; color:white; overflow:hidden;
-      border-right:.15em solid white;
-      white-space:nowrap;
-      margin:0 auto 20px;
-      animation: typing 5s steps(50,end), blink-caret .75s step-end infinite;
-    }
-
-    @keyframes typing { from{width:0;} to{width:100%;} }
-    @keyframes blink-caret { 50%{border-color: transparent;} }
-
-    /* Social icons */
-    .social { margin-top:20px; }
-    .social a { color:white; margin:0 15px; font-size:2em; transition:0.3s; }
-    .social a:hover { color:#00f; transform:scale(1.2); }
-
-    /* Parallax section */
-    .parallax {
-      position: relative;
-      padding:100px 20px;
-      text-align:center;
-      font-size:2em;
-      background: rgba(0,0,0,0.5);
-    }
-
-    /* Modal liên hệ */
-    .modal {
-      display:none;
-      position:fixed;
-      z-index:3;
-      left:0; top:0;
-      width:100%; height:100%;
-      background:rgba(0,0,0,0.8);
-      justify-content:center;
-      align-items:center;
-    }
-    .modal-content {
-      background:#111;
-      padding:30px;
-      border-radius:10px;
-      text-align:center;
-      color:white;
+    h1{
+      font-size:clamp(2rem, 8vw, 4.2rem); /* responsive: tránh bị tràn */
+      line-height:1; margin-bottom:12px;
+      text-shadow:0 6px 18px rgba(0,0,0,0.6);
+      word-break:break-word;
       max-width:90%;
     }
-    .close { float:right; cursor:pointer; font-size:1.5em; }
 
-    @media(max-width:768px){
-      h1{font-size:3em;}
-      .typewriter{font-size:1.2em;}
+    /* full text (không animation) */
+    .hero-subtext{
+      font-size:clamp(1rem,2.2vw,1.4rem);
+      color:rgba(255,255,255,0.95);
+      max-width:900px;
+      margin:12px auto 20px;
+      white-space:normal; /* cho phép xuống dòng */
+    }
+
+    /* Social */
+    .social{display:flex;gap:18px;align-items:center;justify-content:center;margin-top:18px}
+    .social a{font-size:1.6rem;color:#fff;transition:transform .18s, color .18s}
+    .social a:hover{transform:translateY(-4px); color:#66a0ff}
+
+    /* CTA music button (navbar) */
+    .music-btn{
+      background:transparent;border:1px solid rgba(255,255,255,0.12);
+      padding:8px 12px;border-radius:10px;color:#fff;cursor:pointer;
+      display:inline-flex;align-items:center;gap:8px;font-weight:600;
+    }
+    .music-btn:hover{background:rgba(255,255,255,0.04)}
+
+    /* --- About card --- */
+    .about{padding:60px 18px;text-align:center;background:rgba(0,0,0,0.45)}
+    .card{max-width:760px;margin:0 auto;background:rgba(17,17,17,0.75);padding:26px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+
+    /* --- Popup center --- */
+    .popup-center{
+      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      background:rgba(0,0,0,0.92);padding:22px 26px;border-radius:12px;
+      border:4px solid red;color:#fff;width:320px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.6);
+      display:none;z-index:9999;
+      animation:zoomIn .45s ease;
+    }
+    @keyframes zoomIn{from{transform:translate(-50%,-50%) scale(.65);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+    @keyframes rainbowBorder{0%{border-color:red}14%{border-color:orange}28%{border-color:yellow}42%{border-color:green}57%{border-color:blue}71%{border-color:indigo}85%{border-color:violet}100%{border-color:red}}
+    .popup-center{animation: rainbowBorder 5s linear infinite, zoomIn .45s ease;}
+    .popup-center .close-popup{position:absolute;top:8px;right:12px;cursor:pointer;font-size:1.1rem;color:#fff}
+
+    /* --- Footer --- */
+    footer{padding:18px;text-align:center;background:transparent;font-size:.92rem;opacity:.95}
+
+    /* Responsive tweaks */
+    @media(max-width:640px){
+      .navbar{padding:10px 14px}
+      .music-btn{padding:6px 10px;font-size:.92rem}
+      .social a{font-size:1.4rem}
+      .popup-center{width:86%}
     }
   </style>
 </head>
 <body>
-
+  <!-- Video nền -->
   <video id="background-video" autoplay muted loop>
     <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
     Trình duyệt không hỗ trợ video.
   </video>
 
-  <audio id="background-music" loop>
-    <source src="{{ url_for('static', filename='background.mp3') }}" type="audio/mpeg">
-    Trình duyệt không hỗ trợ audio.
-</audio>
-
-
+  <!-- Overlay -->
   <div class="overlay"></div>
 
-  <div class="rainbow-text">development by ttrieu</div>
-
-  <div class="content">
-    <h1>Cam on, vi da den</h1>
-    <div class="typewriter">"Co nguoi den, co nguoi di va co nguoi o lai..."</div>
-
-    <div class="social">
-      <a href="https://facebook.com/ttrieu22" target="_blank"><i class="fab fa-facebook"></i></a>
-<a href="https://t.me/Meomeo11t" target="_blank"><i class="fab fa-telegram"></i></a>
-<a href="tiktok" target="_blank"><i class="fas fa-id-card"></i></a>
-      <button onclick="openModal()" style="margin-left:15px; padding:10px 20px; font-size:1em; cursor:pointer;">Liên hệ</button>
+  <!-- Navbar -->
+  <div class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="left">
+      <div class="rainbow-text">Development by tan trieu</div>
     </div>
-      <!-- Nút bật/tắt nhạc nền dưới social -->
-<button onclick="toggleMusic()" class="rainbow-button" style="margin-top:10px;">
-    Bật/Tắt nhạc
-</button>
+    <div class="right">
+      <a href="#home">Trang chủ</a>
+      <a href="#about">Giới thiệu</a>
+      <a href="#contact">Liên hệ</a>
 
-<!-- Audio nền -->
-<audio id="background-music" loop>
-    <source src="{{ url_for('static', filename='background.mp3') }}" type="audio/mpeg">
-    Trình duyệt không hỗ trợ audio.
-</audio>
-   </div>
-  <div class="parallax">anh da wua met moi can bo vai em. </div>
-  <!-- Modal liên hệ -->
-  <div class="modal" id="contactModal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Liên hệ với tôi</h2>
-      <p>Email: cuccanhsatvietnam@gmail.com</p>
-      <p>Phone: 113</p>
+      <!-- Nút bật/tắt nhạc -->
+      <button id="musicBtn" class="music-btn" onclick="toggleMusic()" aria-pressed="false" title="Bật/Tắt nhạc">
+        <i id="musicIcon" class="fa-solid fa-volume-high"></i>
+        <span id="musicLabel">Nhạc</span>
+      </button>
     </div>
   </div>
 
+  <!-- Nội dung chính -->
+  <section class="content" id="home" tabindex="-1">
+    <h1>Cam on vi da den...</h1>
+
+    <!-- Full text (không hiệu ứng gõ chữ) -->
+    <div class="hero-subtext">
+      "Có người đến, có người đi và có người ở lại..."
+    <p> "Cảm ơn vì tất cả"</p>
+    </div>
+
+    <div class="social" aria-label="Mạng xã hội">
+      <a href="https://facebook.com/ttrieu22" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="https://t.me/Meomeo11t" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+      <a href="tiktok" target="_blank" aria-label="TikTok"><i class="fas fa-id-card"></i></a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="card">
+      <h2>U^U</h2>
+     <p>Le Tran Tan Trieu</p>
+
+    </div>
+  </section>
+
+  <!-- Footer / Contact -->
+  <footer id="contact">
+    <p>© 2025 tan trieu | Liên hệ: cuccanhsatvietnam@gmail.com</p>
+  </footer>
+
+  <!-- Popup center -->
+  <div class="popup-center" id="centerPopup" role="dialog" aria-modal="true" aria-hidden="true">
+    <span class="close-popup" onclick="closePopupCenter()" aria-label="Đóng">&times;</span>
+    <h3>Thông báo</h3>
+    <p>Thiết bị của bạn đã bị cấm! Để mở hãy bank 500k
+ MB:0123456789!</p>
+  </div>
+
+  <!-- Audio (chỉ 1) -->
+  <audio id="background-music" loop>
+    <source src="{{ url_for('static', filename='background.mp3') }}" type="audio/mpeg">
+    Trình duyệt không hỗ trợ audio.
+  </audio>
+
   <script>
-function openModal() { 
-    document.getElementById('contactModal').style.display = 'flex'; 
-}
-function closeModal() { 
-    document.getElementById('contactModal').style.display = 'none'; 
-}
-
-// Đóng modal khi click ngoài
-window.onclick = function(e) {
-    if(e.target == document.getElementById('contactModal')) closeModal();
-}
-
-// Nút bật/tắt nhạc
-const music = document.getElementById('background-music');
-function toggleMusic() {
-    if (music.paused) {
-        music.play().catch(e => console.log(e)); // bắt lỗi autoplay bị chặn
-    } else {
-        music.pause();
+    // ---------- Popup ----------
+    function showPopupCenter(){
+      const p = document.getElementById('centerPopup');
+      p.style.display = 'block';
+      p.setAttribute('aria-hidden', 'false');
     }
-}
-</script>
+    function closePopupCenter(){
+      const p = document.getElementById('centerPopup');
+      p.style.display = 'none';
+      p.setAttribute('aria-hidden', 'true');
+    }
+    // Hiện popup sau 3s
+    setTimeout(showPopupCenter, 3000);
 
+    // ---------- Music toggle ----------
+    const music = document.getElementById('background-music');
+    const musicBtn = document.getElementById('musicBtn');
+    const musicIcon = document.getElementById('musicIcon');
+    const musicLabel = document.getElementById('musicLabel');
+
+    // Khởi tạo trạng thái từ localStorage (nếu user đã bật trước đó)
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('musicPlaying');
+      // nếu user đã bật trước đó, cố gắng play (nếu trình duyệt cho phép)
+      if (saved === 'true') {
+        playMusic().catch(()=>{/* nếu bị chặn, giữ im lặng */});
+      }
+      updateMusicButton();
+    });
+
+    // Hàm play với Promise trả về
+    function playMusic(){
+      return music.play().then(()=> {
+        music.muted = false;
+        localStorage.setItem('musicPlaying','true');
+        updateMusicButton();
+      });
+    }
+
+    function pauseMusic(){
+      music.pause();
+      localStorage.setItem('musicPlaying','false');
+      updateMusicButton();
+    }
+
+    function toggleMusic(){
+      if (music.paused) {
+        // cố gắng play, bắt lỗi autoplay policy
+        playMusic().catch(err => {
+          // Nếu play bị chặn, bật muted rồi play để không bị chặn (tuỳ trường hợp)
+          console.warn('Play bị chặn:', err);
+          try {
+            music.muted = true;
+            return music.play();
+          } catch(e) { /* ignore */ }
+        });
+      } else {
+        pauseMusic();
+      }
+    }
+
+    // Đồng bộ nút hiển thị icon & label
+    function updateMusicButton(){
+      if (!music.paused && !music.muted){
+        musicIcon.className = 'fa-solid fa-volume-high';
+        musicBtn.setAttribute('aria-pressed','true');
+        musicLabel.textContent = 'Tắt nhạc';
+      } else if (!music.paused && music.muted) {
+        // đang phát nhưng muted
+        musicIcon.className = 'fa-solid fa-volume-low';
+        musicBtn.setAttribute('aria-pressed','true');
+        musicLabel.textContent = 'Nhạc (muted)';
+      } else {
+        musicIcon.className = 'fa-solid fa-volume-xmark';
+        musicBtn.setAttribute('aria-pressed','false');
+        musicLabel.textContent = 'Bật nhạc';
+      }
+    }
+
+    // Cập nhật UI khi user tự pause/play bằng API khác
+    music.addEventListener('play', updateMusicButton);
+    music.addEventListener('pause', updateMusicButton);
+    music.addEventListener('volumechange', updateMusicButton);
+
+    // Hỗ trợ keyboard: Enter/Space trên nút để toggle
+    musicBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMusic();
+      }
+    });
+  </script>
 </body>
 </html>
