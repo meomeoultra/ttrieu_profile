@@ -109,11 +109,25 @@
   </div>
 
   <!-- Nội dung -->
-  <section class="content" id="home">
-    <h1>Cam on vi da den...</h1>
-    <div class="hero-subtext">
-      "Có người đến, có người đi và có người ở lại..."<br>
-      "Cảm ơn vì tất cả"
+     <section class="content" id="home">
+
+  <!-- Box thời gian -->
+  <div id="time-box" style="margin:20px; padding:15px; background:rgba(0,0,0,0.6); border-radius:12px;">
+    Đang tải thời gian...
+  </div>
+
+  <!-- Box thời tiết -->
+  <div id="weather-box" style="margin:20px; padding:15px; background:rgba(0,0,0,0.6); border-radius:12px;">
+    Đang tải dữ liệu...
+  </div>
+
+  <!-- Tiêu đề chính -->
+  <h1 style="text-align:center; margin-top:20px;">Cảm ơn vì đã đến...</h1>
+
+  <div class="hero-subtext" style="text-align:center; margin-top:10px;">
+    "Có người đến, có người đi và có người ở lại..."<br>
+    "Cảm ơn vì tất cả"
+  
     </div>
     <div class="social">
       <a href="https://facebook.com/ttrieu22" target="_blank"><i class="fab fa-facebook"></i></a>
@@ -215,7 +229,141 @@
 
     music.addEventListener('play',updateMusicButton);
     music.addEventListener('pause',updateMusicButton);
+// thoi tiet
+  async function getWeather(lat, lon) {
+    const res = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`
+    );
+    return await res.json();
+  }
+
+  async function loadWeatherAndGreeting() {
+    try {
+      let lat = 10.75, lon = 106.67; // mặc định HCM
+
+      // Thử lấy vị trí thật của user
+      if (navigator.geolocation) {
+        await new Promise((resolve) => {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              lat = pos.coords.latitude;
+              lon = pos.coords.longitude;
+              resolve();
+            },
+            () => resolve() // nếu lỗi hoặc user từ chối → dùng HCM
+          );
+        });
+      }
+
+      const data = await getWeather(lat, lon);
+      const weather = data.current_weather;
+
+      // Thông tin thời tiết
+      const temp = weather.temperature;
+      const wind = weather.windspeed;
+      const code = weather.weathercode;
+
+      const conditions = {
+        0: "Trời quang",
+        1: "Hơi có mây",
+        2: "Nhiều mây",
+        3: "U ám",
+        45: "Sương mù",
+        48: "Sương mù đóng băng",
+        51: "Mưa phùn nhẹ",
+        61: "Mưa nhỏ",
+        63: "Mưa vừa",
+        65: "Mưa to",
+        80: "Mưa rào nhẹ",
+        95: "Dông",
+      };
+      const condition = conditions[code] || "Không rõ";
+      // Mảng lời chào
+      const greetings = [
+        "Chào buổi sáng tươi đẹp ☀️",
+        "Chào buổi chiều an lành 🌤",
+        "Chào buổi tối ấm áp 🌙",
+        "Xin chào! Rất vui khi bạn ghé thăm 💖",
+        "Chào bạn, hy vọng hôm nay là một ngày tốt lành ✨",
+      ];
+
+      // Mảng lời chúc / an ủi
+      const wishes = [
+        "Chúc bạn một ngày may mắn 🍀",
+        "Hãy giữ nụ cười, mọi chuyện rồi sẽ ổn 😊",
+        "Bạn đã làm rất tốt, hãy tự tin lên 💪",
+        "Mọi khó khăn chỉ là thử thách nhỏ thôi ✨",
+        "Chúc bạn luôn vui vẻ và hạnh phúc ❤️",
+      ];
+
+      const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+      const wish = wishes[Math.floor(Math.random() * wishes.length)];
+
+      document.getElementById("weather-box").innerHTML =
+        `${greeting}<br>${wish}<br><br>
+         Thời tiết: ${temp}°C | ${condition} | Gió ${wind} km/h`;
+    } catch (e) {
+      document.getElementById("weather-box").innerHTML =
+        "Không lấy được dữ liệu thời tiết ❌";
+    }
+  }
+
+  loadWeatherAndGreeting();
+  //time
+  function updateTime() {
+    const now = new Date();
+
+    // Lấy giờ phút giây
+    let h = now.getHours().toString().padStart(2, "0");
+    let m = now.getMinutes().toString().padStart(2, "0");
+    let s = now.getSeconds().toString().padStart(2, "0");
+
+    // Lấy ngày tháng năm
+    let d = now.getDate().toString().padStart(2, "0");
+    let mo = (now.getMonth() + 1).toString().padStart(2, "0"); // tháng bắt đầu từ 0
+    let y = now.getFullYear();
+
+    // Hiển thị
+    document.getElementById("time-box").innerHTML =
+      `⏰ Bây giờ là ${h}:${m}:${s} - Ngày ${d}/${mo}/${y}`;
+  }
+
+  // Cập nhật mỗi giây
+  setInterval(updateTime, 1000);
+  updateTime();
+  //upd tg
+  function getGreeting() {
+    const now = new Date();
+    const hour = now.getHours();
+    let partOfDay;
+
+    if (hour >= 5 && hour < 11) partOfDay = "morning";
+    else if (hour >= 11 && hour < 13) partOfDay = "noon";
+    else if (hour >= 13 && hour < 18) partOfDay = "afternoon";
+    else if (hour >= 18 && hour < 22) partOfDay = "evening";
+    else partOfDay = "night";
+
+    const list = greetings[partOfDay];
+    const randomGreeting = list[Math.floor(Math.random() * list.length)];
+
+    // Ghép với đồng hồ
+    let h = now.getHours().toString().padStart(2,"0");
+    let m = now.getMinutes().toString().padStart(2,"0");
+    let s = now.getSeconds().toString().padStart(2,"0");
+
+    return `⏰ Bây giờ là ${h}:${m}:${s}.<br>${randomGreeting}`;
+  }
+
+  function updateGreeting() {
+    document.getElementById("greeting-box").innerHTML = getGreeting();
+  }
+
+  // Cập nhật mỗi giây
+  setInterval(updateGreeting, 1000);
+  updateGreeting();
+
   </script>
 </body>
 </html>
+
 
