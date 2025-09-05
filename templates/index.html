@@ -8,6 +8,7 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%;font-family:"Segoe UI",Tahoma, Geneva, Verdana, sans-serif;color:#fff;scroll-behavior:smooth}
+
     /* --- Video nền & overlay --- */
     #background-video {
       position: fixed; inset:0;
@@ -51,20 +52,19 @@
       text-align:center;padding:120px 20px 80px;position:relative;z-index:1;
     }
     h1{
-      font-size:clamp(2rem, 8vw, 4.2rem); /* responsive: tránh bị tràn */
+      font-size:clamp(2rem, 8vw, 4.2rem);
       line-height:1; margin-bottom:12px;
       text-shadow:0 6px 18px rgba(0,0,0,0.6);
       word-break:break-word;
       max-width:90%;
     }
 
-    /* full text (không animation) */
     .hero-subtext{
       font-size:clamp(1rem,2.2vw,1.4rem);
       color:rgba(255,255,255,0.95);
       max-width:900px;
       margin:12px auto 20px;
-      white-space:normal; /* cho phép xuống dòng */
+      white-space:normal;
     }
 
     /* Social */
@@ -72,7 +72,7 @@
     .social a{font-size:1.6rem;color:#fff;transition:transform .18s, color .18s}
     .social a:hover{transform:translateY(-4px); color:#66a0ff}
 
-    /* CTA music button (navbar) */
+    /* Buttons */
     .music-btn{
       background:transparent;border:1px solid rgba(255,255,255,0.12);
       padding:8px 12px;border-radius:10px;color:#fff;cursor:pointer;
@@ -90,17 +90,31 @@
       background:rgba(0,0,0,0.92);padding:22px 26px;border-radius:12px;
       border:4px solid red;color:#fff;width:320px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.6);
       display:none;z-index:9999;
-      animation:zoomIn .45s ease;
+      animation: rainbowBorder 5s linear infinite, zoomIn .45s ease;
     }
     @keyframes zoomIn{from{transform:translate(-50%,-50%) scale(.65);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
     @keyframes rainbowBorder{0%{border-color:red}14%{border-color:orange}28%{border-color:yellow}42%{border-color:green}57%{border-color:blue}71%{border-color:indigo}85%{border-color:violet}100%{border-color:red}}
-    .popup-center{animation: rainbowBorder 5s linear infinite, zoomIn .45s ease;}
     .popup-center .close-popup{position:absolute;top:8px;right:12px;cursor:pointer;font-size:1.1rem;color:#fff}
+
+    /* --- Playlist popup --- */
+    .playlist-popup{
+      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      background:rgba(0,0,0,0.9);padding:22px;border-radius:12px;
+      width:300px;max-width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.6);
+      display:none;z-index:10000;text-align:left;
+    }
+    .playlist-popup h3{text-align:center;margin-bottom:10px}
+    .playlist-popup button{
+      display:block;width:100%;background:#222;color:#fff;border:none;
+      padding:10px;margin:6px 0;border-radius:8px;cursor:pointer;
+    }
+    .playlist-popup button:hover{background:#444}
+    .playlist-popup .close-playlist{position:absolute;top:8px;right:12px;cursor:pointer;font-size:1.1rem}
 
     /* --- Footer --- */
     footer{padding:18px;text-align:center;background:transparent;font-size:.92rem;opacity:.95}
 
-    /* Responsive tweaks */
+    /* Responsive */
     @media(max-width:640px){
       .navbar{padding:10px 14px}
       .music-btn{padding:6px 10px;font-size:.92rem}
@@ -115,12 +129,10 @@
     <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
     Trình duyệt không hỗ trợ video.
   </video>
-
-  <!-- Overlay -->
   <div class="overlay"></div>
 
   <!-- Navbar -->
-  <div class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="navbar">
     <div class="left">
       <div class="rainbow-text">Development by tan trieu</div>
     </div>
@@ -130,27 +142,29 @@
       <a href="#contact">Liên hệ</a>
 
       <!-- Nút bật/tắt nhạc -->
-      <button id="musicBtn" class="music-btn" onclick="toggleMusic()" aria-pressed="false" title="Bật/Tắt nhạc">
+      <button id="musicBtn" class="music-btn" onclick="toggleMusic()" aria-pressed="false">
         <i id="musicIcon" class="fa-solid fa-volume-high"></i>
         <span id="musicLabel">Nhạc</span>
+      </button>
+
+      <!-- Nút mở playlist -->
+      <button class="music-btn" onclick="togglePlaylist()">
+        <i class="fa-solid fa-music"></i> Danh sách
       </button>
     </div>
   </div>
 
   <!-- Nội dung chính -->
-  <section class="content" id="home" tabindex="-1">
+  <section class="content" id="home">
     <h1>Cam on vi da den...</h1>
-
-    <!-- Full text (không hiệu ứng gõ chữ) -->
     <div class="hero-subtext">
       "Có người đến, có người đi và có người ở lại..."
-    <p> "Cảm ơn vì tất cả"</p>
+      <p>"Cảm ơn vì tất cả"</p>
     </div>
-
-    <div class="social" aria-label="Mạng xã hội">
-      <a href="https://facebook.com/ttrieu22" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-      <a href="https://t.me/Meomeo11t" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
-      <a href="tiktok" target="_blank" aria-label="TikTok"><i class="fas fa-id-card"></i></a>
+    <div class="social">
+      <a href="https://facebook.com/ttrieu22" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="https://t.me/Meomeo11t" target="_blank"><i class="fab fa-telegram"></i></a>
+      <a href="tiktok" target="_blank"><i class="fas fa-id-card"></i></a>
     </div>
   </section>
 
@@ -158,102 +172,96 @@
   <section class="about" id="about">
     <div class="card">
       <h2>U^U</h2>
-     <p>Le Tran Tan Trieu</p>
-
+      <p>Le Tran Tan Trieu</p>
     </div>
   </section>
 
-  <!-- Footer / Contact -->
+  <!-- Footer -->
   <footer id="contact">
     <p>© 2025 tan trieu | Liên hệ: cuccanhsatvietnam@gmail.com</p>
   </footer>
 
   <!-- Popup center -->
-  <div class="popup-center" id="centerPopup" role="dialog" aria-modal="true" aria-hidden="true">
-    <span class="close-popup" onclick="closePopupCenter()" aria-label="Đóng">&times;</span>
+  <div class="popup-center" id="centerPopup">
+    <span class="close-popup" onclick="closePopupCenter()">&times;</span>
     <h3>Thông báo</h3>
-    <p>Thiết bị của bạn đã bị cấm! Để mở hãy bank 500k
- MB:0123456789!</p>
+    <p>Thiết bị của bạn đã bị cấm! Để mở hãy bank 500k MB:0123456789!</p>
   </div>
 
-  <!-- Audio (chỉ 1) -->
+  <!-- Playlist popup -->
+  <div class="playlist-popup" id="playlistPopup">
+    <span class="close-playlist" onclick="togglePlaylist()">&times;</span>
+    <h3>Danh sách nhạc</h3>
+    <button onclick="changeMusic('congidephon.mp3')">Còn Gì Đẹp Hơn</button>
+    <button onclick="changeMusic('wrongtimes.mp3')">WrongTimes</button>
+    <button onclick="changeMusic('nghediroibiet.mp3')">Thập Cẩm Chill</button>
+  </div>
+
+  <!-- Audio -->
   <audio id="background-music" loop>
-    <source src="{{ url_for('static', filename='background.mp3') }}" type="audio/mpeg">
-    Trình duyệt không hỗ trợ audio.
+    <source src="{{ url_for('static', filename='congidephon.mp3') }}" type="audio/mpeg">
   </audio>
 
   <script>
-    // ---------- Popup ----------
+    // ---------- Popup center ----------
     function showPopupCenter(){
       const p = document.getElementById('centerPopup');
       p.style.display = 'block';
-      p.setAttribute('aria-hidden', 'false');
     }
     function closePopupCenter(){
-      const p = document.getElementById('centerPopup');
-      p.style.display = 'none';
-      p.setAttribute('aria-hidden', 'true');
+      document.getElementById('centerPopup').style.display = 'none';
     }
-    // Hiện popup sau 3s
     setTimeout(showPopupCenter, 3000);
 
-    // ---------- Music toggle ----------
+    // ---------- Playlist popup ----------
+    function togglePlaylist(){
+      const pl = document.getElementById('playlistPopup');
+      pl.style.display = (pl.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // ---------- Music ----------
     const music = document.getElementById('background-music');
     const musicBtn = document.getElementById('musicBtn');
     const musicIcon = document.getElementById('musicIcon');
     const musicLabel = document.getElementById('musicLabel');
 
-    // Khởi tạo trạng thái từ localStorage (nếu user đã bật trước đó)
     document.addEventListener('DOMContentLoaded', () => {
       const saved = localStorage.getItem('musicPlaying');
-      // nếu user đã bật trước đó, cố gắng play (nếu trình duyệt cho phép)
+      const savedTrack = localStorage.getItem('currentMusic');
+      if (savedTrack) changeMusic(savedTrack);
       if (saved === 'true') {
-        playMusic().catch(()=>{/* nếu bị chặn, giữ im lặng */});
+        playMusic().catch(()=>{});
       }
       updateMusicButton();
     });
 
-    // Hàm play với Promise trả về
     function playMusic(){
-      return music.play().then(()=> {
+      return music.play().then(()=>{
         music.muted = false;
         localStorage.setItem('musicPlaying','true');
         updateMusicButton();
       });
     }
-
     function pauseMusic(){
       music.pause();
       localStorage.setItem('musicPlaying','false');
       updateMusicButton();
     }
-
     function toggleMusic(){
       if (music.paused) {
-        // cố gắng play, bắt lỗi autoplay policy
-        playMusic().catch(err => {
-          // Nếu play bị chặn, bật muted rồi play để không bị chặn (tuỳ trường hợp)
-          console.warn('Play bị chặn:', err);
-          try {
-            music.muted = true;
-            return music.play();
-          } catch(e) { /* ignore */ }
+        playMusic().catch(err=>{
+          music.muted = true;
+          music.play();
         });
-      } else {
-        pauseMusic();
-      }
+      } else pauseMusic();
     }
-
-    // Đồng bộ nút hiển thị icon & label
     function updateMusicButton(){
       if (!music.paused && !music.muted){
         musicIcon.className = 'fa-solid fa-volume-high';
         musicBtn.setAttribute('aria-pressed','true');
         musicLabel.textContent = 'Tắt nhạc';
-      } else if (!music.paused && music.muted) {
-        // đang phát nhưng muted
+      } else if (!music.paused && music.muted){
         musicIcon.className = 'fa-solid fa-volume-low';
-        musicBtn.setAttribute('aria-pressed','true');
         musicLabel.textContent = 'Nhạc (muted)';
       } else {
         musicIcon.className = 'fa-solid fa-volume-xmark';
@@ -262,18 +270,20 @@
       }
     }
 
-    // Cập nhật UI khi user tự pause/play bằng API khác
+    // Đổi nhạc
+    function changeMusic(fileName){
+      const source = music.querySelector('source');
+      source.src = "{{ url_for('static', filename='') }}" + fileName;
+      music.load();
+      music.play();
+      localStorage.setItem('currentMusic', fileName);
+      localStorage.setItem('musicPlaying','true');
+      updateMusicButton();
+    }
+
     music.addEventListener('play', updateMusicButton);
     music.addEventListener('pause', updateMusicButton);
     music.addEventListener('volumechange', updateMusicButton);
-
-    // Hỗ trợ keyboard: Enter/Space trên nút để toggle
-    musicBtn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleMusic();
-      }
-    });
   </script>
 </body>
 </html>
