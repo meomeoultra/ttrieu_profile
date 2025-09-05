@@ -3,121 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profile TTrieu</title>
+  <title>Profile cua tan trieu tai 3 pro vip</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%;font-family:"Segoe UI",Tahoma, Geneva, Verdana, sans-serif;color:#fff;scroll-behavior:smooth}
+    #background-video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+    .overlay{position:fixed;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.55),rgba(0,0,0,0.75));z-index:-1}
 
-    /* --- Video nền & overlay --- */
-    #background-video {
-      position: fixed; inset:0;
-      width:100%; height:100%;
-      object-fit:cover;
-      z-index:-2;
-    }
-    .overlay {
-      position: fixed; inset:0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.75));
-      z-index:-1;
-    }
-
-    /* --- Navbar --- */
-    .navbar{
-      position:fixed; left:0; right:0; top:0;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 28px; gap:10px;
-      background: rgba(0,0,0,0.35); backdrop-filter: blur(6px);
-      z-index:1000;
-    }
-    .navbar .left, .navbar .right{display:flex;align-items:center;gap:12px}
+    /* Navbar */
+    .navbar{position:fixed;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;gap:10px;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);z-index:1000}
+    .navbar .left,.navbar .right{display:flex;align-items:center;gap:12px}
     .navbar a{color:#fff;text-decoration:none;font-weight:600;margin:0 6px;opacity:0.95}
     .navbar a:hover{color:#66a0ff}
-
-    /* Rainbow text */
-    .rainbow-text{
-      font-weight:700;font-size:1.02rem;
-      animation: rainbow 7s linear infinite;
-    }
+    .rainbow-text{font-weight:700;font-size:1.02rem;animation:rainbow 7s linear infinite}
     @keyframes rainbow{
-      0%{color:#ff3b30} 14%{color:#ff9500} 28%{color:#ffcc00}
-      42%{color:#34c759} 57%{color:#007aff} 71%{color:#5856d6}
-      85%{color:#ff2d55} 100%{color:#ff3b30}
+      0%{color:#ff3b30}14%{color:#ff9500}28%{color:#ffcc00}
+      42%{color:#34c759}57%{color:#007aff}71%{color:#5856d6}
+      85%{color:#ff2d55}100%{color:#ff3b30}
     }
 
-    /* --- Hero / Content chính --- */
-    .content{
-      min-height:100vh;
-      display:flex;flex-direction:column;justify-content:center;align-items:center;
-      text-align:center;padding:120px 20px 80px;position:relative;z-index:1;
-    }
-    h1{
-      font-size:clamp(2rem, 8vw, 4.2rem);
-      line-height:1; margin-bottom:12px;
-      text-shadow:0 6px 18px rgba(0,0,0,0.6);
-      word-break:break-word;
-      max-width:90%;
-    }
-
-    .hero-subtext{
-      font-size:clamp(1rem,2.2vw,1.4rem);
-      color:rgba(255,255,255,0.95);
-      max-width:900px;
-      margin:12px auto 20px;
-      white-space:normal;
-    }
+    /* Content */
+    .content{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 20px 80px;position:relative;z-index:1}
+    h1{font-size:clamp(2rem,8vw,4.2rem);line-height:1;margin-bottom:12px;text-shadow:0 6px 18px rgba(0,0,0,0.6);word-break:break-word;max-width:90%}
+    .hero-subtext{font-size:clamp(1rem,2.2vw,1.4rem);color:rgba(255,255,255,0.95);max-width:900px;margin:12px auto 20px;white-space:normal}
 
     /* Social */
     .social{display:flex;gap:18px;align-items:center;justify-content:center;margin-top:18px}
-    .social a{font-size:1.6rem;color:#fff;transition:transform .18s, color .18s}
-    .social a:hover{transform:translateY(-4px); color:#66a0ff}
+    .social a{font-size:1.6rem;color:#fff;transition:transform .18s,color .18s}
+    .social a:hover{transform:translateY(-4px);color:#66a0ff}
 
-    /* Buttons */
-    .music-btn{
-      background:transparent;border:1px solid rgba(255,255,255,0.12);
-      padding:8px 12px;border-radius:10px;color:#fff;cursor:pointer;
-      display:inline-flex;align-items:center;gap:8px;font-weight:600;
-    }
+    /* Music */
+    .music-btn{background:transparent;border:1px solid rgba(255,255,255,0.12);padding:8px 12px;border-radius:10px;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600}
     .music-btn:hover{background:rgba(255,255,255,0.04)}
+    .music-select{margin-left:10px;padding:6px 10px;border-radius:8px;background:rgba(0,0,0,0.45);color:#fff;border:1px solid rgba(255,255,255,0.2)}
 
-    /* --- About card --- */
+    /* About */
     .about{padding:60px 18px;text-align:center;background:rgba(0,0,0,0.45)}
     .card{max-width:760px;margin:0 auto;background:rgba(17,17,17,0.75);padding:26px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
 
-    /* --- Popup center --- */
-    .popup-center{
-      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-      background:rgba(0,0,0,0.92);padding:22px 26px;border-radius:12px;
-      border:4px solid red;color:#fff;width:320px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.6);
-      display:none;z-index:9999;
-      animation: rainbowBorder 5s linear infinite, zoomIn .45s ease;
-    }
+    /* Popup */
+    .popup-center{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.92);padding:22px 26px;border-radius:12px;border:4px solid red;color:#fff;width:320px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.6);display:none;z-index:9999;animation:zoomIn .45s ease}
     @keyframes zoomIn{from{transform:translate(-50%,-50%) scale(.65);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
     @keyframes rainbowBorder{0%{border-color:red}14%{border-color:orange}28%{border-color:yellow}42%{border-color:green}57%{border-color:blue}71%{border-color:indigo}85%{border-color:violet}100%{border-color:red}}
+    .popup-center{animation:rainbowBorder 5s linear infinite,zoomIn .45s ease}
     .popup-center .close-popup{position:absolute;top:8px;right:12px;cursor:pointer;font-size:1.1rem;color:#fff}
 
-    /* --- Playlist popup --- */
-    .playlist-popup{
-      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-      background:rgba(0,0,0,0.9);padding:22px;border-radius:12px;
-      width:300px;max-width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.6);
-      display:none;z-index:10000;text-align:left;
-    }
-    .playlist-popup h3{text-align:center;margin-bottom:10px}
-    .playlist-popup button{
-      display:block;width:100%;background:#222;color:#fff;border:none;
-      padding:10px;margin:6px 0;border-radius:8px;cursor:pointer;
-    }
-    .playlist-popup button:hover{background:#444}
-    .playlist-popup .close-playlist{position:absolute;top:8px;right:12px;cursor:pointer;font-size:1.1rem}
-
-    /* --- Footer --- */
     footer{padding:18px;text-align:center;background:transparent;font-size:.92rem;opacity:.95}
 
-    /* Responsive */
     @media(max-width:640px){
       .navbar{padding:10px 14px}
       .music-btn{padding:6px 10px;font-size:.92rem}
+      .music-select{font-size:.9rem}
       .social a{font-size:1.4rem}
       .popup-center{width:86%}
     }
@@ -129,6 +66,7 @@
     <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
     Trình duyệt không hỗ trợ video.
   </video>
+
   <div class="overlay"></div>
 
   <!-- Navbar -->
@@ -141,25 +79,26 @@
       <a href="#about">Giới thiệu</a>
       <a href="#contact">Liên hệ</a>
 
-      <!-- Nút bật/tắt nhạc -->
+      <!-- Music -->
       <button id="musicBtn" class="music-btn" onclick="toggleMusic()" aria-pressed="false">
         <i id="musicIcon" class="fa-solid fa-volume-high"></i>
         <span id="musicLabel">Nhạc</span>
       </button>
 
-      <!-- Nút mở playlist -->
-      <button class="music-btn" onclick="togglePlaylist()">
-        <i class="fa-solid fa-music"></i> Danh sách
-      </button>
+      <select id="musicSelect" class="music-select" onchange="changeMusic(this.value)">
+        <option value="congidephon.mp3">Con gì đẹp hơn</option>
+        <option value="wrongtimes.mp3">Wrong Times</option>
+        <option value="nghediroibiet.mp3">Nghe đi rồi biết</option>
+      </select>
     </div>
   </div>
 
-  <!-- Nội dung chính -->
+  <!-- Nội dung -->
   <section class="content" id="home">
     <h1>Cam on vi da den...</h1>
     <div class="hero-subtext">
-      "Có người đến, có người đi và có người ở lại..."
-      <p>"Cảm ơn vì tất cả"</p>
+      "Có người đến, có người đi và có người ở lại..."<br>
+      "Cảm ơn vì tất cả"
     </div>
     <div class="social">
       <a href="https://facebook.com/ttrieu22" target="_blank"><i class="fab fa-facebook"></i></a>
@@ -181,20 +120,11 @@
     <p>© 2025 tan trieu | Liên hệ: cuccanhsatvietnam@gmail.com</p>
   </footer>
 
-  <!-- Popup center -->
+  <!-- Popup -->
   <div class="popup-center" id="centerPopup">
     <span class="close-popup" onclick="closePopupCenter()">&times;</span>
     <h3>Thông báo</h3>
     <p>Thiết bị của bạn đã bị cấm! Để mở hãy bank 500k MB:0123456789!</p>
-  </div>
-
-  <!-- Playlist popup -->
-  <div class="playlist-popup" id="playlistPopup">
-    <span class="close-playlist" onclick="togglePlaylist()">&times;</span>
-    <h3>Danh sách nhạc</h3>
-    <button onclick="changeMusic('congidephon.mp3')">Còn Gì Đẹp Hơn</button>
-    <button onclick="changeMusic('wrongtimes.mp3')">WrongTimes</button>
-    <button onclick="changeMusic('nghediroibiet.mp3')">Thập Cẩm Chill</button>
   </div>
 
   <!-- Audio -->
@@ -203,87 +133,53 @@
   </audio>
 
   <script>
-    // ---------- Popup center ----------
-    function showPopupCenter(){
-      const p = document.getElementById('centerPopup');
-      p.style.display = 'block';
-    }
-    function closePopupCenter(){
-      document.getElementById('centerPopup').style.display = 'none';
-    }
-    setTimeout(showPopupCenter, 3000);
+    // Popup
+    function showPopupCenter(){const p=document.getElementById('centerPopup');p.style.display='block';}
+    function closePopupCenter(){const p=document.getElementById('centerPopup');p.style.display='none';}
+    setTimeout(showPopupCenter,3000);
 
-    // ---------- Playlist popup ----------
-    function togglePlaylist(){
-      const pl = document.getElementById('playlistPopup');
-      pl.style.display = (pl.style.display === 'block') ? 'none' : 'block';
-    }
+    const music=document.getElementById('background-music');
+    const musicBtn=document.getElementById('musicBtn');
+    const musicIcon=document.getElementById('musicIcon');
+    const musicLabel=document.getElementById('musicLabel');
+    const musicSelect=document.getElementById('musicSelect');
 
-    // ---------- Music ----------
-    const music = document.getElementById('background-music');
-    const musicBtn = document.getElementById('musicBtn');
-    const musicIcon = document.getElementById('musicIcon');
-    const musicLabel = document.getElementById('musicLabel');
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem('musicPlaying');
-      const savedTrack = localStorage.getItem('currentMusic');
-      if (savedTrack) changeMusic(savedTrack);
-      if (saved === 'true') {
+    // Load trạng thái cũ
+    document.addEventListener('DOMContentLoaded',()=>{
+      const savedTrack=localStorage.getItem('musicTrack')||'congidephon.mp3';
+      const savedTime=parseFloat(localStorage.getItem('musicTime'))||0;
+      musicSelect.value=savedTrack;
+      music.src=`/static/${savedTrack}`;
+      music.currentTime=savedTime;
+      if(localStorage.getItem('musicPlaying')==='true'){
         playMusic().catch(()=>{});
       }
       updateMusicButton();
     });
 
-    function playMusic(){
-      return music.play().then(()=>{
-        music.muted = false;
-        localStorage.setItem('musicPlaying','true');
-        updateMusicButton();
-      });
-    }
-    function pauseMusic(){
-      music.pause();
-      localStorage.setItem('musicPlaying','false');
-      updateMusicButton();
-    }
-    function toggleMusic(){
-      if (music.paused) {
-        playMusic().catch(err=>{
-          music.muted = true;
-          music.play();
-        });
-      } else pauseMusic();
-    }
+    // Lưu vị trí khi out
+    window.addEventListener('beforeunload',()=>{
+      localStorage.setItem('musicTrack',musicSelect.value);
+      localStorage.setItem('musicTime',music.currentTime);
+      localStorage.setItem('musicPlaying',!music.paused);
+    });
+
+    function playMusic(){return music.play().then(()=>{music.muted=false;updateMusicButton();});}
+    function pauseMusic(){music.pause();updateMusicButton();}
+    function toggleMusic(){if(music.paused){playMusic().catch(()=>{music.muted=true;music.play();});}else{pauseMusic();}}
     function updateMusicButton(){
-      if (!music.paused && !music.muted){
-        musicIcon.className = 'fa-solid fa-volume-high';
-        musicBtn.setAttribute('aria-pressed','true');
-        musicLabel.textContent = 'Tắt nhạc';
-      } else if (!music.paused && music.muted){
-        musicIcon.className = 'fa-solid fa-volume-low';
-        musicLabel.textContent = 'Nhạc (muted)';
-      } else {
-        musicIcon.className = 'fa-solid fa-volume-xmark';
-        musicBtn.setAttribute('aria-pressed','false');
-        musicLabel.textContent = 'Bật nhạc';
-      }
+      if(!music.paused&&!music.muted){musicIcon.className='fa-solid fa-volume-high';musicLabel.textContent='Tắt nhạc';}
+      else{musicIcon.className='fa-solid fa-volume-xmark';musicLabel.textContent='Bật nhạc';}
     }
-
-    // Đổi nhạc
-    function changeMusic(fileName){
-      const source = music.querySelector('source');
-      source.src = "{{ url_for('static', filename='') }}" + fileName;
-      music.load();
-      music.play();
-      localStorage.setItem('currentMusic', fileName);
-      localStorage.setItem('musicPlaying','true');
-      updateMusicButton();
+    function changeMusic(track){
+      music.src=`/static/${track}`;
+      music.currentTime=0;
+      localStorage.setItem('musicTrack',track);
+      playMusic();
     }
-
-    music.addEventListener('play', updateMusicButton);
-    music.addEventListener('pause', updateMusicButton);
-    music.addEventListener('volumechange', updateMusicButton);
+    music.addEventListener('play',updateMusicButton);
+    music.addEventListener('pause',updateMusicButton);
   </script>
 </body>
 </html>
+
