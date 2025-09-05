@@ -34,9 +34,14 @@
     .social a:hover{transform:translateY(-4px);color:#66a0ff}
 
     /* Music */
+    .music-player{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
     .music-btn{background:transparent;border:1px solid rgba(255,255,255,0.12);padding:8px 12px;border-radius:10px;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600}
     .music-btn:hover{background:rgba(255,255,255,0.04)}
-    .music-select{margin-left:10px;padding:6px 10px;border-radius:8px;background:rgba(0,0,0,0.45);color:#fff;border:1px solid rgba(255,255,255,0.2)}
+    .music-select{padding:6px 10px;border-radius:8px;background:rgba(0,0,0,0.45);color:#fff;border:1px solid rgba(255,255,255,0.2)}
+    .progress-container{display:flex;align-items:center;gap:8px;width:180px}
+    .progress{flex:1;height:6px;background:rgba(255,255,255,0.3);border-radius:4px;cursor:pointer;position:relative}
+    .progress-filled{height:100%;background:#66a0ff;border-radius:4px;width:0%}
+    .time{font-size:.8rem;opacity:.85;min-width:36px;text-align:right}
 
     /* About */
     .about{padding:60px 18px;text-align:center;background:rgba(0,0,0,0.45)}
@@ -57,6 +62,7 @@
       .music-select{font-size:.9rem}
       .social a{font-size:1.4rem}
       .popup-center{width:86%}
+      .progress-container{width:140px}
     }
   </style>
 </head>
@@ -80,16 +86,25 @@
       <a href="#contact">Liên hệ</a>
 
       <!-- Music -->
-      <button id="musicBtn" class="music-btn" onclick="toggleMusic()" aria-pressed="false">
-        <i id="musicIcon" class="fa-solid fa-volume-high"></i>
-        <span id="musicLabel">Nhạc</span>
-      </button>
+      <div class="music-player">
+        <button id="musicBtn" class="music-btn" onclick="toggleMusic()" aria-pressed="false">
+          <i id="musicIcon" class="fa-solid fa-volume-high"></i>
+          <span id="musicLabel">Nhạc</span>
+        </button>
 
-      <select id="musicSelect" class="music-select" onchange="changeMusic(this.value)">
-        <option value="congidephon.mp3">Con gì đẹp hơn</option>
-        <option value="wrongtimes.mp3">Wrong Times</option>
-        <option value="nghediroibiet.mp3">Nghe đi rồi biết</option>
-      </select>
+        <select id="musicSelect" class="music-select" onchange="changeMusic(this.value)">
+          <option value="congidephon.mp3">Con gì đẹp hơn</option>
+          <option value="wrongtimes.mp3">Wrong Times</option>
+          <option value="nghediroibiet.mp3">Nghe đi rồi biết</option>
+        </select>
+
+        <div class="progress-container">
+          <div class="progress" id="progressBar">
+            <div class="progress-filled" id="progressFilled"></div>
+          </div>
+          <div class="time" id="timeDisplay">0:00</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -134,15 +149,17 @@
 
   <script>
     // Popup
-    function showPopupCenter(){const p=document.getElementById('centerPopup');p.style.display='block';}
-    function closePopupCenter(){const p=document.getElementById('centerPopup');p.style.display='none';}
+    function showPopupCenter(){document.getElementById('centerPopup').style.display='block';}
+    function closePopupCenter(){document.getElementById('centerPopup').style.display='none';}
     setTimeout(showPopupCenter,3000);
 
     const music=document.getElementById('background-music');
-    const musicBtn=document.getElementById('musicBtn');
     const musicIcon=document.getElementById('musicIcon');
     const musicLabel=document.getElementById('musicLabel');
     const musicSelect=document.getElementById('musicSelect');
+    const progressBar=document.getElementById('progressBar');
+    const progressFilled=document.getElementById('progressFilled');
+    const timeDisplay=document.getElementById('timeDisplay');
 
     // Load trạng thái cũ
     document.addEventListener('DOMContentLoaded',()=>{
@@ -177,6 +194,25 @@
       localStorage.setItem('musicTrack',track);
       playMusic();
     }
+
+    // Progress bar update
+    music.addEventListener('timeupdate',()=>{
+      const percent=(music.currentTime/music.duration)*100;
+      progressFilled.style.width=`${percent}%`;
+      const minutes=Math.floor(music.currentTime/60);
+      const seconds=Math.floor(music.currentTime%60).toString().padStart(2,'0');
+      timeDisplay.textContent=`${minutes}:${seconds}`;
+    });
+
+    // Seek khi click progress
+    progressBar.addEventListener('click',(e)=>{
+      const rect=progressBar.getBoundingClientRect();
+      const clickX=e.clientX-rect.left;
+      const width=rect.width;
+      const percent=clickX/width;
+      music.currentTime=percent*music.duration;
+    });
+
     music.addEventListener('play',updateMusicButton);
     music.addEventListener('pause',updateMusicButton);
   </script>
