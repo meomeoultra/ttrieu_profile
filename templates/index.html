@@ -1,369 +1,534 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profile cua tan trieu tai 3 pro vip</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%;font-family:"Segoe UI",Tahoma, Geneva, Verdana, sans-serif;color:#fff;scroll-behavior:smooth}
-    #background-video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
-    .overlay{position:fixed;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.55),rgba(0,0,0,0.75));z-index:-1}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tấn Triệu — Ultra Pro Profile</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    /* Navbar */
-    .navbar{position:fixed;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;gap:10px;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);z-index:1000}
-    .navbar .left,.navbar .right{display:flex;align-items:center;gap:12px}
-    .navbar a{color:#fff;text-decoration:none;font-weight:600;margin:0 6px;opacity:0.95}
-    .navbar a:hover{color:#66a0ff}
-    .rainbow-text{font-weight:700;font-size:1.02rem;animation:rainbow 7s linear infinite}
-    @keyframes rainbow{
-      0%{color:#ff3b30}14%{color:#ff9500}28%{color:#ffcc00}
-      42%{color:#34c759}57%{color:#007aff}71%{color:#5856d6}
-      85%{color:#ff2d55}100%{color:#ff3b30}
-    }
+<style>
+  :root{
+    --bg1:#0f1724; --bg2:#0b1220;
+    --accent: #66a0ff;
+    --glass: rgba(255,255,255,0.06);
+    --card-bg: rgba(255,255,255,0.04);
+    --text: #e6eef8;
+    --muted: rgba(230,238,248,0.68);
+  }
+  /* Reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;background:linear-gradient(120deg,var(--bg1),var(--bg2));color:var(--text);overflow-x:hidden}
+  a{color:inherit}
 
-    /* Content */
-    .content{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 20px 80px;position:relative;z-index:1}
-    h1{font-size:clamp(2rem,8vw,4.2rem);line-height:1;margin-bottom:12px;text-shadow:0 6px 18px rgba(0,0,0,0.6);word-break:break-word;max-width:90%}
-    .hero-subtext{font-size:clamp(1rem,2.2vw,1.4rem);color:rgba(255,255,255,0.95);max-width:900px;margin:12px auto 20px;white-space:normal}
+  /* Animated gradient background layer */
+  .bg-gradient {
+    position:fixed;inset:0;z-index:-3;
+    background:linear-gradient(120deg,#071126,#0b1220);
+    transition:background .6s ease;
+  }
+  .bg-gradient::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(60deg, rgba(102,160,255,0.06), rgba(255,80,135,0.04));
+    mix-blend-mode:overlay;
+    animation:shiftBg 12s linear infinite;
+    opacity:0.95;
+  }
+  @keyframes shiftBg{
+    0%{transform:translateY(0) rotate(0deg)}
+    50%{transform:translateY(-6%) rotate(3deg)}
+    100%{transform:translateY(0) rotate(0deg)}
+  }
 
-    /* Social */
-    .social{display:flex;gap:18px;align-items:center;justify-content:center;margin-top:18px}
-    .social a{font-size:1.6rem;color:#fff;transition:transform .18s,color .18s}
-    .social a:hover{transform:translateY(-4px);color:#66a0ff}
+  /* Particles canvas sits above gradient but behind UI */
+  #particles-canvas{position:fixed;inset:0;z-index:-2;pointer-events:none;display:block}
 
-    /* Music */
-    .music-player{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
-    .music-btn{background:transparent;border:1px solid rgba(255,255,255,0.12);padding:8px 12px;border-radius:10px;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600}
-    .music-btn:hover{background:rgba(255,255,255,0.04)}
-    .music-select{padding:6px 10px;border-radius:8px;background:rgba(0,0,0,0.45);color:#fff;border:1px solid rgba(255,255,255,0.2)}
-    .progress-container{display:flex;align-items:center;gap:8px;width:180px}
-    .progress{flex:1;height:6px;background:rgba(255,255,255,0.3);border-radius:4px;cursor:pointer;position:relative}
-    .progress-filled{height:100%;background:#66a0ff;border-radius:4px;width:0%}
-    .time{font-size:.8rem;opacity:.85;min-width:36px;text-align:right}
+  /* Top navbar */
+  .navbar{position:fixed;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));backdrop-filter: blur(6px);border:1px solid rgba(255,255,255,0.04);z-index:50}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#66a0ff,#7b61ff);display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 6px 20px rgba(102,160,255,0.12)}
+  .nav-links{display:flex;gap:12px;align-items:center}
+  .nav-links a{padding:8px 10px;border-radius:8px;font-weight:600;opacity:.95}
+  .controls{display:flex;gap:8px;align-items:center}
 
-    /* About */
-    .about{padding:60px 18px;text-align:center;background:rgba(0,0,0,0.45)}
-    .card{max-width:760px;margin:0 auto;background:rgba(17,17,17,0.75);padding:26px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+  /* Hero */
+  .hero{min-height:78vh;display:flex;align-items:center;justify-content:center;padding:120px 20px 60px;position:relative;z-index:10}
+  .card-hero{width:100%;max-width:1100px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:16px;padding:36px;display:grid;grid-template-columns:1fr 420px;gap:28px;box-shadow:0 12px 60px rgba(5,8,20,0.5);border:1px solid rgba(255,255,255,0.03)}
+  .left-hero{}
+  .title{font-size:clamp(1.6rem,4vw,2.8rem);font-weight:800;line-height:1.02;letter-spacing:-0.6px; margin-bottom:12px}
+  /* neon rainbow text */
+  .title .neon{display:inline-block;background:linear-gradient(90deg,#ff6b6b,#ffb86b,#66a0ff,#8a7bff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 8px 30px rgba(102,160,255,0.08))}
+  .subtitle{color:var(--muted);margin-bottom:18px}
 
-    /* Popup */
-    .popup-center{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.92);padding:22px 26px;border-radius:12px;border:4px solid red;color:#fff;width:320px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.6);display:none;z-index:9999;animation:zoomIn .45s ease}
-    @keyframes zoomIn{from{transform:translate(-50%,-50%) scale(.65);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
-    @keyframes rainbowBorder{0%{border-color:red}14%{border-color:orange}28%{border-color:yellow}42%{border-color:green}57%{border-color:blue}71%{border-color:indigo}85%{border-color:violet}100%{border-color:red}}
-    .popup-center{animation:rainbowBorder 5s linear infinite,zoomIn .45s ease}
-    .popup-center .close-popup{position:absolute;top:8px;right:12px;cursor:pointer;font-size:1.1rem;color:#fff}
+  /* Typing animation */
+  .typing{font-weight:700;color:#fff;font-size:1.06rem;min-height:28px}
+  .typing .cursor{display:inline-block;width:10px;background:var(--accent);margin-left:8px;animation:blink 900ms steps(2) infinite}
+  @keyframes blink{50%{opacity:0}}
 
-    footer{padding:18px;text-align:center;background:transparent;font-size:.92rem;opacity:.95}
+  /* Buttons */
+  .actions{display:flex;gap:12px;margin-top:18px}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;font-weight:700;border:0;cursor:pointer;position:relative;overflow:hidden
+  }
+  .btn-primary{
+    background:linear-gradient(90deg,var(--accent),#7b61ff);
+    color:white;box-shadow:0 10px 30px rgba(102,160,255,0.14);transform:translateZ(0);
+  }
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text)}
 
-    @media(max-width:640px){
-      .navbar{padding:10px 14px}
-      .music-btn{padding:6px 10px;font-size:.92rem}
-      .music-select{font-size:.9rem}
-      .social a{font-size:1.4rem}
-      .popup-center{width:86%}
-      .progress-container{width:140px}
-    }
-  </style>
+  /* Glowing hover effect and 3D push */
+  .btn:hover::after{opacity:1;transform:scale(1)}
+  .btn::after{
+    content:"";position:absolute;inset:0;background:linear-gradient(90deg, rgba(102,160,255,0.12), rgba(123,97,255,0.08));opacity:0;transition:all .28s;border-radius:12px;transform:scale(.95)
+  }
+  .btn:active{transform:translateY(2px) scale(.996)}
+
+  /* Right column */
+  .right-hero{display:flex;flex-direction:column;gap:12px;align-items:center}
+  .profile-card{width:100%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);text-align:center}
+  .avatar{width:92px;height:92px;border-radius:14px;background:linear-gradient(135deg,#7b61ff,#66a0ff);display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 8px}
+  .meta{color:var(--muted);font-size:.95rem;margin-bottom:8px}
+
+  /* Cards grid (3D hover) */
+  .grid-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+  .card-small{background:var(--card-bg);padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);transform-style:preserve-3d;transition:transform .28s, box-shadow .28s;cursor:pointer}
+  .card-small:hover{transform:translateY(-8px) rotateX(6deg);box-shadow:0 30px 60px rgba(2,6,23,0.45)}
+
+  /* Sections + transitions */
+  section{padding:64px 20px}
+  .fade-in{opacity:0;transform:translateY(20px);transition:all .6s ease}
+  .fade-in.show{opacity:1;transform:none}
+
+  /* Footer */
+  footer{padding:28px;text-align:center;color:var(--muted);font-size:.92rem}
+
+  /* Weather + time boxes */
+  .info-row{display:flex;gap:12px;flex-wrap:wrap}
+  .info-box{padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);min-width:180px}
+
+  /* Mini game modal */
+  .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:100;visibility:hidden;opacity:0;transition:opacity .25s,visibility .25s}
+  .modal.show{visibility:visible;opacity:1}
+  .game-box{width:92%;max-width:720px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);}
+
+  /* Responsive */
+  @media(max-width:980px){
+    .card-hero{grid-template-columns:1fr; padding:18px}
+    .grid-cards{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:520px){
+    .grid-cards{grid-template-columns:1fr}
+    .navbar{left:8px;right:8px;top:8px}
+  }
+</style>
 </head>
 <body>
-  <!-- Video nền -->
-  <video id="background-video" autoplay muted loop>
-    <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
-    Trình duyệt không hỗ trợ video.
-  </video>
 
-  <div class="overlay"></div>
+<!-- Gradient & particles layers -->
+<div class="bg-gradient" aria-hidden="true"></div>
+<canvas id="particles-canvas" aria-hidden="true"></canvas>
 
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="left">
-      <div class="rainbow-text">Development by tan trieu</div>
+<!-- NAV -->
+<header class="navbar" role="banner">
+  <div class="brand">
+    <div class="logo">TT</div>
+    <div>
+      <div style="font-weight:800">Tấn Triệu</div>
+      <div style="font-size:.85rem;color:var(--muted)">Web Profile • Pro Ultra</div>
     </div>
-    <div class="right">
-      <a href="#home">Trang chủ</a>
-      <a href="#about">Giới thiệu</a>
-      <a href="#contact">Liên hệ</a>
+  </div>
+  <nav class="nav-links" role="navigation" aria-label="Chuyển trang">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#game" id="open-game-btn">Mini-game</a>
+    <a href="#contact">Contact</a>
+  </nav>
 
-      <!-- Music -->
-      <div class="music-player">
-        <button id="musicBtn" class="music-btn" onclick="toggleMusic()" aria-pressed="false">
-          <i id="musicIcon" class="fa-solid fa-volume-high"></i>
-          <span id="musicLabel">Nhạc</span>
-        </button>
+  <div class="controls">
+    <button class="btn btn-ghost" id="toggle-theme" title="Chuyển sáng/tối"><i class="fa-solid fa-moon"></i></button>
+    <button class="btn btn-primary" id="play-music"><i class="fa-solid fa-play"></i> Play</button>
+  </div>
+</header>
 
-        <select id="musicSelect" class="music-select" onchange="changeMusic(this.value)">
-          <option value="congidephon.mp3">Con gì đẹp hơn</option>
-          <option value="wrongtimes.mp3">Wrong Times</option>
-          <option value="nghediroibiet.mp3">Nghe đi rồi biết</option>
-        </select>
+<!-- HERO -->
+<main>
+  <section id="home" class="hero">
+    <article class="card-hero fade-in" id="hero-card">
+      <div class="left-hero">
+        <div class="title">Xin chào — <span class="neon">Tấn Triệu</span></div>
+        <p class="subtitle">Developer • UI/UX tinkerer • Frontend lover</p>
 
-        <div class="progress-container">
-          <div class="progress" id="progressBar">
-            <div class="progress-filled" id="progressFilled"></div>
-          </div>
-          <div class="time" id="timeDisplay">0:00</div>
+        <div class="typing" id="typing"></div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="btn-contact"><i class="fa-solid fa-envelope"></i> Liên hệ</button>
+          <button class="btn btn-ghost" id="btn-sound"><i class="fa-solid fa-bell"></i> Sound test</button>
+          <button class="btn btn-ghost" id="btn-open-game"><i class="fa-solid fa-gamepad"></i> Chơi thử</button>
+        </div>
+
+        <div style="margin-top:18px" class="info-row">
+          <div class="info-box" id="time-box">⏰ Đang lấy thời gian...</div>
+          <div class="info-box" id="weather-box">☁️ Đang lấy thời tiết...</div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Nội dung -->
-     <section class="content" id="home">
+      <aside class="right-hero">
+        <div class="profile-card">
+          <div class="avatar">TT</div>
+          <div style="font-weight:800">Lê Trần Tấn Triệu</div>
+          <div class="meta">Frontend • Game UI • Pro Dev</div>
 
-  <!-- Box thời gian -->
-  <div id="time-box" style="margin:20px; padding:15px; background:rgba(0,0,0,0.6); border-radius:12px;">
-    Đang tải thời gian...
-  </div>
+          <div class="grid-cards" style="margin-top:12px">
+            <div class="card-small"><i class="fa-solid fa-code"></i> JavaScript</div>
+            <div class="card-small"><i class="fa-solid fa-paint-brush"></i> UI/UX</div>
+            <div class="card-small"><i class="fa-solid fa-music"></i> Sound Design</div>
+          </div>
+        </div>
 
-  <!-- Box thời tiết -->
-  <div id="weather-box" style="margin:20px; padding:15px; background:rgba(0,0,0,0.6); border-radius:12px;">
-    Đang tải dữ liệu...
-  </div>
-
-  <!-- Tiêu đề chính -->
-  <h1 style="text-align:center; margin-top:20px;">Cảm ơn vì đã đến...</h1>
-
-  <div class="hero-subtext" style="text-align:center; margin-top:10px;">
-    "Có người đến, có người đi và có người ở lại..."<br>
-    "Cảm ơn vì tất cả"
-  
-    </div>
-    <div class="social">
-      <a href="https://facebook.com/ttrieu22" target="_blank"><i class="fab fa-facebook"></i></a>
-      <a href="https://t.me/Meomeo11t" target="_blank"><i class="fab fa-telegram"></i></a>
-      <a href="tiktok" target="_blank"><i class="fas fa-id-card"></i></a>
-    </div>
+        <div style="width:100%;margin-top:12px;text-align:center">
+          <button class="btn btn-ghost" id="open-game">Mở mini-game</button>
+        </div>
+      </aside>
+    </article>
   </section>
 
-  <!-- About -->
-  <section class="about" id="about">
-    <div class="card">
-      <h2>U^U</h2>
-      <p>Le Tran Tan Trieu</p>
-    </div>
+  <!-- About (fade-in on scroll) -->
+  <section id="about" class="fade-in">
+    <h3 style="font-size:1.3rem;margin-bottom:10px">Về tôi</h3>
+    <p style="color:var(--muted);max-width:880px">Tôi làm web, thích tạo trải nghiệm nhỏ nhặt nhưng tinh tế — animation mượt, micro-interactions, sound touch. Bạn có thể tùy biến toàn bộ file này.</p>
   </section>
 
-  <!-- Footer -->
-  <footer id="contact">
-    <p>© 2025 tan trieu | Liên hệ: cuccanhsatvietnam@gmail.com</p>
-  </footer>
+  <!-- contact -->
+  <section id="contact" class="fade-in">
+    <h3 style="margin-bottom:10px">Liên hệ</h3>
+    <p style="color:var(--muted)">Email: <b>cuccanhsatvietnam@gmail.com</b></p>
+  </section>
+</main>
 
-  <!-- Popup -->
-  <div class="popup-center" id="centerPopup">
-    <span class="close-popup" onclick="closePopupCenter()">&times;</span>
-    <h3>Thông báo</h3>
-    <p>Thiết bị của bạn đã bị cấm! Để mở hãy bank 500k MB:0123456789!</p>
+<!-- Footer -->
+<footer>
+  © 2025 Tấn Triệu • Built with ❤️ — Ultra Pro Pack
+</footer>
+
+<!-- Mini-game modal -->
+<div class="modal" id="game-modal">
+  <div class="game-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <h4>Mini-game: Bấm nổ bong bóng</h4>
+      <button class="btn btn-ghost" id="close-game">Đóng</button>
+    </div>
+    <div style="width:100%;height:420px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));position:relative;overflow:hidden" id="game-area">
+      <!-- game canvas will be inserted -->
+    </div>
+    <div style="margin-top:8px;color:var(--muted)">Thời gian: <span id="game-time">0</span>s • Điểm: <span id="game-score">0</span></div>
   </div>
+</div>
 
-  <!-- Audio -->
-  <audio id="background-music" loop>
-    <source src="{{ url_for('static', filename='congidephon.mp3') }}" type="audio/mpeg">
-  </audio>
+<script>
+/* ========== UTIL: tiny sound engine using WebAudio (no files) ========== */
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playBeep(freq=440, type='sine', duration=0.08, gain=0.06){
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.value = gain;
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start();
+  g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+  o.stop(audioCtx.currentTime + duration + 0.02);
+}
 
-  <script>
-    // Popup
-    function showPopupCenter(){document.getElementById('centerPopup').style.display='block';}
-    function closePopupCenter(){document.getElementById('centerPopup').style.display='none';}
-    setTimeout(showPopupCenter,3000);
+/* ========== PARTICLES: performant particle field + mouse trail ========== */
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let DPR = Math.max(1, window.devicePixelRatio || 1);
+function resizeCanvas(){
+  DPR = Math.max(1, window.devicePixelRatio || 1);
+  canvas.width = Math.floor(innerWidth * DPR);
+  canvas.height = Math.floor(innerHeight * DPR);
+  canvas.style.width = innerWidth + 'px';
+  canvas.style.height = innerHeight + 'px';
+  ctx.scale(DPR, DPR);
+}
+resizeCanvas();
+window.addEventListener('resize', ()=>{ ctx.setTransform(1,0,0,1,0,0); resizeCanvas(); });
 
-    const music=document.getElementById('background-music');
-    const musicIcon=document.getElementById('musicIcon');
-    const musicLabel=document.getElementById('musicLabel');
-    const musicSelect=document.getElementById('musicSelect');
-    const progressBar=document.getElementById('progressBar');
-    const progressFilled=document.getElementById('progressFilled');
-    const timeDisplay=document.getElementById('timeDisplay');
+const particles = [];
+const PARTICLE_COUNT = Math.floor(Math.max(60, innerWidth/12));
+for(let i=0;i<PARTICLE_COUNT;i++){
+  particles.push({
+    x: Math.random()*innerWidth,
+    y: Math.random()*innerHeight,
+    r: Math.random()*2 + 0.8,
+    vx: (Math.random()-0.5)*0.4,
+    vy: (Math.random()*0.6)+0.1,
+    alpha: Math.random()*0.6 + 0.2
+  });
+}
+let mouse = {x:-9999,y:-9999,down:false};
+window.addEventListener('mousemove', e =>{ mouse.x=e.clientX; mouse.y=e.clientY; });
+window.addEventListener('mouseleave', ()=>{ mouse.x=-9999; mouse.y=-9999; });
 
-    // Load trạng thái cũ
-    document.addEventListener('DOMContentLoaded',()=>{
-      const savedTrack=localStorage.getItem('musicTrack')||'congidephon.mp3';
-      const savedTime=parseFloat(localStorage.getItem('musicTime'))||0;
-      musicSelect.value=savedTrack;
-      music.src=`/static/${savedTrack}`;
-      music.currentTime=savedTime;
-      if(localStorage.getItem('musicPlaying')==='true'){
-        playMusic().catch(()=>{});
+function drawParticles(){
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  for(let p of particles){
+    // attraction to mouse for subtle effect
+    if(mouse.x>-9000){
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx*dx+dy*dy);
+      if(dist < 120){
+        p.vx += (dx/dist)*0.03;
+        p.vy += (dy/dist)*0.03;
       }
-      updateMusicButton();
-    });
-
-    // Lưu vị trí khi out
-    window.addEventListener('beforeunload',()=>{
-      localStorage.setItem('musicTrack',musicSelect.value);
-      localStorage.setItem('musicTime',music.currentTime);
-      localStorage.setItem('musicPlaying',!music.paused);
-    });
-
-    function playMusic(){return music.play().then(()=>{music.muted=false;updateMusicButton();});}
-    function pauseMusic(){music.pause();updateMusicButton();}
-    function toggleMusic(){if(music.paused){playMusic().catch(()=>{music.muted=true;music.play();});}else{pauseMusic();}}
-    function updateMusicButton(){
-      if(!music.paused&&!music.muted){musicIcon.className='fa-solid fa-volume-high';musicLabel.textContent='Tắt nhạc';}
-      else{musicIcon.className='fa-solid fa-volume-xmark';musicLabel.textContent='Bật nhạc';}
-    }
-    function changeMusic(track){
-      music.src=`/static/${track}`;
-      music.currentTime=0;
-      localStorage.setItem('musicTrack',track);
-      playMusic();
     }
 
-    // Progress bar update
-    music.addEventListener('timeupdate',()=>{
-      const percent=(music.currentTime/music.duration)*100;
-      progressFilled.style.width=`${percent}%`;
-      const minutes=Math.floor(music.currentTime/60);
-      const seconds=Math.floor(music.currentTime%60).toString().padStart(2,'0');
-      timeDisplay.textContent=`${minutes}:${seconds}`;
-    });
+    p.x += p.vx; p.y += p.vy;
+    p.vx *= 0.995; p.vy *= 0.999;
 
-    // Seek khi click progress
-    progressBar.addEventListener('click',(e)=>{
-      const rect=progressBar.getBoundingClientRect();
-      const clickX=e.clientX-rect.left;
-      const width=rect.width;
-      const percent=clickX/width;
-      music.currentTime=percent*music.duration;
-    });
+    if(p.y > innerHeight + 20){ p.y = -10; p.x = Math.random()*innerWidth; }
+    if(p.x > innerWidth+20) p.x = -10;
+    if(p.x < -20) p.x = innerWidth+10;
 
-    music.addEventListener('play',updateMusicButton);
-    music.addEventListener('pause',updateMusicButton);
-// thoi tiet
-  async function getWeather(lat, lon) {
-    const res = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`
-    );
-    return await res.json();
+    // draw glow
+    const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*8);
+    g.addColorStop(0, `rgba(102,160,255,${p.alpha*0.9})`);
+    g.addColorStop(0.6, `rgba(102,160,255,${p.alpha*0.22})`);
+    g.addColorStop(1, `rgba(102,160,255,0)`);
+    ctx.beginPath(); ctx.fillStyle = g; ctx.arc(p.x, p.y, p.r*7, 0, Math.PI*2); ctx.fill();
+
+    ctx.beginPath(); ctx.fillStyle = `rgba(255,255,255,${p.alpha})`; ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
   }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
 
-  async function loadWeatherAndGreeting() {
-    try {
-      let lat = 10.75, lon = 106.67; // mặc định HCM
+/* ========== TYPING ANIMATION ========== */
+const typingEl = document.getElementById('typing');
+const phrases = [
+  "I build smooth UI experiences.",
+  "I love tiny interactions & micro-animations.",
+  "Let's make your site feel alive ✨",
+  "Fast. Clean. Elegant. — Pro Ultra."
+];
+let tIdx=0, cIdx=0, forward=true;
+function tick(){
+  const phrase = phrases[tIdx];
+  if(forward){
+    cIdx++;
+    if(cIdx>=phrase.length){ forward=false; setTimeout(tick,900); typingEl.innerHTML = phrase + '<span class="cursor"></span>'; return; }
+  } else {
+    cIdx--;
+    if(cIdx<=0){ forward=true; tIdx=(tIdx+1)%phrases.length; setTimeout(tick,300); typingEl.innerHTML = ''; return; }
+  }
+  typingEl.innerHTML = phrase.slice(0,cIdx) + '<span class="cursor"></span>';
+  setTimeout(tick, 60 + Math.random()*40);
+}
+tick();
 
-      // Thử lấy vị trí thật của user
-      if (navigator.geolocation) {
-        await new Promise((resolve) => {
-          navigator.geolocation.getCurrentPosition(
-            (pos) => {
-              lat = pos.coords.latitude;
-              lon = pos.coords.longitude;
-              resolve();
-            },
-            () => resolve() // nếu lỗi hoặc user từ chối → dùng HCM
-          );
-        });
-      }
+/* ========== TIME & WEATHER ========== */
+function updateTime(){
+  const now = new Date();
+  const h = now.getHours().toString().padStart(2,'0');
+  const m = now.getMinutes().toString().padStart(2,'0');
+  const s = now.getSeconds().toString().padStart(2,'0');
+  const d = now.getDate().toString().padStart(2,'0');
+  const mo = (now.getMonth()+1).toString().padStart(2,'0');
+  document.getElementById('time-box').textContent = `⏰ ${h}:${m}:${s} — ${d}/${mo}/${now.getFullYear()}`;
+}
+setInterval(updateTime,1000); updateTime();
 
-      const data = await getWeather(lat, lon);
-      const weather = data.current_weather;
+// fetch weather (open-meteo)
+async function loadWeather(){
+  try{
+    // default HCM lat/lon
+    let lat=10.75, lon=106.67;
+    if(navigator.geolocation){
+      await new Promise(res=>navigator.geolocation.getCurrentPosition(p=>{lat=p.coords.latitude; lon=p.coords.longitude; res();}, ()=>res(), {timeout:2500}));
+    }
+    const resp = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`);
+    const data = await resp.json();
+    const w = data.current_weather;
+    const map = {0:"Quang",1:"Ít mây",2:"Nhiều mây",3:"U ám",45:"Sương mù",61:"Mưa nhỏ",63:"Mưa vừa",65:"Mưa to",80:"Mưa rào",95:"Dông"};
+    document.getElementById('weather-box').textContent = `🌡 ${w.temperature}°C • ${map[w.weathercode]||"Không rõ"} • 💨 ${w.windspeed} km/h`;
+  }catch(e){
+    document.getElementById('weather-box').textContent = '❌ Không lấy được thời tiết';
+  }
+}
+loadWeather();
 
-      // Thông tin thời tiết
-      const temp = weather.temperature;
-      const wind = weather.windspeed;
-      const code = weather.weathercode;
+/* ========== THEME TOGGLE ========== */
+const toggleThemeBtn = document.getElementById('toggle-theme');
+let dark = true;
+toggleThemeBtn.addEventListener('click', ()=>{
+  dark = !dark;
+  if(!dark){
+    document.documentElement.style.setProperty('--bg1','#f6f8ff');
+    document.documentElement.style.setProperty('--bg2','#eaf1ff');
+    document.documentElement.style.setProperty('--text','#06112b');
+    document.documentElement.style.setProperty('--muted','rgba(6,17,43,0.7)');
+    document.documentElement.style.setProperty('--card-bg','rgba(6,17,43,0.03)');
+    toggleThemeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+  } else {
+    document.documentElement.style.setProperty('--bg1','#0f1724');
+    document.documentElement.style.setProperty('--bg2','#0b1220');
+    document.documentElement.style.setProperty('--text','#e6eef8');
+    document.documentElement.style.setProperty('--muted','rgba(230,238,248,0.68)');
+    document.documentElement.style.setProperty('--card-bg','rgba(255,255,255,0.04)');
+    toggleThemeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+  }
+});
 
-      const conditions = {
-        0: "Trời quang",
-        1: "Hơi có mây",
-        2: "Nhiều mây",
-        3: "U ám",
-        45: "Sương mù",
-        48: "Sương mù đóng băng",
-        51: "Mưa phùn nhẹ",
-        61: "Mưa nhỏ",
-        63: "Mưa vừa",
-        65: "Mưa to",
-        80: "Mưa rào nhẹ",
-        95: "Dông",
-      };
-      const condition = conditions[code] || "Không rõ";
-      // Mảng lời chào
-      const greetings = [
-        "Chào buổi sáng tươi đẹp ☀️",
-        "Chào buổi chiều an lành 🌤",
-        "Chào buổi tối ấm áp 🌙",
-        "Xin chào! Rất vui khi bạn ghé thăm 💖",
-        "Chào bạn, hy vọng hôm nay là một ngày tốt lành ✨",
-      ];
+/* ========== SOUND / MUSIC CONTROL ========== */
+const playMusicBtn = document.getElementById('play-music');
+let playing = false;
+let audioEl = null;
+playMusicBtn.addEventListener('click', async ()=>{
+  // resume audio context if suspended (some browsers require user gesture)
+  if(audioCtx.state === 'suspended') await audioCtx.resume();
 
-      // Mảng lời chúc / an ủi
-      const wishes = [
-        "Chúc bạn một ngày may mắn 🍀",
-        "Hãy giữ nụ cười, mọi chuyện rồi sẽ ổn 😊",
-        "Bạn đã làm rất tốt, hãy tự tin lên 💪",
-        "Mọi khó khăn chỉ là thử thách nhỏ thôi ✨",
-        "Chúc bạn luôn vui vẻ và hạnh phúc ❤️",
-      ];
+  if(!audioEl){
+    // simple ambient generated sound using oscillator + reverb-ish via gain
+    audioEl = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    audioEl.type = 'sine'; audioEl.frequency.value = 110;
+    g.gain.value = 0.02;
+    audioEl.connect(g); g.connect(audioCtx.destination);
+    audioEl.start();
+  }
+  if(!playing){
+    playBeep(780,'sawtooth',0.06,0.08);
+    playMusicBtn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+    playing = true;
+  } else {
+    playBeep(320,'sine',0.06,0.06);
+    playMusicBtn.innerHTML = '<i class="fa-solid fa-play"></i> Play';
+    playing = false;
+  }
+});
 
-      const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-      const wish = wishes[Math.floor(Math.random() * wishes.length)];
+/* extra small UI click sound */
+document.querySelectorAll('.btn').forEach(b=>b.addEventListener('click', ()=>playBeep(600 + Math.random()*400,'triangle',0.06,0.04)));
 
-      document.getElementById("weather-box").innerHTML =
-        `${greeting}<br>${wish}<br><br>
-         Thời tiết: ${temp}°C | ${condition} | Gió ${wind} km/h`;
-    } catch (e) {
-      document.getElementById("weather-box").innerHTML =
-        "Không lấy được dữ liệu thời tiết ❌";
+/* ========== SCROLL FADE-IN ========== */
+const faders = document.querySelectorAll('.fade-in');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(ent=>{
+    if(ent.isIntersecting) ent.target.classList.add('show');
+   });
+},{threshold:0.12});
+faders.forEach(f=>obs.observe(f));
+
+/* ========== MINI-GAME (bubble pop) ========== */
+const openGameBtns = [document.getElementById('open-game'), document.getElementById('open-game-btn'), document.getElementById('btn-open-game')];
+const gameModal = document.getElementById('game-modal');
+const closeGame = document.getElementById('close-game');
+const gameArea = document.getElementById('game-area');
+const gameTimeEl = document.getElementById('game-time');
+const gameScoreEl = document.getElementById('game-score');
+let gameCanvas, gctx, bubbles=[], gameTimer=0, gameScore=0, gameInterval=null;
+
+function startGame(){
+  gameModal.classList.add('show');
+  // create canvas
+  gameCanvas = document.createElement('canvas');
+  gameCanvas.width = gameArea.clientWidth;
+  gameCanvas.height = gameArea.clientHeight;
+  gameCanvas.style.width = '100%'; gameCanvas.style.height = '100%';
+  gctx = gameCanvas.getContext('2d');
+  gameArea.innerHTML = ''; gameArea.appendChild(gameCanvas);
+  bubbles = []; gameScore=0; gameTimer=0;
+  spawnBubbles();
+  gameInterval = setInterval(()=>{ gameTimer++; gameTimeEl.textContent = gameTimer; }, 1000);
+  requestAnimationFrame(gameLoop);
+}
+
+function spawnBubbles(){
+  for(let i=0;i<8;i++){
+    bubbles.push({
+      x: Math.random()*(gameCanvas.width-80)+40,
+      y: gameCanvas.height + Math.random()*200,
+      r: 18 + Math.random()*32,
+      vy: - (1 + Math.random()*2),
+      hue: Math.floor(Math.random()*360),
+      popped:false
+    });
+  }
+}
+
+function gameLoop(){
+  gctx.clearRect(0,0,gameCanvas.width,gameCanvas.height);
+  // spawn occasional
+  if(Math.random()<0.02) spawnBubbles();
+  // update draw
+  for(let b of bubbles){
+    if(b.popped) continue;
+    b.y += b.vy;
+    b.x += Math.sin(gameTimer*0.05 + b.r)*0.3;
+    // draw
+    const grad = gctx.createRadialGradient(b.x, b.y, b.r*0.2, b.x, b.y, b.r*1.6);
+    grad.addColorStop(0, `hsla(${b.hue},80%,85%,0.9)`);
+    grad.addColorStop(0.6, `hsla(${b.hue},75%,60%,0.28)`);
+    grad.addColorStop(1, `hsla(${b.hue},70%,50%,0.06)`);
+    gctx.beginPath(); gctx.fillStyle = grad; gctx.arc(b.x,b.y,b.r,0,Math.PI*2); gctx.fill();
+  }
+  // remove bubbles off-screen
+  bubbles = bubbles.filter(b=>b.y+ b.r > -60 && !b.ghost);
+  requestAnimationFrame(gameLoop);
+}
+
+gameArea.addEventListener('click', (e)=>{
+  if(!gctx) return;
+  const rect = gameCanvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) * (gameCanvas.width/rect.width);
+  const my = (e.clientY - rect.top) * (gameCanvas.height/rect.height);
+  for(let b of bubbles){
+    if(b.popped) continue;
+    const d = Math.hypot(b.x-mx, b.y-my);
+    if(d < b.r){
+      b.popped = true;
+      b.ghost = true;
+      gameScore += Math.round(10 + b.r);
+      gameScoreEl.textContent = gameScore;
+      // pop animation (circle expand)
+      const popX = b.x, popY=b.y, popR=b.r;
+      let t=0;
+      const popAnim = setInterval(()=>{
+        t++;
+        gctx.beginPath(); gctx.arc(popX,popY, popR + t*3,0,Math.PI*2);
+        gctx.strokeStyle = `rgba(255,255,255,${1 - t/10})`; gctx.lineWidth=2;
+        gctx.stroke();
+        if(t>9){ clearInterval(popAnim); }
+      },20);
+      playBeep(600 + Math.random()*600,'sine',0.06,0.06);
+      break;
     }
   }
+});
 
-  loadWeatherAndGreeting();
-  //time
-  function updateTime() {
-    const now = new Date();
+function stopGame(){
+  clearInterval(gameInterval);
+  gameInterval = null;
+  gameModal.classList.remove('show');
+  gameArea.innerHTML = '';
+  gctx = null;
+}
 
-    // Lấy giờ phút giây
-    let h = now.getHours().toString().padStart(2, "0");
-    let m = now.getMinutes().toString().padStart(2, "0");
-    let s = now.getSeconds().toString().padStart(2, "0");
+openGameBtns.forEach(btn=>btn && btn.addEventListener('click', (e)=>{ e.preventDefault(); startGame(); }));
+closeGame.addEventListener('click', stopGame);
+document.getElementById('btn-open-game').addEventListener('click', startGame);
 
-    // Lấy ngày tháng năm
-    let d = now.getDate().toString().padStart(2, "0");
-    let mo = (now.getMonth() + 1).toString().padStart(2, "0"); // tháng bắt đầu từ 0
-    let y = now.getFullYear();
+/* ========== Small UX: scroll to sections and page transition sound ========== */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', (e)=>{
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); playBeep(480,'triangle',0.06,0.04); }
+  });
+});
 
-    // Hiển thị
-    document.getElementById("time-box").innerHTML =
-      `⏰ Bây giờ là ${h}:${m}:${s} - Ngày ${d}/${mo}/${y}`;
-  }
-
-  // Cập nhật mỗi giây
-  setInterval(updateTime, 1000);
-  updateTime();
-  //upd tg
-  function getGreeting() {
-    const now = new Date();
-    const hour = now.getHours();
-    let partOfDay;
-
-    if (hour >= 5 && hour < 11) partOfDay = "morning";
-    else if (hour >= 11 && hour < 13) partOfDay = "noon";
-    else if (hour >= 13 && hour < 18) partOfDay = "afternoon";
-    else if (hour >= 18 && hour < 22) partOfDay = "evening";
-    else partOfDay = "night";
-
-    const list = greetings[partOfDay];
-    const randomGreeting = list[Math.floor(Math.random() * list.length)];
-
-    // Ghép với đồng hồ
-    let h = now.getHours().toString().padStart(2,"0");
-    let m = now.getMinutes().toString().padStart(2,"0");
-    let s = now.getSeconds().toString().padStart(2,"0");
-
-    return `⏰ Bây giờ là ${h}:${m}:${s}.<br>${randomGreeting}`;
-  }
-
-  function updateGreeting() {
-    document.getElementById("greeting-box").innerHTML = getGreeting();
-  }
-
-  // Cập nhật mỗi giây
-  setInterval(updateGreeting, 1000);
-  updateGreeting();
-
-  </script>
+/* ========== Accessibility: resume audio context when user interacts anywhere ========== */
+document.documentElement.addEventListener('click', async ()=>{
+  if(audioCtx.state === 'suspended') await audioCtx.resume();
+}, {once:true});
+</script>
 </body>
 </html>
-
-

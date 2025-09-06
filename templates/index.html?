@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile cua tan trieu tai 3 pro vip</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    <style>
+  /* CSS khác của bạn giữ nguyên */
+
+  /* Hiệu ứng tuyết */
+  canvas#snow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    pointer-events: none; /* không chặn click vào web */
+    mix-blend-mode: screen; /* làm tuyết sáng nổi bật hơn */
+  }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%;font-family:"Segoe UI",Tahoma, Geneva, Verdana, sans-serif;color:#fff;scroll-behavior:smooth}
+    #background-video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+    .overlay{position:fixed;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.55),rgba(0,0,0,0.75));z-index:-1}
+
+    /* Navbar */
+    .navbar{position:fixed;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;gap:10px;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);z-index:1000}
+    .navbar .left,.navbar .right{display:flex;align-items:center;gap:12px}
+    .navbar a{color:#fff;text-decoration:none;font-weight:600;margin:0 6px;opacity:0.95}
+    .navbar a:hover{color:#66a0ff}
+    .rainbow-text{font-weight:700;font-size:1.02rem;animation:rainbow 7s linear infinite}
+    @keyframes rainbow{
+      0%{color:#ff3b30}14%{color:#ff9500}28%{color:#ffcc00}
+      42%{color:#34c759}57%{color:#007aff}71%{color:#5856d6}
+      85%{color:#ff2d55}100%{color:#ff3b30}
+    }
+
+    /* Content */
+    .content{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 20px 80px;position:relative;z-index:1}
+    h1{font-size:clamp(2rem,8vw,4.2rem);line-height:1;margin-bottom:12px;text-shadow:0 6px 18px rgba(0,0,0,0.6);word-break:break-word;max-width:90%}
+    .hero-subtext{font-size:clamp(1rem,2.2vw,1.4rem);color:rgba(255,255,255,0.95);max-width:900px;margin:12px auto 20px;white-space:normal}
+
+    /* Social */
+    .social{display:flex;gap:18px;align-items:center;justify-content:center;margin-top:18px}
+    .social a{font-size:1.6rem;color:#fff;transition:transform .18s,color .18s}
+    .social a:hover{transform:translateY(-4px);color:#66a0ff}
+
+    /* Music */
+    .music-player{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+    .music-btn{background:transparent;border:1px solid rgba(255,255,255,0.12);padding:8px 12px;border-radius:10px;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600}
+    .music-btn:hover{background:rgba(255,255,255,0.04)}
+    .music-select{padding:6px 10px;border-radius:8px;background:rgba(0,0,0,0.45);color:#fff;border:1px solid rgba(255,255,255,0.2)}
+    .progress-container{display:flex;align-items:center;gap:8px;width:180px}
+    .progress{flex:1;height:6px;background:rgba(255,255,255,0.3);border-radius:4px;cursor:pointer;position:relative}
+    .progress-filled{height:100%;background:#66a0ff;border-radius:4px;width:0%}
+    .time{font-size:.8rem;opacity:.85;min-width:36px;text-align:right}
+
+    /* About */
+    .about{padding:60px 18px;text-align:center;background:rgba(0,0,0,0.45)}
+    .card{max-width:760px;margin:0 auto;background:rgba(17,17,17,0.75);padding:26px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+
+    /* Popup */
+    .popup-center{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.92);padding:22px 26px;border-radius:12px;border:4px solid red;color:#fff;width:320px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.6);display:none;z-index:9999;animation:zoomIn .45s ease}
+    @keyframes zoomIn{from{transform:translate(-50%,-50%) scale(.65);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+    @keyframes rainbowBorder{0%{border-color:red}14%{border-color:orange}28%{border-color:yellow}42%{border-color:green}57%{border-color:blue}71%{border-color:indigo}85%{border-color:violet}100%{border-color:red}}
+    .popup-center{animation:rainbowBorder 5s linear infinite,zoomIn .45s ease}
+    .popup-center .close-popup{position:absolute;top:8px;right:12px;cursor:pointer;font-size:1.1rem;color:#fff}
+
+    footer{padding:18px;text-align:center;background:transparent;font-size:.92rem;opacity:.95}
+
+    @media(max-width:640px){
+      .navbar{padding:10px 14px}
+      .music-btn{padding:6px 10px;font-size:.92rem}
+      .music-select{font-size:.9rem}
+      .social a{font-size:1.4rem}
+      .popup-center{width:86%}
+      .progress-container{width:140px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Video nền -->
+  <video id="background-video" autoplay muted loop>
+    <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
+    Trình duyệt không hỗ trợ video.
+  </video>
+
+  <div class="overlay"></div>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="left">
+      <div class="rainbow-text">Development by tan trieu</div>
+    </div>
+    <div class="right">
+      <a href="#home">Trang chủ</a>
+      <a href="#about">Giới thiệu</a>
+      <a href="#contact">Liên hệ</a>
+
+      <!-- Music -->
+      <div class="music-player">
+        <button id="musicBtn" class="music-btn" onclick="toggleMusic()" aria-pressed="false">
+          <i id="musicIcon" class="fa-solid fa-volume-high"></i>
+          <span id="musicLabel">Nhạc</span>
+        </button>
+
+        <select id="musicSelect" class="music-select" onchange="changeMusic(this.value)">
+          <option value="congidephon.mp3">Con gì đẹp hơn</option>
+          <option value="wrongtimes.mp3">Wrong Times</option>
+          <option value="nghediroibiet.mp3">Nghe đi rồi biết</option>
+        </select>
+
+        <div class="progress-container">
+          <div class="progress" id="progressBar">
+            <div class="progress-filled" id="progressFilled"></div>
+          </div>
+          <div class="time" id="timeDisplay">0:00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nội dung -->
+     <section class="content" id="home">
+
+  <!-- Box thời gian -->
+  <div id="time-box" style="margin:20px; padding:15px; background:rgba(0,0,0,0.6); border-radius:12px;">
+    Đang tải thời gian...
+  </div>
+
+  <!-- Box thời tiết -->
+  <div id="weather-box" style="margin:20px; padding:15px; background:rgba(0,0,0,0.6); border-radius:12px;">
+    Đang tải dữ liệu...
+  </div>
+
+  <!-- Tiêu đề chính -->
+  <h1 style="text-align:center; margin-top:20px;">Cảm ơn vì đã đến...</h1>
+
+  <div class="hero-subtext" style="text-align:center; margin-top:10px;">
+    "Có người đến, có người đi và có người ở lại..."<br>
+    "Cảm ơn vì tất cả"
+  
+    </div>
+    <div class="social">
+      <a href="https://facebook.com/ttrieu22" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="https://t.me/Meomeo11t" target="_blank"><i class="fab fa-telegram"></i></a>
+      <a href="tiktok" target="_blank"><i class="fas fa-id-card"></i></a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="card">
+      <h2>U^U</h2>
+      <p>Le Tran Tan Trieu</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <p>© 2025 tan trieu | Liên hệ: cuccanhsatvietnam@gmail.com</p>
+  </footer>
+
+  <!-- Popup -->
+  <div class="popup-center" id="centerPopup">
+    <span class="close-popup" onclick="closePopupCenter()">&times;</span>
+    <h3>Thông báo</h3>
+    <p>Thiết bị của bạn đã bị cấm! Để mở hãy bank 500k MB:0123456789!</p>
+  </div>
+
+  <!-- Audio -->
+  <audio id="background-music" loop>
+    <source src="{{ url_for('static', filename='congidephon.mp3') }}" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Popup
+    function showPopupCenter(){document.getElementById('centerPopup').style.display='block';}
+    function closePopupCenter(){document.getElementById('centerPopup').style.display='none';}
+    setTimeout(showPopupCenter,3000);
+
+    const music=document.getElementById('background-music');
+    const musicIcon=document.getElementById('musicIcon');
+    const musicLabel=document.getElementById('musicLabel');
+    const musicSelect=document.getElementById('musicSelect');
+    const progressBar=document.getElementById('progressBar');
+    const progressFilled=document.getElementById('progressFilled');
+    const timeDisplay=document.getElementById('timeDisplay');
+
+    // Load trạng thái cũ
+    document.addEventListener('DOMContentLoaded',()=>{
+      const savedTrack=localStorage.getItem('musicTrack')||'congidephon.mp3';
+      const savedTime=parseFloat(localStorage.getItem('musicTime'))||0;
+      musicSelect.value=savedTrack;
+      music.src=`/static/${savedTrack}`;
+      music.currentTime=savedTime;
+      if(localStorage.getItem('musicPlaying')==='true'){
+        playMusic().catch(()=>{});
+      }
+      updateMusicButton();
+    });
+
+    // Lưu vị trí khi out
+    window.addEventListener('beforeunload',()=>{
+      localStorage.setItem('musicTrack',musicSelect.value);
+      localStorage.setItem('musicTime',music.currentTime);
+      localStorage.setItem('musicPlaying',!music.paused);
+    });
+
+    function playMusic(){return music.play().then(()=>{music.muted=false;updateMusicButton();});}
+    function pauseMusic(){music.pause();updateMusicButton();}
+    function toggleMusic(){if(music.paused){playMusic().catch(()=>{music.muted=true;music.play();});}else{pauseMusic();}}
+    function updateMusicButton(){
+      if(!music.paused&&!music.muted){musicIcon.className='fa-solid fa-volume-high';musicLabel.textContent='Tắt nhạc';}
+      else{musicIcon.className='fa-solid fa-volume-xmark';musicLabel.textContent='Bật nhạc';}
+    }
+    function changeMusic(track){
+      music.src=`/static/${track}`;
+      music.currentTime=0;
+      localStorage.setItem('musicTrack',track);
+      playMusic();
+    }
+
+    // Progress bar update
+    music.addEventListener('timeupdate',()=>{
+      const percent=(music.currentTime/music.duration)*100;
+      progressFilled.style.width=`${percent}%`;
+      const minutes=Math.floor(music.currentTime/60);
+      const seconds=Math.floor(music.currentTime%60).toString().padStart(2,'0');
+      timeDisplay.textContent=`${minutes}:${seconds}`;
+    });
+
+    // Seek khi click progress
+    progressBar.addEventListener('click',(e)=>{
+      const rect=progressBar.getBoundingClientRect();
+      const clickX=e.clientX-rect.left;
+      const width=rect.width;
+      const percent=clickX/width;
+      music.currentTime=percent*music.duration;
+    });
+
+    music.addEventListener('play',updateMusicButton);
+    music.addEventListener('pause',updateMusicButton);
+// thoi tiet
+  async function getWeather(lat, lon) {
+    const res = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`
+    );
+    return await res.json();
+  }
+
+  async function loadWeatherAndGreeting() {
+    try {
+      let lat = 10.75, lon = 106.67; // mặc định HCM
+
+      // Thử lấy vị trí thật của user
+      if (navigator.geolocation) {
+        await new Promise((resolve) => {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              lat = pos.coords.latitude;
+              lon = pos.coords.longitude;
+              resolve();
+            },
+            () => resolve() // nếu lỗi hoặc user từ chối → dùng HCM
+          );
+        });
+      }
+
+      const data = await getWeather(lat, lon);
+      const weather = data.current_weather;
+
+      // Thông tin thời tiết
+      const temp = weather.temperature;
+      const wind = weather.windspeed;
+      const code = weather.weathercode;
+
+      const conditions = {
+        0: "Trời quang",
+        1: "Hơi có mây",
+        2: "Nhiều mây",
+        3: "U ám",
+        45: "Sương mù",
+        48: "Sương mù đóng băng",
+        51: "Mưa phùn nhẹ",
+        61: "Mưa nhỏ",
+        63: "Mưa vừa",
+        65: "Mưa to",
+        80: "Mưa rào nhẹ",
+        95: "Dông",
+      };
+      const condition = conditions[code] || "Không rõ";
+      // Mảng lời chào
+      const greetings = [
+        "Chào buổi sáng tươi đẹp ☀️",
+        "Chào buổi chiều an lành 🌤",
+        "Chào buổi tối ấm áp 🌙",
+        "Xin chào! Rất vui khi bạn ghé thăm 💖",
+        "Chào bạn, hy vọng hôm nay là một ngày tốt lành ✨",
+      ];
+
+      // Mảng lời chúc / an ủi
+      const wishes = [
+        "Chúc bạn một ngày may mắn 🍀",
+        "Hãy giữ nụ cười, mọi chuyện rồi sẽ ổn 😊",
+        "Bạn đã làm rất tốt, hãy tự tin lên 💪",
+        "Mọi khó khăn chỉ là thử thách nhỏ thôi ✨",
+        "Chúc bạn luôn vui vẻ và hạnh phúc ❤️",
+      ];
+
+      const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+      const wish = wishes[Math.floor(Math.random() * wishes.length)];
+
+      document.getElementById("weather-box").innerHTML =
+        `${greeting}<br>${wish}<br><br>
+         Thời tiết: ${temp}°C | ${condition} | Gió ${wind} km/h`;
+    } catch (e) {
+      document.getElementById("weather-box").innerHTML =
+        "Không lấy được dữ liệu thời tiết ❌";
+    }
+  }
+
+  loadWeatherAndGreeting();
+  //time
+  function updateTime() {
+    const now = new Date();
+
+    // Lấy giờ phút giây
+    let h = now.getHours().toString().padStart(2, "0");
+    let m = now.getMinutes().toString().padStart(2, "0");
+    let s = now.getSeconds().toString().padStart(2, "0");
+
+    // Lấy ngày tháng năm
+    let d = now.getDate().toString().padStart(2, "0");
+    let mo = (now.getMonth() + 1).toString().padStart(2, "0"); // tháng bắt đầu từ 0
+    let y = now.getFullYear();
+
+    // Hiển thị
+    document.getElementById("time-box").innerHTML =
+      `⏰ Bây giờ là ${h}:${m}:${s} - Ngày ${d}/${mo}/${y}`;
+  }
+
+  // Cập nhật mỗi giây
+  setInterval(updateTime, 1000);
+  updateTime();
+  //upd tg
+  function getGreeting() {
+    const now = new Date();
+    const hour = now.getHours();
+    let partOfDay;
+
+    if (hour >= 5 && hour < 11) partOfDay = "morning";
+    else if (hour >= 11 && hour < 13) partOfDay = "noon";
+    else if (hour >= 13 && hour < 18) partOfDay = "afternoon";
+    else if (hour >= 18 && hour < 22) partOfDay = "evening";
+    else partOfDay = "night";
+
+    const list = greetings[partOfDay];
+    const randomGreeting = list[Math.floor(Math.random() * list.length)];
+
+    // Ghép với đồng hồ
+    let h = now.getHours().toString().padStart(2,"0");
+    let m = now.getMinutes().toString().padStart(2,"0");
+    let s = now.getSeconds().toString().padStart(2,"0");
+
+    return `⏰ Bây giờ là ${h}:${m}:${s}.<br>${randomGreeting}`;
+  }
+
+  function updateGreeting() {
+    document.getElementById("greeting-box").innerHTML = getGreeting();
+  }
+
+  // Cập nhật mỗi giây
+  setInterval(updateGreeting, 1000);
+  updateGreeting();
+}
+  <canvas id="snow"></canvas>
+<script>
+  const canvas = document.getElementById('snow');
+  const ctx = canvas.getContext('2d');
+  let flakes = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function Snowflake() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.radius = Math.random() * 4 + 1;
+    this.speed = Math.random() * 2 + 0.5;
+    this.alpha = Math.random();
+    this.velX = Math.random() * 2 - 1;
+    this.velY = this.speed;
+
+    this.update = function() {
+      this.y += this.velY;
+      this.x += this.velX;
+      if (this.y > canvas.height) {
+        this.y = 0;
+        this.x = Math.random() * canvas.width;
+      }
+    };
+
+    this.draw = function() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+      ctx.shadowColor = "rgba(255,255,255,0.9)";
+      ctx.shadowBlur = 8; // tạo ánh sáng mờ cho bông tuyết
+      ctx.fill();
+    };
+  }
+
+  function createFlakes() {
+    flakes = [];
+    for (let i = 0; i < 100; i++) {
+      flakes.push(new Snowflake());
+    }
+  }
+
+  function snow() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let flake of flakes) {
+      flake.update();
+      flake.draw();
+    }
+    requestAnimationFrame(snow);
+  }
+
+  createFlakes();
+  snow();
+
+  // Tương tác vỡ khi click
+  canvas.addEventListener('click', (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    for (let i = 0; i < 15; i++) {
+      const f = new Snowflake();
+      f.x = x;
+      f.y = y;
+      f.velX = Math.random() * 6 - 3;
+      f.velY = Math.random() * -3 - 1;
+      flakes.push(f);
+    }
+  });
+</script>
+</body>
+</html>
+
+
