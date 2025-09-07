@@ -119,6 +119,10 @@
     .grid-cards{grid-template-columns:1fr}
     .navbar{left:8px;right:8px;top:8px}
   }
+
+  /* Small styles for leaderboard area */
+  .lb-row{display:flex;justify-content:space-between;gap:8px;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .input{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:var(--text);outline:none}
 </style>
 </head>
 <body>
@@ -220,10 +224,24 @@
       <!-- game canvas will be inserted -->
     </div>
     <div style="margin-top:8px;color:var(--muted)">Thời gian: <span id="game-time">0</span>s • Điểm: <span id="game-score">0</span></div>
+
+    <!-- Leaderboard controls -->
+    <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <input id="player-name" class="input" placeholder="Tên của bạn" style="flex:1;min-width:160px" maxlength="20" />
+      <button class="btn btn-primary" id="btn-submit-score"><i class="fa-solid fa-upload"></i> Gửi điểm</button>
+      <button class="btn btn-ghost" id="btn-load-leaderboard"><i class="fa-solid fa-trophy"></i> Xem bảng xếp hạng</button>
+    </div>
+    <div id="leaderboard" style="margin-top:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:12px;max-height:220px;overflow:auto">
+      <div style="color:var(--muted);font-size:.95rem">Chưa tải bảng xếp hạng...</div>
+    </div>
   </div>
 </div>
 
 <script>
+/* ========== CONFIG BACKEND ========== */
+/* ĐÃ CẬP NHẬT: URL backend Render của bạn */
+const API_URL = 'https://bxh-onl.onrender.com';
+
 /* ========== UTIL: tiny sound engine using WebAudio (no files) ========== */
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playBeep(freq=440, type='sine', duration=0.08, gain=0.06){
@@ -247,10 +265,11 @@ function resizeCanvas(){
   canvas.height = Math.floor(innerHeight * DPR);
   canvas.style.width = innerWidth + 'px';
   canvas.style.height = innerHeight + 'px';
+  ctx.setTransform(1,0,0,1,0,0);
   ctx.scale(DPR, DPR);
 }
 resizeCanvas();
-window.addEventListener('resize', ()=>{ ctx.setTransform(1,0,0,1,0,0); resizeCanvas(); });
+window.addEventListener('resize', resizeCanvas);
 
 const particles = [];
 const PARTICLE_COUNT = Math.floor(Math.max(60, innerWidth/12));
@@ -383,11 +402,9 @@ const playMusicBtn = document.getElementById('play-music');
 let playing = false;
 let audioEl = null;
 playMusicBtn.addEventListener('click', async ()=>{
-  // resume audio context if suspended (some browsers require user gesture)
   if(audioCtx.state === 'suspended') await audioCtx.resume();
 
   if(!audioEl){
-    // simple ambient generated sound using oscillator + reverb-ish via gain
     audioEl = audioCtx.createOscillator();
     const g = audioCtx.createGain();
     audioEl.type = 'sine'; audioEl.frequency.value = 110;
@@ -418,28 +435,63 @@ const obs = new IntersectionObserver(entries=>{
 },{threshold:0.12});
 faders.forEach(f=>obs.observe(f));
 
-/* ========== MINI-GAME (bubble pop) ========== */
+/* ========== MINI-GAME (bubble pop) + LEADERBOARD ========== */
 const openGameBtns = [document.getElementById('open-game'), document.getElementById('open-game-btn'), document.getElementById('btn-open-game')];
 const gameModal = document.getElementById('game-modal');
 const closeGame = document.getElementById('close-game');
 const gameArea = document.getElementById('game-area');
 const gameTimeEl = document.getElementById('game-time');
 const gameScoreEl = document.getElementById('game-score');
+const nameInput = document.getElementById('player-name');
+const submitBtn = document.getElementById('btn-submit-score');
+const loadLbBtn = document.getElementById('btn-load-leaderboard');
+const lbBox = document.getElementById('leaderboard');
+
 let gameCanvas, gctx, bubbles=[], gameTimer=0, gameScore=0, gameInterval=null;
+const GAME_DURATION = 60; // giây
 
 function startGame(){
   gameModal.classList.add('show');
-  // create canvas
+  // canvas
   gameCanvas = document.createElement('canvas');
   gameCanvas.width = gameArea.clientWidth;
   gameCanvas.height = gameArea.clientHeight;
   gameCanvas.style.width = '100%'; gameCanvas.style.height = '100%';
   gctx = gameCanvas.getContext('2d');
   gameArea.innerHTML = ''; gameArea.appendChild(gameCanvas);
+
+  // reset state
   bubbles = []; gameScore=0; gameTimer=0;
+  gameScoreEl.textContent = gameScore;
+  gameTimeEl.textContent = gameTimer;
+  nameInput.value = localStorage.getItem('player_name') || '';
+
   spawnBubbles();
-  gameInterval = setInterval(()=>{ gameTimer++; gameTimeEl.textContent = gameTimer; }, 1000);
+  if(gameInterval) clearInterval(gameInterval);
+  gameInterval = setInterval(()=>{
+    gameTimer++;
+    gameTimeEl.textContent = gameTimer;
+    if(gameTimer >= GAME_DURATION){
+      endGame();
+    }
+  }, 1000);
+
   requestAnimationFrame(gameLoop);
+  // load leaderboard ngay khi mở
+  loadLeaderboard().catch(()=>{});
+}
+
+function endGame(){
+  if(gameInterval){ clearInterval(gameInterval); gameInterval = null; }
+  playBeep(300,'sine',0.12,0.08);
+  alert(`Hết giờ! Điểm của bạn: ${gameScore}. Nhập tên và bấm "Gửi điểm" để lưu bảng xếp hạng.`);
+}
+
+function stopGame(){
+  if(gameInterval){ clearInterval(gameInterval); gameInterval = null; }
+  gameModal.classList.remove('show');
+  gameArea.innerHTML = '';
+  gctx = null;
 }
 
 function spawnBubbles(){
@@ -456,6 +508,7 @@ function spawnBubbles(){
 }
 
 function gameLoop(){
+  if(!gctx) return;
   gctx.clearRect(0,0,gameCanvas.width,gameCanvas.height);
   // spawn occasional
   if(Math.random()<0.02) spawnBubbles();
@@ -493,6 +546,7 @@ gameArea.addEventListener('click', (e)=>{
       const popX = b.x, popY=b.y, popR=b.r;
       let t=0;
       const popAnim = setInterval(()=>{
+        if(!gctx){ clearInterval(popAnim); return; }
         t++;
         gctx.beginPath(); gctx.arc(popX,popY, popR + t*3,0,Math.PI*2);
         gctx.strokeStyle = `rgba(255,255,255,${1 - t/10})`; gctx.lineWidth=2;
@@ -505,19 +559,70 @@ gameArea.addEventListener('click', (e)=>{
   }
 });
 
-function stopGame(){
-  clearInterval(gameInterval);
-  gameInterval = null;
-  gameModal.classList.remove('show');
-  gameArea.innerHTML = '';
-  gctx = null;
-}
-
 openGameBtns.forEach(btn=>btn && btn.addEventListener('click', (e)=>{ e.preventDefault(); startGame(); }));
 closeGame.addEventListener('click', stopGame);
 document.getElementById('btn-open-game').addEventListener('click', startGame);
 
-/* ========== Small UX: scroll to sections and page transition sound ========== */
+/* ========== Leaderboard API helpers ========== */
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function submitScore(){
+  try{
+    if(gameScore <= 0){
+      alert('Điểm chưa hợp lệ hoặc chưa chơi.');
+      return;
+    }
+    const name = (nameInput.value || '').trim().slice(0,20) || 'Player';
+    localStorage.setItem('player_name', name);
+
+    const resp = await fetch(`${API_URL}/api/score`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, score: gameScore })
+    });
+    const data = await resp.json();
+    if(!resp.ok) throw new Error(data.error || 'Submit thất bại');
+    playBeep(820,'triangle',0.07,0.06);
+    alert('Đã gửi điểm!');
+    await loadLeaderboard();
+  }catch(err){
+    console.error(err);
+    alert('Không gửi được điểm. Kiểm tra kết nối hoặc thử lại sau.');
+  }
+}
+
+async function loadLeaderboard(){
+  try{
+    lbBox.innerHTML = '<div style="color:var(--muted)">Đang tải bảng xếp hạng...</div>';
+    const resp = await fetch(`${API_URL}/api/leaderboard?limit=20`);
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    const { items } = await resp.json();
+    if(!Array.isArray(items) || items.length===0){
+      lbBox.innerHTML = '<div style="color:var(--muted)">Chưa có dữ liệu.</div>';
+      return;
+    }
+    const rows = items.map((it, idx)=>{
+      const d = new Date(it.createdAt || it.created_at || Date.now());
+      const time = d.toLocaleString();
+      return `
+        <div class="lb-row">
+          <div><b>#${idx+1}</b> — ${escapeHTML(it.name)}</div>
+          <div><b>${it.score}</b> điểm • <span style="color:var(--muted)">${time}</span></div>
+        </div>`;
+    }).join('');
+    lbBox.innerHTML = rows;
+  }catch(e){
+    console.error(e);
+    lbBox.innerHTML = '<div style="color:var(--muted)">Không tải được leaderboard.</div>';
+  }
+}
+
+submitBtn.addEventListener('click', submitScore);
+loadLbBtn.addEventListener('click', loadLeaderboard);
+
+/* ========== Smooth anchor scroll + sfx ========== */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', (e)=>{
     const target = document.querySelector(a.getAttribute('href'));
