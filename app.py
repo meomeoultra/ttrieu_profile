@@ -1,41 +1,14 @@
-from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS
-app = Flask(__name__)
-CORS(app)
-leaderboard_data = []
+from flask import Flask, render_template, send_from_directory
+import os
+app = Flask(__name__, static_folder='static', template_folder='templates')
 
-# Route phục vụ index.html
-@app.route("/")
+@app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template('index.html')
 
-# Route POST để thêm score
-@app.route("/leaderboard", methods=["POST"])
-def leaderboard_post():
-    try:
-        data = request.get_json()
-        print("Received JSON:", data)
-        name = data.get("name")
-        score = data.get("score")
-        if not name or score is None:
-            return jsonify({"status":"error","message":"Missing name or score"}), 400
-        leaderboard_data.append({"name": name, "score": score})
-        # Sắp xếp top theo điểm
-        top_scores = sorted(leaderboard_data, key=lambda x: x["score"], reverse=True)[:10]
-        return jsonify({"status":"success", "top": top_scores}), 200
-    except Exception as e:
-        print("Error:", e)
-        return jsonify({"status":"error", "message": str(e)}), 500
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
 
-# Route GET để lấy bảng xếp hạng
-@app.route("/leaderboard", methods=["GET"])
-def leaderboard_get():
-    try:
-        top_scores = sorted(leaderboard_data, key=lambda x: x["score"], reverse=True)[:10]
-        return jsonify({"status":"success", "top": top_scores}), 200
-    except Exception as e:
-        print("Error:", e)
-        return jsonify({"status":"error", "message": str(e)}), 500
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8080)  # port 8080 cho Termux tránh xung đột
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
