@@ -145,3 +145,61 @@
   }
 
 })();
+// ==============================
+// DARK / LIGHT MODE TOGGLE
+// ==============================
+const toggleBtn = document.getElementById("theme-toggle");
+
+if (toggleBtn) {
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light-mode");
+
+    // Đổi icon theo theme
+    if (document.body.classList.contains("light-mode")) {
+      toggleBtn.textContent = "🌙"; // ban đêm
+    } else {
+      toggleBtn.textContent = "☀️"; // ban ngày
+    }
+  });
+}
+
+// ==============================
+// SCROLL ANIMATION
+// ==============================
+const scrollElements = document.querySelectorAll(".scroll-animate");
+
+function checkScroll() {
+  scrollElements.forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 100) {
+      el.classList.add("show");
+    }
+  });
+}
+
+window.addEventListener("scroll", checkScroll);
+window.addEventListener("load", checkScroll);
+
+// ==============================
+// OPTIONAL: Lưu theme vào localStorage
+// ==============================
+(function () {
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+    if (toggleBtn) toggleBtn.textContent = "🌙";
+  } else {
+    if (toggleBtn) toggleBtn.textContent = "☀️";
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      if (document.body.classList.contains("light-mode")) {
+        localStorage.setItem("theme", "light");
+      } else {
+        localStorage.setItem("theme", "dark");
+      }
+    });
+  }
+})();
+

@@ -4,21 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>profile cua tan trieu tai 3</title>
-  <link rel="stylesheet" href="/static/main.css">
+  <link rel="stylesheet" href="/static/styles.css">
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+<!-- Nút đổi theme -->
+<button id="theme-toggle" class="theme-btn">🌙 / ☀️</button>
+
   <div class="app">
     <div class="top">
       <div class="brand">
-        <div class="avatar">
-  <img src="https://i.postimg.cc/QVLWbfNr/IMG-1757494168204-1757494169910.jpg'" alt="Avatar">
+        <div class="avatar-container scroll-animate">
+  <img src="https://i.postimg.cc/QVLWbfNr/IMG-1757494168204-1757494169910.jpg" alt="avatar" class="avatar-glow">
 </div>
 
         <div class="title">
           <h1>Ckào</h1>
-          <p>!@#$%^&*()</p>
+          <p>Hello World</p>
         </div>
       </div>
       <div class="controls">
@@ -29,50 +32,51 @@
 
     <div class="stage">
       <main class="hero">
-        <div class="headline">Cam on vi da den</div>
+        <h1 class="gradient-text scroll-animate">Cam on vi da den</h1>
+
         <p class="lead">Xin chao, chuc ban co mot ngay tot lanh.</p>
 
         <div class="slides">
-          <section id="about" class="card">
-            <h3>Nhận tăng tt</h3>
-            <p>Facebook </p>
-            <p>Tik Tok </p>
+            <div class="card scroll-animate">
+            <h3>Work</h3>
+            <p>OFF </p>
+            <p>OFF </p>
           </section>
 
-          <section id="skills" class="card">
-            <h3>Ky nang</h3>
+            <div class="card scroll-animate">
+            <h3>Skill</h3>
             <div class="skills">
-              <div class="skill">Phù phép FB</div>
-              <div class="skill">Phù phép TikTok</div>
-              <div class="skill">Ẩn</div>
-              <div class="skill">Ẩn</div>
-              <div class="skill">Ẩn</div>
-              <div class="skill">BANK 500k để xem kỹ năng ẩn</div>
+              <div class="skill">OFF</div>
+              <div class="skill">OFF</div>
+              <div class="skill">NO</div>
+              <div class="skill">NO</div>
+              <div class="skill">NO</div>
+              <div class="skill">@aosimaahihimeomeogaugau</div>
             </div>
           </section>
 
           <section id="projects" class="card">
             <h3>#</h3>
             <p>khong di cung ngay mua 
-               thi dung di cung ngay nang</>
+               thi dung di cung ngay mua</>
           </section>
         </div>
 
       </main>
 
-      <aside class="panel">
-        <h3>lien he</h3>
+        <div class="card scroll-animate">
+       <h3>lien he</h3>
         <div class="social">
           <div class="social-btn fb" onclick="openLink('https://www.facebook.com/share/1BnobpN479/')"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><div><strong>Facebook</strong><div style="font-size:12px;opacity:0.85">/tantrieu</div></div></div>
           <div class="social-btn tg" onclick="openLink('https://t.me/Meomeo11t')"><div class="icon"><i class="fa-brands fa-telegram-plane"></i></div><div><strong>Telegram</strong><div style="font-size:12px;opacity:0.85">@Meomeo11t</div></div></div>
           <div class="social-btn tt" onclick="openLink('https://www.tiktok.com')"><div class="icon"><i class="fa-brands fa-tiktok"></i></div><div><strong>TikTok</strong><div style="font-size:12px;opacity:0.85">@meomeo11t</div></div></div>
         </div>
-        <h3 style="margin-top:12px">CAM ON</h3>
-        <div style="font-size:13px;opacity:0.9">CODE BY CHAT GPT</div>
+        <h3 style="margin-top:12px">GOOD LUCK</h3>
+        <div style="font-size:13px;opacity:0.9">100% Sua Tuoi Khong Milk</div>
       </aside>
     </div>
 
-    <div class="footer">bye</div>
+    <div class="footer">TanTrieu2025 – Web Developer</div>
   </div>
 
   <script>
@@ -82,6 +86,6 @@
     let soundOn = true;
     soundToggle.addEventListener('click', ()=>{ soundOn = !soundOn; soundToggle.textContent = soundOn? '🔊 Sound':'🔈 Muted'; });
   </script>
-  <script src="/static/main.js"></script>
+  <script src="/static/script.js"></script>
 </body>
 </html>
