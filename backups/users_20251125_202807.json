@@ -1,0 +1,115 @@
+{
+  "admin": {
+    "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+    "role": "admin",
+    "money": 1000000,
+    "history": [],
+    "created": "2025-11-25 20:19:58"
+  },
+  "player": {
+    "password": "e41abfd6daf8ad3289f41e5ed0cfe8f5c705dbb40531efdf63e110118b7594f2",
+    "role": "player",
+    "money": 2001000,
+    "history": [
+      {
+        "dice": [
+          6,
+          3,
+          3
+        ],
+        "total": 12,
+        "result": "tai",
+        "bet": 100,
+        "outcome": "lose",
+        "by": "player",
+        "note": "play_round",
+        "time": "2025-11-25 20:20:48"
+      },
+      {
+        "dice": [
+          5,
+          5,
+          1
+        ],
+        "total": 11,
+        "result": "tai",
+        "bet": 200,
+        "outcome": "win",
+        "by": "player",
+        "note": "play_round",
+        "time": "2025-11-25 20:21:03"
+      },
+      {
+        "dice": [
+          6,
+          6,
+          3
+        ],
+        "total": 15,
+        "result": "tai",
+        "bet": 300,
+        "outcome": "lose",
+        "by": "player",
+        "note": "play_round",
+        "time": "2025-11-25 20:22:59"
+      },
+      {
+        "dice": [
+          5,
+          3,
+          2
+        ],
+        "total": 10,
+        "result": "xiu",
+        "bet": 500,
+        "outcome": "lose",
+        "by": "player",
+        "note": "play_round",
+        "time": "2025-11-25 20:23:07"
+      },
+      {
+        "dice": [
+          5,
+          2,
+          4
+        ],
+        "total": 11,
+        "result": "tai",
+        "bet": 200,
+        "outcome": "win",
+        "by": "player",
+        "note": "play_round",
+        "time": "2025-11-25 20:23:22"
+      },
+      {
+        "by": "admin",
+        "action": "admin_adjust",
+        "delta": 1000000,
+        "note": "Admin admin thay đổi tiền",
+        "time": "2025-11-25 20:23:59"
+      },
+      {
+        "dice": [
+          2,
+          2,
+          2
+        ],
+        "total": 6,
+        "result": "xiu",
+        "bet": 1000500,
+        "outcome": "win",
+        "by": "player",
+        "note": "play_round",
+        "time": "2025-11-25 20:24:26"
+      }
+    ],
+    "created": "2025-11-25 20:19:58"
+  },
+  "trieu": {
+    "password": "188789d5583c25bbb994c2509807b9829c7aef4adacfccc4ee8352421a968f86",
+    "role": "player",
+    "money": 1000,
+    "history": [],
+    "created": "2025-11-25 20:27:00"
+  }
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Xí Ngầu VIP - TTrieu</title>
+<style>
+body, html { margin:0; padding:0; width:100%; height:100%; font-family:Arial, sans-serif; background:#0a0a0a; color:#ffd700; overflow:hidden; }
+.container{display:flex;width:100%;height:100%;flex-direction:row;align-items:center;justify-content:space-between;}
+.panel{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;}
+.panel input,.panel select{width:80%;padding:10px;border-radius:5px;border:none;text-align:center;font-size:16px;}
+.panel button{padding:10px 20px;font-size:16px;border:none;border-radius:5px;background:#ffd700;color:#0a0a0a;cursor:pointer;transition:all 0.3s;}
+.panel button:hover{transform:scale(1.1);}
+.center-panel{flex:2;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;}
+.dice-table{width:300px;height:300px;border-radius:50%;border:2px solid #ffd700;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.dice{width:60px;height:60px;margin:0 10px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;z-index:1;}
+.dice-lid{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;border-radius:50%;cursor:grab;display:flex;align-items:center;justify-content:center;z-index:3;}
+.dice-lid.dragging{cursor:grabbing;}
+.lid-text{color:#ffd700;font-weight:bold;font-size:20px;}
+.btn-roll{margin-top:20px;padding:10px 20px;font-size:18px;border:none;border-radius:10px;background:#ffd700;color:#111;cursor:pointer;}
+.btn-roll:hover{transform:scale(1.1);}
+.player-info{margin-bottom:10px;font-size:20px;}
+.login-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:10;}
+.login-overlay h2{color:#ffd700;margin-bottom:20px;}
+.login-overlay input,.login-overlay select{padding:10px 15px;margin-bottom:10px;border-radius:5px;border:none;font-size:16px;}
+.login-overlay button{padding:10px 20px;font-size:16px;border-radius:5px;border:none;background:#ffd700;color:#111;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="login-overlay" id="loginOverlay">
+<h2>Đăng nhập Game</h2>
+<input type="text" id="username" placeholder="Tên người chơi">
+<select id="role">
+<option value="player">Người chơi</option>
+<option value="admin">Admin</option>
+</select>
+<button onclick="login()">Đăng nhập</button>
+</div>
+
+<div class="container" id="gameContainer">
+<div class="panel" id="leftPanel">
+<h2>Đặt cược Kẹo</h2>
+<input type="number" id="betCandy" placeholder="Nhập số kẹo muốn cược">
+<button onclick="placeBet('candy')">Đặt cược</button>
+<div id="adminPanel" style="display:none; margin-top:20px;">
+<h3>Admin Panel</h3>
+<input type="text" id="playerNameBuff" placeholder="Tên player">
+<input type="number" id="buffAmount" placeholder="Số kẹo thêm">
+<button onclick="buffCandy()">Buff kẹo</button>
+<input type="number" id="ratioCandy" placeholder="Tỉ lệ ra Kẹo %">
+<button onclick="setRatio()">Set tỉ lệ</button>
+</div>
+</div>
+
+<div class="center-panel">
+<div class="player-info" id="playerInfo">Player: ? | Kẹo: 10000</div>
+<div class="dice-table" id="diceTable">
+<div class="dice-lid" id="diceLid">
+<span class="lid-text">Kéo nắp để mở</span>
+</div>
+<div class="dice" id="dice1" data-value="?">?</div>
+<div class="dice" id="dice2" data-value="?">?</div>
+<div class="dice" id="dice3" data-value="?">?</div>
+</div>
+<button class="btn-roll" onclick="rollDice()">Lắc xí ngầu</button>
+</div>
+
+<div class="panel" id="rightPanel">
+<h2>Đặt cược Thúi</h2>
+<input type="number" id="betStink" placeholder="Nhập số kẹo muốn cược">
+<button onclick="placeBet('stink')">Đặt cược</button>
+</div>
+</div>
+
+<script>
+let username='';
+let role='';
+let players={};// lưu tất cả player
+let diceValues=[0,0,0];
+let currentBets={'candy':0,'stink':0};
+let ratioCandy=50; // % ra Kẹo
+
+let diceLid=document.getElementById('diceLid');
+let dragging=false;
+let offsetX=0;
+let lidRemoved=false;
+
+function login(){
+username=document.getElementById('username').value.trim();
+role=document.getElementById('role').value;
+if(username===''){ alert('Nhập tên!'); return; }
+if(!players[username]) players[username]=10000;
+document.getElementById('loginOverlay').style.display='none';
+updatePlayerInfo();
+if(role==='admin') document.getElementById('adminPanel').style.display='block';
+}
+
+function updatePlayerInfo(){
+document.getElementById('playerInfo').textContent='Player: '+username+' | Kẹo: '+players[username];
+}
+
+// Kéo nắp đậy
+diceLid.addEventListener('mousedown', e=>{
+dragging=true;
+offsetX=e.clientX - diceLid.getBoundingClientRect().left;
+diceLid.classList.add('dragging');
+});
+document.addEventListener('mousemove', e=>{
+if(dragging){
+let x=e.clientX - offsetX - diceLid.parentElement.getBoundingClientRect().left;
+if(x<0)x=0;
+if(x>diceLid.parentElement.offsetWidth - diceLid.offsetWidth)x=diceLid.parentElement.offsetWidth - diceLid.offsetWidth;
+diceLid.style.left=x+'px';
+let ratio=x/(diceLid.parentElement.offsetWidth - diceLid.offsetWidth);
+for(let i=0;i<3;i++){
+let val=diceValues[i];
+document.getElementById('dice'+(i+1)).textContent=Math.round(val*ratio + 0.5*(1-ratio));
+}
+if(ratio>0.9 && !lidRemoved){ lidRemoved=true; showResult(); }
+}
+});
+document.addEventListener('mouseup', e=>{
+if(dragging){ dragging=false; diceLid.classList.remove('dragging'); }
+});
+
+function placeBet(type){
+let bet=parseInt(document.getElementById(type==='candy'?'betCandy':'betStink').value);
+if(isNaN(bet)||bet<=0){alert('Nhập số kẹo hợp lệ'); return;}
+if(bet>players[username]){alert('Không đủ kẹo'); return;}
+players[username]-=bet;
+currentBets[type]=bet;
+updatePlayerInfo();
+}
+
+function rollDice(){
+lidRemoved=false;
+diceLid.style.left='0px';
+for(let i=0;i<3;i++){
+let rand=Math.random()*100;
+if(rand<ratioCandy){
+diceValues[i]=Math.floor(Math.random()*7)+11; // Kẹo 11-17
+} else {
+diceValues[i]=Math.floor(Math.random()*7)+4; // Thúi 4-10
+}
+document.getElementById('dice'+(i+1)).textContent='?';
+}
+}
+
+function showResult(){
+for(let i=0;i<3;i++){
+let d=document.getElementById('dice'+(i+1));
+d.textContent=diceValues[i];
+d.setAttribute('data-value',diceValues[i]);
+}
+let sum=diceValues.reduce((a,b)=>a+b,0);
+let resultType=(sum>=11)?'candy':'stink';
+let betAmount=currentBets[resultType];
+if(betAmount>0){players[username]+=betAmount*2; alert('Tổng xí ngầu: '+sum+' → '+(resultType==='candy'?'Kẹo':'Thúi')+' | Bạn thắng '+betAmount+' kẹo!');}
+else alert('Tổng xí ngầu: '+sum+' → '+(resultType==='candy'?'Kẹo':'Thúi')+' | Bạn thua cược!');
+currentBets={'candy':0,'stink':0};
+updatePlayerInfo();
+}
+
+// Admin buff kẹo
+function buffCandy(){
+let p=document.getElementById('playerNameBuff').value.trim();
+let amt=parseInt(document.getElementById('buffAmount').value);
+if(!players[p]){alert('Không tìm thấy player!'); return;}
+if(isNaN(amt)||amt<=0){alert('Số kẹo không hợp lệ'); return;}
+players[p]+=amt;
+if(p===username) updatePlayerInfo();
+alert('Buff '+amt+' kẹo cho '+p);
+}
+
+// Admin set tỉ lệ
+function setRatio(){
+let r=parseInt(document.getElementById('ratioCandy').value);
+if(isNaN(r)||r<0||r>100){alert('Tỉ lệ phải 0-100%'); return;}
+ratioCandy=r;
+alert('Tỉ lệ ra Kẹo đã được set: '+ratioCandy+'%');
+}
+</script>
+</body>
+</html>

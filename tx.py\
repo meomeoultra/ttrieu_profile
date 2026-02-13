@@ -1,0 +1,175 @@
+import random
+import time
+import os
+
+# =======================
+#  SYSTEM EFFECTS
+# =======================
+def clear():
+    os.system("clear")
+
+def slow(text, delay=0.02):
+    for c in text:
+        print(c, end="", flush=True)
+        time.sleep(delay)
+    print()
+
+def banner():
+    clear()
+    print("████████╗ █████╗ ██╗██╗  ██╗   ██╗██╗")
+    print("╚══██╔══╝██╔══██╗██║██║  ╚██╗ ██╔╝██║")
+    print("   ██║   ███████║██║██║   ╚████╔╝ ██║")
+    print("   ██║   ██╔══██║██║██║    ╚██╔╝  ██║")
+    print("   ██║   ██║  ██║██║███████╗██║   ██║")
+    print("   ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝╚═╝   ╚═╝")
+    print("        CASINO TÀI XỈU PRO MAX 1FILE")
+    print("--------------------------------------------------")
+
+# =======================
+#  DATABASE GIẢ LẬP
+# =======================
+USER = {
+    "username": "player",
+    "coin": 50000
+}
+
+ADMIN = {
+    "username": "admin",
+    "password": "admin",
+}
+
+# =======================
+#  GAME TÀI XỈU
+# =======================
+def play_game():
+    while True:
+        banner()
+        print(f"Người chơi: {USER['username']} | Coin: {USER['coin']:,}")
+        print("\n[1] Đặt TÀI")
+        print("[2] Đặt XỈU")
+        print("[0] Thoát về menu")
+        
+        choice = input("\nChọn: ")
+        if choice == "0":
+            return
+        
+        if choice not in ["1", "2"]:
+            slow("Lựa chọn không hợp lệ!")
+            time.sleep(1)
+            continue
+        
+        bet = input("Nhập số coin cược: ")
+        if not bet.isdigit():
+            slow("Nhập coin hợp lệ!")
+            time.sleep(1)
+            continue
+
+        bet = int(bet)
+        if bet <= 0 or bet > USER["coin"]:
+            slow("Cược không hợp lệ!")
+            time.sleep(1)
+            continue
+
+        USER["coin"] -= bet
+
+        slow("\nĐang lắc xúc xắc...", 0.05)
+        time.sleep(1)
+
+        dice = [random.randint(1, 6) for _ in range(3)]
+        total = sum(dice)
+
+        slow(f"🎲 Kết quả: {dice}  | Tổng = {total}")
+
+        result = "TÀI" if total >= 11 else "XỈU"
+        slow(f"Kết quả chung cuộc: {result}")
+
+        # Người chơi chọn gì
+        pick = "TÀI" if choice == "1" else "XỈU"
+
+        if pick == result:
+            win = bet * 2
+            USER["coin"] += win
+            slow(f"✔ Bạn thắng {win:,} coin!")
+        else:
+            slow("✘ Bạn thua rồi bro...")
+
+        input("\nBấm Enter để tiếp tục...")
+
+# =======================
+#  ADMIN PANEL
+# =======================
+def admin_panel():
+    banner()
+    print("---- ĐĂNG NHẬP ADMIN ----")
+    user = input("Tên đăng nhập: ")
+    pw = input("Mật khẩu: ")
+
+    if user != ADMIN["username"] or pw != ADMIN["password"]:
+        slow("Sai thông tin!")
+        time.sleep(1)
+        return
+
+    while True:
+        banner()
+        print("=== ADMIN PANEL ===")
+        print("[1] Xem thông tin người chơi")
+        print("[2] Thêm coin cho người chơi")
+        print("[3] Reset coin người chơi")
+        print("[0] Thoát")
+
+        ad = input("Chọn: ")
+
+        if ad == "0":
+            return
+        
+        elif ad == "1":
+            banner()
+            print("THÔNG TIN NGƯỜI CHƠI")
+            print(f"Tên: {USER['username']}")
+            print(f"Coin: {USER['coin']:,}")
+            input("\nEnter để quay lại...")
+
+        elif ad == "2":
+            add = input("Thêm coin: ")
+            if add.isdigit():
+                USER["coin"] += int(add)
+                slow("Đã thêm thành công!")
+                time.sleep(1)
+
+        elif ad == "3":
+            USER["coin"] = 50000
+            slow("Đã reset coin về 50,000!")
+            time.sleep(1)
+
+        else:
+            slow("Lựa chọn không hợp lệ!")
+            time.sleep(1)
+
+# =======================
+#  MAIN MENU
+# =======================
+def main():
+    while True:
+        banner()
+        print("[1] Chơi Tài Xỉu")
+        print("[2] Admin")
+        print("[0] Thoát")
+
+        c = input("\nChọn: ")
+
+        if c == "1":
+            play_game()
+        elif c == "2":
+            admin_panel()
+        elif c == "0":
+            clear()
+            print("Tạm biệt bro 😎")
+            exit()
+        else:
+            slow("Sai lựa chọn rồi bro!")
+            time.sleep(1)
+
+# =======================
+#  START
+# =======================
+main()
