@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ah meo happy new year</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+	
+
+/* ===== LOADER ===== */
+#loader{
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:99999;
+color:gold;
+font-size:22px;
+letter-spacing:3px;
+animation:fadeOut 1s ease forwards;
+animation-delay:3s;
+}
+
+#loader span{
+font-size:40px;
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+0%,100%{opacity:1;transform:scale(1);}
+50%{opacity:0.5;transform:scale(1.1);}
+}
+
+@keyframes fadeOut{
+to{opacity:0;visibility:hidden;}
+}
+
+/* ===== HEADER ===== */
+
+.countdown-box,
+.name-wrapper{
+position:fixed;
+top:20px;
+z-index:9999;
+transition:transform 0.3s ease;
+will-change:transform;
+}
+
+.countdown-box{ left:20px; }
+[B.name-wrapper{ right:20px; }
+
+.countdown-box.shrink,
+.name-wrapper.shrink{
+transform:scale(0.75);
+}
+
+.glass{
+padding:12px 28px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+border-radius:50px;
+border:1px solid rgba(255,215,0,0.4);
+box-shadow:0 0 20px rgba(255,215,0,0.3);
+color:gold;
+font-weight:bold;
+white-space:nowrap;
+}
+
+.horse-run{
+position:absolute;
+top:-22px;
+right:20px;
+font-size:22px;
+animation:runHorse 6s linear infinite;
+}
+
+@keyframes runHorse{
+0%{ transform:translateX(0) scaleX(1); }
+49%{ transform:translateX(-170px) scaleX(1); }
+50%{ transform:translateX(-170px) scaleX(-1); }
+100%{ transform:translateX(0) scaleX(-1); }
+}
+
+.red-mode{
+filter:hue-rotate(-60deg) saturate(300%);
+text-shadow:0 0 20px red,0 0 40px red;
+}
+
+/* ===== HERO ===== */
+
+.hero{
+text-align:center;
+margin-top:180px;
+transition:transform 0.3s ease;
+}
+
+.hero h1{
+font-size:60px;
+background:linear-gradient(90deg,gold,orange,gold);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+text-shadow:0 0 30px gold;
+}
+
+.hero h1{
+animation: ledPulse 2s infinite alternate;
+}
+
+@keyframes ledPulse{
+from{
+text-shadow:
+0 0 10px gold,
+0 0 20px orange,
+0 0 40px gold;
+}
+to{
+text-shadow:
+0 0 20px gold,
+0 0 40px orange,
+0 0 80px gold;
+}
+}
+
+.hero p{
+margin-top:10px;
+opacity:0.8;
+}
+
+/* ===== SERVICES ===== */
+
+.services{
+margin-top:150px;
+padding:0 8%;
+text-align:center;
+}
+
+.services-title{
+font-size:38px;
+margin-bottom:60px;
+background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);
+background-size:400%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:ledTitle 6s linear infinite;
+}
+
+@keyframes ledTitle{
+0%{background-position:0%}
+100%{background-position:400%}
+}
+
+.services-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:35px;
+}
+
+.service-card{
+position:relative;
+padding:40px 25px;
+border-radius:25px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+transition:0.4s;
+overflow:hidden;
+}
+
+.service-card:hover{
+transform:translateY(-15px) scale(1.03);
+box-shadow:0 0 30px rgba(255,215,0,0.6);
+}
+
+.service-card::before{
+content:"";
+position:absolute;
+inset:0;
+border-radius:25px;
+padding:2px;
+background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);
+background-size:400%;
+animation: ledBorder 4s linear infinite;
+-webkit-mask:
+linear-gradient(#000 0 0) content-box,
+linear-gradient(#000 0 0);
+-webkit-mask-composite: xor;
+mask-composite: exclude;
+}
+
+@keyframes ledBorder{
+0%{background-position:0%}
+100%{background-position:400%}
+}
+
+.service-icon{
+font-size:45px;
+margin-bottom:20px;
+color:gold;
+text-shadow:0 0 15px gold;
+}
+
+.service-card h3{
+margin-bottom:15px;
+color:gold;
+}
+
+.service-card p{
+opacity:0.85;
+}
+
+/* ===== CONTACT ===== */
+
+.contact{
+margin-top:120px;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:20px;
+padding-bottom:100px;
+}
+
+.contact a{
+display:flex;
+justify-content:center;
+align-items:center;
+width:65px;
+height:65px;
+border-radius:50%;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,215,0,0.5);
+color:gold;
+font-size:22px;
+text-decoration:none;
+transition:0.4s ease;
+position:relative;
+overflow:hidden;
+}
+
+.contact a::before{
+content:"";
+position:absolute;
+inset:-3px;
+border-radius:50%;
+background:linear-gradient(45deg,gold,orange,yellow);
+opacity:0;
+transition:0.4s;
+z-index:-1;
+}
+
+.contact a:hover::before{
+opacity:1;
+filter:blur(10px);
+}
+
+.contact a:hover{
+box-shadow:0 0 20px gold;
+transform:scale(1.1);
+}
+
+.contact a:nth-child(1):hover{
+color:#1877f2;
+box-shadow:0 0 20px #1877f2;
+}
+
+.contact a:nth-child(2):hover{
+color:#e1306c;
+box-shadow:0 0 20px #e1306c;
+}
+
+.contact a:nth-child(3):hover{
+color:#ffffff;
+box-shadow:0 0 20px #ffffff;
+}
+
+.contact a:nth-child(4):hover{
+color:#ffcc00;
+box-shadow:0 0 20px #ffcc00;
+}
+
+.contact a:hover{
+transform:translateY(-8px) scale(1.15);
+}
+
+/* ===== FIREWORK ===== */
+.firework{
+position:fixed;
+width:6px;
+height:6px;
+background:gold;
+border-radius:50%;
+animation:explode 1s ease-out forwards;
+}
+
+@keyframes explode{
+to{
+transform:translate(var(--x),var(--y));
+opacity:0;
+}
+}
+
+@media(max-width:768px){
+.hero h1{ font-size:40px; }
+.services{ padding:0 5%; }
+}
+
+@keyframes gradientMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+
+@keyframes stageLight{
+from{transform:translateX(-100%);}
+to{transform:translateX(100%);}
+}
+
+.footer{
+text-align:center;
+padding:20px 0 40px;
+font-size:14px;
+opacity:0.6;
+color:gold;
+letter-spacing:1px;
+}
+
+
+.music-player{
+position:fixed;
+bottom:20px;
+right:20px;
+width:320px;
+background:rgba(0,0,0,0.8);
+border:1px solid gold;
+border-radius:15px;
+box-shadow:0 0 30px gold;
+color:gold;
+font-family:sans-serif;
+overflow:hidden;
+backdrop-filter:blur(10px);
+z-index:999;
+}
+
+.player-header{
+padding:10px;
+background:gold;
+color:black;
+cursor:pointer;
+font-weight:bold;
+text-align:center;
+}
+
+.player-body{
+padding:15px;
+}
+
+.visualizer{
+width:100px;
+height:100px;
+margin:10px auto;
+border-radius:50%;
+background:radial-gradient(circle, gold 20%, transparent 70%);
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.2);}
+100%{transform:scale(1);}
+}
+
+.controls{
+display:flex;
+justify-content:center;
+gap:15px;
+margin:10px 0;
+}
+
+.controls button{
+padding:6px 12px;
+border:none;
+border-radius:8px;
+background:gold;
+cursor:pointer;
+}
+
+.time{
+text-align:center;
+margin:5px 0;
+}
+
+#progress, #volume{
+width:100%;
+margin:5px 0;
+}
+
+.collapsed .player-body{
+display:none;
+}
+
+</style>
+</head>
+<body>
+
+<div id="loader">
+<span>👑</span>
+Cảm Ơn Vi Da Den...
+</div>
+
+<div class="countdown-box glass" id="countdownBox">
+⏳ <span id="countdown"></span>
+</div>
+
+<div class="name-wrapper" id="nameWrapper">
+<div class="glass">
+👑 TTRIEU • MEO MEO 🐱
+</div>
+<div class="horse-run" id="horse">🐎</div>
+</div>
+
+<section class="hero">
+<h1>abcdxyz</h1>
+<p>Đẳng cấp cũng không diễn tả được hết trình độ của anh...!</p>
+</section>
+
+<section class="services">
+<h2 class="services-title">Những Thứ Ah Meo Làm </h2>
+<div class="services-grid">
+<div class="service-card">
+<i class="fa-solid fa-laptop-code service-icon"></i>
+<h3>!@#$%^&*()</h3>
+<p>a meo ban di hoc</p>
+</div>
+<div class="service-card">
+<i class="fa-solid fa-bolt service-icon"></i>
+<h3>!@#$%^&*()</h3>
+<p>dang di hoc ace oiii</p>
+</div>
+<div class="service-card">
+<i class="fa-solid fa-gauge-high service-icon"></i>
+<h3>!@#$%^&*()</h3>
+<p>cha bit cgi caaaa</p>
+</div>
+<div class="service-card">
+<i class="fa-solid fa-crown service-icon"></i>
+<h3>!@#$%^&*()</h3>
+<p>ah van dag hoc ma e cho xju di</p>
+</div>
+</div>
+</section>
+
+<section class="contact">
+<a href="#"><i class="fa-brands fa-facebook"></i></a>
+<a href="#"><i class="fa-brands fa-instagram"></i></a>
+<a href="#"><i class="fa-brands fa-github"></i></a>
+<a href="#"><i class="fa-solid fa-envelope"></i></a>
+</section>
+<footer class="footer">
+© 2026 TTRIEU. All Rights Reserved.
+</footer>
+
+
+<script>
+const targetDate = new Date("Feb 17, 2026 00:00:00").getTime();
+const countdownEl = document.getElementById("countdown");
+const horse = document.getElementById("horse");
+const hero = document.querySelector(".hero h1");
+
+function updateCountdown(){
+const now=new Date().getTime();
+const distance=targetDate-now;
+
+const days=Math.floor(distance/(1000*60*60*24));
+const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+const minutes=Math.floor((distance%(1000*60*60))/(1000*60));
+const seconds=Math.floor((distance%(1000*60))/1000);
+
+countdownEl.innerHTML=`${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+if(distance < 10000 && distance > 0){
+launchFireworks();
+}
+
+if(distance<=0){
+horse.classList.add("red-mode");
+hero.innerText="🔥 Chúc Mừng Năm Mới 🔥";
+launchFireworks();
+}
+}
+
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+function launchFireworks(){
+for(let i=0;i<50;i++){
+
+const fw=document.createElement("div");
+fw.className="firework";
+
+fw.style.left=Math.random()*window.innerWidth+"px";
+fw.style.top=window.innerHeight+"px";
+
+fw.style.background=`hsl(${Math.random()*360},100%,60%)`;
+
+fw.style.setProperty("--x",(Math.random()-0.5)*400+"px");
+fw.style.setProperty("--y",-Math.random()*600+"px");
+
+document.body.appendChild(fw);
+
+setTimeout(()=>fw.remove(),1000);
+}
+}
+
+const box=document.getElementById("countdownBox");
+const nameWrapper=document.getElementById("nameWrapper");
+
+window.addEventListener("scroll",()=>{
+if(window.scrollY>80){
+box.classList.add("shrink");
+nameWrapper.classList.add("shrink");
+}else{
+box.classList.remove("shrink");
+nameWrapper.classList.remove("shrink");
+}
+hero.style.transform=`translateY(${window.scrollY*0.2}px)`;
+});
+
+const hour=new Date().getHours();
+if(hour>=6 && hour<18){
+document.body.style.background="linear-gradient(135deg,#1a1a1a,#222,#111)";
+}else{
+document.body.style.background="linear-gradient(135deg,#000000,#0f0f0f,#050505)";
+}
+
+
+const songs = [
+  {name:"Song 1", file:"music1.mp3"},
+  {name:"Song 2", file:"music2.mp3"},
+  {name:"Song 3", file:"music3.mp3"}
+];
+
+let currentSong = 0;
+
+const music = document.getElementById("bgMusic");
+const playBtn = document.getElementById("playBtn");
+const songTitle = document.getElementById("songTitle");
+const progress = document.getElementById("progress");
+const volumeSlider = document.getElementById("volume");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
+
+function loadSong(index){
+  music.src = songs[index].file;
+  songTitle.textContent = songs[index].name;
+  localStorage.setItem("lastSong", index);
+}
+
+function toggleMusic(){
+  if(music.paused){
+    music.play();
+    playBtn.textContent = "⏸";
+  }else{
+    music.pause();
+    playBtn.textContent = "▶";
+  }
+}
+
+function nextSong(){
+  currentSong = (currentSong + 1) % songs.length;
+  loadSong(currentSong);
+  music.play();
+  playBtn.textContent = "⏸";
+}
+
+function prevSong(){
+  currentSong = (currentSong - 1 + songs.length) % songs.length;
+  loadSong(currentSong);
+  music.play();
+  playBtn.textContent = "⏸";
+}
+
+function formatTime(time){
+  const min = Math.floor(time/60);
+  const sec = Math.floor(time%60);
+  return `${min}:${sec<10?"0"+sec:sec}`;
+}
+
+music.addEventListener("timeupdate", ()=>{
+  progress.value = (music.currentTime / music.duration) * 100 || 0;
+  currentTimeEl.textContent = formatTime(music.currentTime);
+});
+
+music.addEventListener("loadedmetadata", ()=>{
+  durationEl.textContent = formatTime(music.duration);
+});
+
+progress.addEventListener("input", ()=>{
+  music.currentTime = (progress.value / 100) * music.duration;
+});
+
+volumeSlider.addEventListener("input", ()=>{
+  music.volume = volumeSlider.value;
+});
+
+function togglePlayer(){
+  document.getElementById("musicPlayer").classList.toggle("collapsed");
+}
+
+window.addEventListener("click", function(){
+  if(music.paused){
+    music.play();
+  }
+},{ once:true });
+
+window.onload = ()=>{
+  const saved = localStorage.getItem("lastSong");
+  if(saved){
+    currentSong = parseInt(saved);
+  }
+  loadSong(currentSong);
+  music.volume = 0.5;
+};
+
+</script>
+<div class="music-player" id="musicPlayer">
+
+  <div class="player-header" onclick="togglePlayer()">
+    🎧 TT Overdrive Player
+  </div>
+
+  <div class="player-body">
+    <div class="visualizer"></div>
+
+    <div class="song-title" id="songTitle">Loading...</div>
+
+    <div class="controls">
+      <button onclick="prevSong()">⏮</button>
+      <button onclick="toggleMusic()" id="playBtn">▶</button>
+      <button onclick="nextSong()">⏭</button>
+    </div>
+
+    <div class="time">
+      <span id="currentTime">00:00</span> /
+      <span id="duration">00:00</span>
+    </div>
+
+    <input type="range" id="progress" value="0">
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+  </div>
+
+  <audio id="bgMusic"></audio>
+</div>
+
+</body>
+</html>
