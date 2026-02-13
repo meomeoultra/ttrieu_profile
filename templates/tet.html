@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TTRIEU • Tết Bính Ngọ 2026</title>
+
+<style>
+
+/* ================= ROOT ================= */
+
+:root{
+--bg-main: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+--text-main: gold;
+--glass: rgba(255,255,255,0.06);
+}
+
+body{
+margin:0;
+min-height:100vh;
+background:var(--bg-main);
+background-size:300% 300%;
+animation:bgMove 18s ease infinite;
+color:var(--text-main);
+font-family:'Segoe UI',sans-serif;
+text-align:center;
+overflow-x:hidden;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* ================= HERO ================= */
+
+.hero{
+margin-top:120px;
+}
+
+.hero h1{
+font-size:42px;
+letter-spacing:3px;
+background:linear-gradient(90deg,gold,orange,gold);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+text-shadow:0 0 25px gold;
+animation:pulse 2s infinite alternate;
+}
+
+@keyframes pulse{
+from{text-shadow:0 0 10px gold;}
+to{text-shadow:0 0 40px orange;}
+}
+
+.subtitle{
+opacity:0.8;
+margin-top:10px;
+}
+
+/* ================= COUNTDOWN ================= */
+
+.countdown{
+margin-top:20px;
+font-size:18px;
+}
+
+/* ================= BUTTON ================= */
+
+.btn{
+margin-top:20px;
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:gold;
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* ================= GLASS CARD ================= */
+
+.card{
+margin:40px auto;
+width:85%;
+padding:20px;
+border-radius:20px;
+background:var(--glass);
+backdrop-filter:blur(12px);
+}
+
+/* ================= HORSE ================= */
+
+.horse{
+position:fixed;
+bottom:60px;
+left:-100px;
+font-size:40px;
+animation:runHorse 12s linear infinite;
+}
+
+@keyframes runHorse{
+0%{left:-100px;}
+100%{left:110%;}
+}
+
+/* ================= FIREWORK ================= */
+
+.firework{
+position:fixed;
+width:6px;
+height:6px;
+border-radius:50%;
+animation:explode 1s ease-out forwards;
+}
+
+@keyframes explode{
+to{
+transform:translate(var(--x),var(--y));
+opacity:0;
+}
+}
+
+/* ================= TET MODE ================= */
+
+.tet-mode{
+--bg-main: linear-gradient(135deg,#3b0000,#7a0000,#a30000);
+--text-main: #ffcc00;
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+margin-top:80px;
+padding-bottom:40px;
+opacity:0.6;
+font-size:14px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="hero">
+<h1>🎆 TẾT BÍNH NGỌ 2026 🐎</h1>
+<div class="subtitle">Bứt Phá – Tăng Tốc – Thành Công</div>
+<div class="countdown" id="countdown"></div>
+<button class="btn" onclick="toggleTet()">🧧 Chế Độ Tết Đỏ</button>
+</div>
+<div class="card">
+<h1> lừi ăn cướp code nên chỉ thế thôi </h1>
+</div>
+<a href="/profile" class="btn">👑 Đến Trang Công Việc</a>
+<div class="card">
+<h3>🧧 Mở Lì Xì</h3>
+<p id="lixiText">Bấm bên dưới để nhận lời chúc đầu năm</p>
+<button class="btn" onclick="openLixi()">Mở Ngay</button>
+</div>
+
+<div class="footer">
+© 2026 TTRIEU • Bính Ngọ Overdrive
+</div>
+
+<div class="horse">🐎</div>
+
+<script>
+
+/* ================= COUNTDOWN ================= */
+
+const target = new Date("Feb 17, 2026 00:00:00").getTime();
+const countdownEl = document.getElementById("countdown");
+
+setInterval(()=>{
+const now = new Date().getTime();
+const d = target - now;
+
+const days = Math.floor(d/(1000*60*60*24));
+const hours = Math.floor((d%(1000*60*60*24))/(1000*60*60));
+const minutes = Math.floor((d%(1000*60*60))/(1000*60));
+const seconds = Math.floor((d%(1000*60))/1000);
+
+countdownEl.innerHTML =
+`⏳ ${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+if(d<=0){
+countdownEl.innerHTML="🎉 CHÚC MỪNG NĂM MỚI 🎉";
+}
+},1000);
+
+/* ================= TET MODE ================= */
+
+function toggleTet(){
+document.body.classList.toggle("tet-mode");
+}
+
+/* ================= LÌ XÌ RANDOM ================= */
+
+function openLixi(){
+const messages = [
+"💰 2026 tài lộc bùng nổ!",
+"🚀 Sự nghiệp tăng tốc như ngựa chiến!",
+"🔥 Thành công vượt mong đợi!",
+"💖 Tình duyên khởi sắc!",
+"🎯 Mọi mục tiêu đều hoàn thành!"
+];
+
+const random = messages[Math.floor(Math.random()*messages.length)];
+document.getElementById("lixiText").innerHTML = random;
+}
+
+/* ================= FIREWORK CLICK ================= */
+
+document.addEventListener("click",function(e){
+for(let i=0;i<30;i++){
+const fw=document.createElement("div");
+fw.className="firework";
+fw.style.left=e.clientX+"px";
+fw.style.top=e.clientY+"px";
+fw.style.background=`hsl(${Math.random()*360},100%,60%)`;
+fw.style.setProperty("--x",(Math.random()-0.5)*300+"px");
+fw.style.setProperty("--y",(Math.random()-0.5)*300+"px");
+document.body.appendChild(fw);
+setTimeout(()=>fw.remove(),1000);
+}
+});
+
+/* ================= HOA ĐÀO RƠI ================= */
+
+function createPetal(){
+const petal=document.createElement("div");
+petal.innerHTML="🌸";
+petal.style.position="fixed";
+petal.style.top="-20px";
+petal.style.left=Math.random()*window.innerWidth+"px";
+petal.style.fontSize=Math.random()*20+20+"px";
+petal.style.animation=`fall ${Math.random()*5+5}s linear`;
+petal.style.zIndex="1";
+document.body.appendChild(petal);
+
+setTimeout(()=>petal.remove(),8000);
+}
+
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes fall{
+to{
+transform:translateY(100vh) rotate(360deg);
+opacity:0;
+}
+}`;
+document.head.appendChild(style);
+
+setInterval(createPetal,700);
+
+</script>
+
+</body>
+</html>

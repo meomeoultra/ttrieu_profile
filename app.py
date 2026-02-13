@@ -1,14 +1,18 @@
-from flask import Flask, render_template, send_from_directory
-import os
-app = Flask(__name__, static_folder='static', template_folder='templates')
+from flask import Flask, render_template, redirect
 
-@app.route('/')
+app = Flask(__name__)
+
+@app.route("/")
 def home():
-    return render_template('index.html')
+    return redirect("/tet")   # chỉ redirect 1 chiều
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
+@app.route("/tet")
+def tet():
+    return render_template("tet.html")
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+@app.route("/profile")
+def profile():
+    return render_template("index.html")
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
