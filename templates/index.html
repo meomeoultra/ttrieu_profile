@@ -452,6 +452,62 @@ opacity:0;
 }
 }
 
+.btn-valentine {
+    display: inline-block;
+    padding: 12px 25px;
+    background: linear-gradient(45deg, #ff4e50, #fc913a);
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-valentine:hover {
+    transform: scale(1.1);
+}
+.btn {
+    display: inline-block;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 40px;
+    background: linear-gradient(45deg, #ff512f, #dd2476);
+    box-shadow: 0 0 15px rgba(255, 81, 47, 0.6);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover nâng lên + sáng hơn */
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(255, 81, 47, 0.9);
+}
+
+/* Hiệu ứng ánh sáng chạy ngang */
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.4),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
 </style>
 </head>
 <body>
@@ -509,7 +565,10 @@ Cảm Ơn Vi Da Den...
 <a href="#"><i class="fa-brands fa-github"></i></a>
 <a href="#"><i class="fa-solid fa-envelope"></i></a>
 </section>
-<a href="/tet" class="btn">🎆 Xem Web Tết 2026</a>
+<div class="btn-group">
+    <a href="/tet" class="btn">🎆 Xem Web Tết 2026</a>
+    <a href="/hoa" class="btn btn-valentine">Open Valentine 💖</a>
+</div>
 <footer class="footer">
 © 2026 TTRIEU. Yahhhh.
 </footer>
