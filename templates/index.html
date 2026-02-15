@@ -87,23 +87,35 @@ animation:pulse 1.5s infinite;
 to{opacity:0;visibility:hidden;}
 }
 
-/* ===== HEADER ===== */
+/* ===== COUPLE HEAD BALANCE ===== */
+
+.top-bar{
+    position: fixed;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    padding: 0 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    z-index: 9999;
+}
 
 .countdown-box,
 .name-wrapper{
-position:fixed;
-top:20px;
-z-index:9999;
-transition:transform 0.3s ease;
-will-change:transform;
+    max-width: 45%;
 }
 
-.countdown-box{ left:20px; }
-.name-wrapper{ right:20px; }
+.glass{
+    padding: 10px 20px;
+    border-radius: 50px;
+}
 
 .countdown-box.shrink,
 .name-wrapper.shrink{
-transform:scale(0.75);
+transform:scale(0.85);
 }
 
 .glass{
@@ -116,7 +128,11 @@ box-shadow:0 0 20px rgba(255,215,0,0.3);
 color:gold;
 font-weight:bold;
 white-space:nowrap;
+display:inline-flex;
+align-items:center;
+gap:8px;
 }
+
 
 .horse-run{
 position:absolute;
@@ -395,7 +411,6 @@ cursor:grab;
 touch-action:none;
 }
 
-}
 
 .player-body{
 padding:15px;
@@ -508,6 +523,115 @@ opacity:0;
     left: 100%;
 }
 
+/* ===== BUTTON GROUP LUXURY VERSION ===== */
+
+.btn-group{
+    margin-top:140px;      /* tạo khoảng cách dưới 2 box */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:40px;
+    flex-wrap:wrap;
+    padding:20px;
+}
+
+.btn-group a{
+    min-width:240px;
+    padding:14px 26px;
+    border-radius:14px;
+    font-weight:600;
+    text-decoration:none;
+    text-align:center;
+    transition:all 0.3s ease;
+    box-shadow:0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* nút tết */
+.btn{
+    background:linear-gradient(135deg,#ffb347,#ffcc33);
+    color:#111;
+}
+
+/* nút valentine */
+.btn-valentine{
+    background:linear-gradient(135deg,#ff4e9b,#ff0066);
+    color:#fff;
+}
+
+/* hover effect */
+.btn-group a:hover{
+    transform:translateY(-4px) scale(1.05);
+}
+
+/* mobile tối ưu */
+@media(max-width:600px){
+    .btn-group{
+        gap:20px;
+        margin-top:120px;
+    }
+}
+
+.love-text{
+    font-size:15px;
+    font-weight:bold;
+    background:linear-gradient(45deg,#ff4e9b,#ff0066,#ff4e9b);
+    background-size:200%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:loveGlow 2s ease infinite alternate,
+              loveMove 4s linear infinite;
+    text-shadow:
+        0 0 10px rgba(255,0,102,0.7),
+        0 0 20px rgba(255,0,102,0.6),
+        0 0 40px rgba(255,0,102,0.4);
+    letter-spacing:2px;
+}
+
+@keyframes loveGlow{
+    from{
+        text-shadow:
+        0 0 10px #ff0066,
+        0 0 20px #ff4e9b;
+    }
+    to{
+        text-shadow:
+        0 0 20px #ff0066,
+        0 0 40px #ff4e9b,
+        0 0 60px #ff0066;
+    }
+}
+
+@keyframes loveMove{
+    0%{background-position:0%}
+    100%{background-position:200%}
+}
+
+.love-container{
+    position: relative;
+    display: inline-block;
+}
+
+.floating-heart{
+    position: absolute;
+    font-size: 18px;
+    pointer-events: none;
+    animation: flyHeart 2.5s ease-out forwards;
+}
+
+@keyframes flyHeart{
+    0%{
+        opacity: 0;
+        transform: translate(0,0) scale(0.8);
+    }
+    20%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        transform: translate(var(--x), var(--y)) scale(1.2);
+    }
+}
+
 </style>
 </head>
 <body>
@@ -517,15 +641,16 @@ opacity:0;
 Cảm Ơn Vi Da Den...
 </div>
 
-<div class="countdown-box glass" id="countdownBox">
-⏳ <span id="countdown"></span>
-</div>
+<div class="top-bar">
+    <div class="glass countdown-box">
+        <span id="hourglass">⏳</span>
+        <span id="countdown">00:00:10</span>
+    </div>
 
-<div class="name-wrapper" id="nameWrapper">
-<div class="glass">
-👑 TTRIEU • MEO MEO 🐱
-</div>
-<div class="horse-run" id="horse">🐎</div>
+    <div class="name-wrapper glass" id="nameWrapper">
+        👑 TTRIEU • MEO MEO 🐱
+        <div class="horse-run" id="horse">🐎</div>
+    </div>
 </div>
 
 <section class="hero">
@@ -575,152 +700,239 @@ Cảm Ơn Vi Da Den...
 
 
 <script>
-const targetDate = new Date().getTime() + 10000;
-const countdownEl = document.getElementById("countdown");
-const horse = document.getElementById("horse");
-const hero = document.querySelector(".hero h1");
+document.addEventListener("DOMContentLoaded", function(){
 
-let newYearLaunched = false;
-let timer = setInterval(updateCountdown,1000);
-updateCountdown();
+  /* ===== MỐC TẾT BÍNH NGỌ ===== */
+  const targetDate = new Date().getTime() + 15000;
 
-function updateCountdown(){
-  const now = new Date().getTime();
-  const distance = targetDate - now;
 
-  if(distance <= 0){
-    countdownEl.innerHTML = "0d 0h 0m 0s";
-  }else{
-    const days = Math.floor(distance/(1000*60*60*24));
-    const hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
-    const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
-    const seconds = Math.floor((distance%(1000*60))/1000);
+  const countdownEl = document.getElementById("countdown");
+  const horse = document.getElementById("horse");
+  const hero = document.querySelector(".hero h1");
 
-    countdownEl.innerHTML =
-      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  let timer = null;
+  let newYearLaunched = false;
+
+  function updateCountdown(){
+
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    /* ===== SAU 00:10 → KHÓA VĨNH VIỄN ===== */
+    if(now > targetDate + 10000){
+      countdownEl.innerHTML = `
+<div class="love-container">
+  <span class="love-text">a yêu pmeooo💖</span>
+</div>
+`;
+
+      return;
+    }
+
+    /* ===== 00:00 → 00:10 ===== */
+    if(now >= targetDate && now <= targetDate + 10000){
+
+      countdownEl.innerHTML = `
+<div class="love-container">
+  <span class="love-text">a yêu pmeooo💖</span>
+</div>
+`;
+
+
+      if(!newYearLaunched){
+        newYearLaunched = true;
+        clearInterval(timer);
+        startFloatingHearts();
+
+        document.getElementById("hourglass").style.display = "none";
+
+        horse.classList.add("red-mode");
+        hero.innerText = "🔥 Chúc Mừng Năm Mới 🔥";
+
+        const highInterval = setInterval(launchHighFirework,1000);
+
+        setTimeout(()=>{
+          clearInterval(highInterval);
+        },10000);
+      }
+
+      return;
+    }
+
+    /* ===== TRƯỚC 00:00 ===== */
+    if(distance > 0){
+
+      const days = Math.floor(distance/(1000*60*60*24));
+      const hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+      const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+      const seconds = Math.floor((distance%(1000*60))/1000);
+
+      countdownEl.innerHTML =
+        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+      // 10 GIÂY CUỐI → pháo thấp
+      if(distance <= 10000){
+        launchLowFireworks();
+      }
+    }
   }
 
-  // 10s cuối → pháo thấp
-  if(distance < 10000 && distance > 0){
-    launchLowFireworks();
+  timer = setInterval(updateCountdown,1000);
+  updateCountdown();
+
+
+  /* ===== PHÁO THẤP ===== */
+  function launchLowFireworks(){
+    for(let i=0;i<30;i++){
+      const fw=document.createElement("div");
+      fw.className="firework";
+
+      fw.style.left=Math.random()*window.innerWidth+"px";
+      fw.style.top=window.innerHeight+"px";
+      fw.style.background=
+        `hsl(${Math.random()*360},100%,60%)`;
+
+      fw.style.setProperty("--x",
+        (Math.random()-0.5)*300+"px");
+      fw.style.setProperty("--y",
+        -Math.random()*300+"px");
+
+      document.body.appendChild(fw);
+      setTimeout(()=>fw.remove(),1000);
+    }
   }
 
-  // Hết giờ → rocket cao
-  if(distance <= 0 && !newYearLaunched){
-    newYearLaunched = true;
-    clearInterval(timer);
 
-    horse.classList.add("red-mode");
-    hero.innerText="🔥 Chúc Mừng Năm Mới 🔥";
+  /* ===== PHÁO CAO ===== */
+  function launchHighFirework(){
 
-    launchHighFirework();
-    setInterval(launchHighFirework,1000);
+    const rocketX = Math.random() * window.innerWidth;
+    const explodeHeight = Math.random() * (window.innerHeight/2);
+
+    const rocket = document.createElement("div");
+    rocket.style.position = "fixed";
+    rocket.style.width = "4px";
+    rocket.style.height = "15px";
+    rocket.style.background = "white";
+    rocket.style.left = rocketX + "px";
+    rocket.style.top = window.innerHeight + "px";
+    rocket.style.zIndex = "9999";
+    rocket.style.transition = "top 0.8s ease-out";
+
+    document.body.appendChild(rocket);
+
+    setTimeout(()=>{
+      rocket.style.top = explodeHeight + "px";
+    },10);
+
+    setTimeout(()=>{
+      rocket.remove();
+      explodeHigh(rocketX, explodeHeight);
+    },800);
   }
-}
 
-/* ===== PHÁO THẤP ===== */
-function launchLowFireworks(){
-  for(let i=0;i<30;i++){
-    const fw=document.createElement("div");
-    fw.className="firework";
+  function explodeHigh(centerX,height){
+    for(let i=0;i<100;i++){
+      const particle=document.createElement("div");
+      particle.style.position="fixed";
+      particle.style.width="6px";
+      particle.style.height="6px";
+      particle.style.borderRadius="50%";
+      particle.style.background=
+        `hsl(${Math.random()*360},100%,60%)`;
+      particle.style.left=centerX+"px";
+      particle.style.top=height+"px";
+      particle.style.zIndex="9999";
 
-    fw.style.left=Math.random()*window.innerWidth+"px";
-    fw.style.top=window.innerHeight+"px";
+      const angle=Math.random()*2*Math.PI;
+      const distance=Math.random()*350;
 
-    fw.style.background=
-      `hsl(${Math.random()*360},100%,60%)`;
+      const x=Math.cos(angle)*distance;
+      const y=Math.sin(angle)*distance;
 
-    fw.style.setProperty("--x",
-      (Math.random()-0.5)*300+"px");
-    fw.style.setProperty("--y",
-      -Math.random()*300+"px");
+      particle.animate(
+        [
+          {transform:"translate(0,0)",opacity:1},
+          {transform:`translate(${x}px,${y}px)`,opacity:0}
+        ],
+        {duration:1200,easing:"ease-out"}
+      );
 
-    document.body.appendChild(fw);
-    setTimeout(()=>fw.remove(),1000);
+      document.body.appendChild(particle);
+      setTimeout(()=>particle.remove(),1200);
+    }
   }
-}
 
-/* ===== ROCKET CAO ===== */
-function launchHighFirework(){
 
-  const rocketX = Math.random() * window.innerWidth;
-  const explodeHeight = Math.random() * (window.innerHeight/2);
-
-  const rocket = document.createElement("div");
-  rocket.style.position = "fixed";
-  rocket.style.width = "4px";
-  rocket.style.height = "15px";
-  rocket.style.background = "white";
-  rocket.style.left = rocketX + "px";
-  rocket.style.top = window.innerHeight + "px";
-  rocket.style.zIndex = "9999";
-  rocket.style.transition = "top 0.8s ease-out";
-
-  document.body.appendChild(rocket);
-
-  setTimeout(()=>{
-    rocket.style.top = explodeHeight + "px";
-  },10);
-
-  setTimeout(()=>{
-    rocket.remove();
-
-    // 👇 TRUYỀN TRỰC TIẾP rocketX
-    explodeHigh(rocketX, explodeHeight);
-
-  },800);
-}
-
-function explodeHigh(centerX,height){
-  for(let i=0;i<100;i++){
-    const particle=document.createElement("div");
-    particle.style.position="fixed";
-    particle.style.width="6px";
-    particle.style.height="6px";
-    particle.style.borderRadius="50%";
-    particle.style.background=
-      `hsl(${Math.random()*360},100%,60%)`;
-    particle.style.left=centerX+"px";
-    particle.style.top=height+"px";
-    particle.style.zIndex="9999";
-
-    const angle=Math.random()*2*Math.PI;
-    const distance=Math.random()*350;
-
-    const x=Math.cos(angle)*distance;
-    const y=Math.sin(angle)*distance;
-
-    particle.animate(
-      [
-        {transform:"translate(0,0)",opacity:1},
-        {transform:`translate(${x}px,${y}px)`,opacity:0}
-      ],
-      {duration:1200,easing:"ease-out"}
-    );
-
-    document.body.appendChild(particle);
-    setTimeout(()=>particle.remove(),1200);
+  /* ===== HOA RƠI (GIỮ NGUYÊN) ===== */
+  function createPetal(){
+    const petal=document.createElement("div");
+    petal.innerHTML="🌸";
+    petal.style.position="fixed";
+    petal.style.top="-20px";
+    petal.style.left=Math.random()*window.innerWidth+"px";
+    petal.style.fontSize=Math.random()*20+20+"px";
+    petal.style.animation=`fall ${Math.random()*5+5}s linear`;
+    petal.style.zIndex="1";
+    document.body.appendChild(petal);
+    setTimeout(()=>petal.remove(),8000);
   }
-}
+
+  setInterval(createPetal,500);
+
+});
 </script>
+
 <script>
-function createPetal(){
-const petal=document.createElement("div");
-petal.innerHTML="🌸";
-petal.style.position="fixed";
-petal.style.top="-20px";
-petal.style.left=Math.random()*window.innerWidth+"px";
-petal.style.fontSize=Math.random()*20+20+"px";
-petal.style.animation=`fall ${Math.random()*5+5}s linear`;
-petal.style.zIndex="1";
-document.body.appendChild(petal);
+const countdownBox = document.querySelector(".countdown-box");
+const nameWrapper = document.getElementById("nameWrapper");
 
-setTimeout(()=>petal.remove(),8000);
+window.addEventListener("scroll", function(){
+
+  if(!countdownBox || !nameWrapper) return;
+
+  if(window.scrollY > 50){
+    countdownBox.classList.add("shrink");
+    nameWrapper.classList.add("shrink");
+  }else{
+    countdownBox.classList.remove("shrink");
+    nameWrapper.classList.remove("shrink");
+  }
+});
+
+function startFloatingHearts(){
+    const container = document.querySelector(".love-container");
+    if(!container) return;
+
+    const hearts = ["💖","💗","💓","💘","💕","💞","💝"];
+
+    setInterval(()=>{
+
+        const heart = document.createElement("div");
+        heart.className = "floating-heart";
+
+        // random emoji
+        heart.innerHTML = hearts[Math.floor(Math.random()*hearts.length)];
+
+        // spawn gần giữa chữ
+        heart.style.left = "50%";
+        heart.style.top = "50%";
+
+        // random hướng bay
+        const x = (Math.random() - 0.5) * 200;
+        const y = (Math.random() - 0.5) * 200;
+
+        heart.style.setProperty("--x", x + "px");
+        heart.style.setProperty("--y", y + "px");
+
+        container.appendChild(heart);
+
+        setTimeout(()=>heart.remove(),2500);
+
+    },400);
 }
 
-setInterval(createPetal,500);
+
+
 </script>
-
 </body>
-</html>
-
