@@ -575,221 +575,134 @@ Cảm Ơn Vi Da Den...
 
 
 <script>
-const targetDate = new Date("Feb 17, 2026 00:00:00").getTime();
+const targetDate = new Date().getTime() + 10000;
 const countdownEl = document.getElementById("countdown");
 const horse = document.getElementById("horse");
 const hero = document.querySelector(".hero h1");
 
-function updateCountdown(){
-const now=new Date().getTime();
-const distance=targetDate-now;
-
-const days=Math.floor(distance/(1000*60*60*24));
-const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
-const minutes=Math.floor((distance%(1000*60*60))/(1000*60));
-const seconds=Math.floor((distance%(1000*60))/1000);
-
-countdownEl.innerHTML=`${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-if(distance < 10000 && distance > 0){
-launchFireworks();
-}
-
-if(distance<=0){
-horse.classList.add("red-mode");
-hero.innerText="🔥 Chúc Mừng Năm Mới 🔥";
-launchFireworks();
-}
-}
-
-setInterval(updateCountdown,1000);
+let newYearLaunched = false;
+let timer = setInterval(updateCountdown,1000);
 updateCountdown();
 
-function launchFireworks(){
-for(let i=0;i<50;i++){
+function updateCountdown(){
+  const now = new Date().getTime();
+  const distance = targetDate - now;
 
-const fw=document.createElement("div");
-fw.className="firework";
-
-fw.style.left=Math.random()*window.innerWidth+"px";
-fw.style.top=window.innerHeight+"px";
-
-fw.style.background=`hsl(${Math.random()*360},100%,60%)`;
-
-fw.style.setProperty("--x",(Math.random()-0.5)*400+"px");
-fw.style.setProperty("--y",-Math.random()*600+"px");
-
-document.body.appendChild(fw);
-
-setTimeout(()=>fw.remove(),1000);
-}
-}
-
-const box=document.getElementById("countdownBox");
-const nameWrapper=document.getElementById("nameWrapper");
-
-window.addEventListener("scroll",()=>{
-if(window.scrollY>80){
-box.classList.add("shrink");
-nameWrapper.classList.add("shrink");
-}else{
-box.classList.remove("shrink");
-nameWrapper.classList.remove("shrink");
-}
-hero.style.transform=`translateY(${window.scrollY*0.2}px)`;
-});
-
-
-const songs = [
-  {name:"Song 1", file:"music1.mp3"},
-  {name:"Song 2", file:"music2.mp3"},
-  {name:"Song 3", file:"music3.mp3"}
-];
-
-let currentSong = 0;
-
-const music = document.getElementById("bgMusic");
-const playBtn = document.getElementById("playBtn");
-const songTitle = document.getElementById("songTitle");
-const progress = document.getElementById("progress");
-const volumeSlider = document.getElementById("volume");
-const currentTimeEl = document.getElementById("currentTime");
-const durationEl = document.getElementById("duration");
-
-function loadSong(index){
-  music.src = songs[index].file;
-  songTitle.textContent = songs[index].name;
-  localStorage.setItem("lastSong", index);
-}
-
-function toggleMusic(){
-  if(music.paused){
-    music.play();
-    playBtn.textContent = "⏸";
+  if(distance <= 0){
+    countdownEl.innerHTML = "0d 0h 0m 0s";
   }else{
-    music.pause();
-    playBtn.textContent = "▶";
+    const days = Math.floor(distance/(1000*60*60*24));
+    const hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+    const seconds = Math.floor((distance%(1000*60))/1000);
+
+    countdownEl.innerHTML =
+      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  // 10s cuối → pháo thấp
+  if(distance < 10000 && distance > 0){
+    launchLowFireworks();
+  }
+
+  // Hết giờ → rocket cao
+  if(distance <= 0 && !newYearLaunched){
+    newYearLaunched = true;
+    clearInterval(timer);
+
+    horse.classList.add("red-mode");
+    hero.innerText="🔥 Chúc Mừng Năm Mới 🔥";
+
+    launchHighFirework();
+    setInterval(launchHighFirework,1000);
   }
 }
 
-function nextSong(){
-  currentSong = (currentSong + 1) % songs.length;
-  loadSong(currentSong);
-  music.play();
-  playBtn.textContent = "⏸";
-}
+/* ===== PHÁO THẤP ===== */
+function launchLowFireworks(){
+  for(let i=0;i<30;i++){
+    const fw=document.createElement("div");
+    fw.className="firework";
 
-function prevSong(){
-  currentSong = (currentSong - 1 + songs.length) % songs.length;
-  loadSong(currentSong);
-  music.play();
-  playBtn.textContent = "⏸";
-}
+    fw.style.left=Math.random()*window.innerWidth+"px";
+    fw.style.top=window.innerHeight+"px";
 
-function formatTime(time){
-  const min = Math.floor(time/60);
-  const sec = Math.floor(time%60);
-  return `${min}:${sec<10?"0"+sec:sec}`;
-}
+    fw.style.background=
+      `hsl(${Math.random()*360},100%,60%)`;
 
-music.addEventListener("timeupdate", ()=>{
-  progress.value = (music.currentTime / music.duration) * 100 || 0;
-  currentTimeEl.textContent = formatTime(music.currentTime);
-});
+    fw.style.setProperty("--x",
+      (Math.random()-0.5)*300+"px");
+    fw.style.setProperty("--y",
+      -Math.random()*300+"px");
 
-music.addEventListener("loadedmetadata", ()=>{
-  durationEl.textContent = formatTime(music.duration);
-});
-
-progress.addEventListener("input", ()=>{
-  music.currentTime = (progress.value / 100) * music.duration;
-});
-
-volumeSlider.addEventListener("input", ()=>{
-  music.volume = volumeSlider.value;
-});
-
-function togglePlayer(){
-  document.getElementById("musicPlayer").classList.toggle("collapsed");
-}
-
-window.addEventListener("click", function(){
-  if(music.paused){
-    music.play();
+    document.body.appendChild(fw);
+    setTimeout(()=>fw.remove(),1000);
   }
-},{ once:true });
+}
 
-window.onload = ()=>{
-  const saved = localStorage.getItem("lastSong");
-  if(saved){
-    currentSong = parseInt(saved);
+/* ===== ROCKET CAO ===== */
+function launchHighFirework(){
+
+  const rocketX = Math.random() * window.innerWidth;
+  const explodeHeight = Math.random() * (window.innerHeight/2);
+
+  const rocket = document.createElement("div");
+  rocket.style.position = "fixed";
+  rocket.style.width = "4px";
+  rocket.style.height = "15px";
+  rocket.style.background = "white";
+  rocket.style.left = rocketX + "px";
+  rocket.style.top = window.innerHeight + "px";
+  rocket.style.zIndex = "9999";
+  rocket.style.transition = "top 0.8s ease-out";
+
+  document.body.appendChild(rocket);
+
+  setTimeout(()=>{
+    rocket.style.top = explodeHeight + "px";
+  },10);
+
+  setTimeout(()=>{
+    rocket.remove();
+
+    // 👇 TRUYỀN TRỰC TIẾP rocketX
+    explodeHigh(rocketX, explodeHeight);
+
+  },800);
+}
+
+function explodeHigh(centerX,height){
+  for(let i=0;i<100;i++){
+    const particle=document.createElement("div");
+    particle.style.position="fixed";
+    particle.style.width="6px";
+    particle.style.height="6px";
+    particle.style.borderRadius="50%";
+    particle.style.background=
+      `hsl(${Math.random()*360},100%,60%)`;
+    particle.style.left=centerX+"px";
+    particle.style.top=height+"px";
+    particle.style.zIndex="9999";
+
+    const angle=Math.random()*2*Math.PI;
+    const distance=Math.random()*350;
+
+    const x=Math.cos(angle)*distance;
+    const y=Math.sin(angle)*distance;
+
+    particle.animate(
+      [
+        {transform:"translate(0,0)",opacity:1},
+        {transform:`translate(${x}px,${y}px)`,opacity:0}
+      ],
+      {duration:1200,easing:"ease-out"}
+    );
+
+    document.body.appendChild(particle);
+    setTimeout(()=>particle.remove(),1200);
   }
-  loadSong(currentSong);
-  music.volume = 0.5;
-};
-
-const player = document.getElementById("musicPlayer");
-const header = player.querySelector(".player-header");
-
-let startX = 0;
-let startY = 0;
-let currentX = 0;
-let currentY = 0;
-let isDragging = false;
-
-header.addEventListener("touchstart", function(e){
-  isDragging = true;
-
-  const touch = e.touches[0];
-  startX = touch.clientX - currentX;
-  startY = touch.clientY - currentY;
-});
-
-document.addEventListener("touchmove", function(e){
-  if(!isDragging) return;
-
-  const touch = e.touches[0];
-  currentX = touch.clientX - startX;
-  currentY = touch.clientY - startY;
-
-  player.style.transform =
-    "translate(" + currentX + "px," + currentY + "px)";
-});
-
-document.addEventListener("touchend", function(){
-  isDragging = false;
-});
-
+}
 </script>
-<div class="music-player" id="musicPlayer">
-
-  <div class="player-header" onclick="togglePlayer()">
-    🎧 TT Overdrive Player
-  </div>
-
-  <div class="player-body">
-    <div class="visualizer"></div>
-
-    <div class="song-title" id="songTitle">Loading...</div>
-
-    <div class="controls">
-      <button onclick="prevSong()">⏮</button>
-      <button onclick="toggleMusic()" id="playBtn">▶</button>
-      <button onclick="nextSong()">⏭</button>
-    </div>
-
-    <div class="time">
-      <span id="currentTime">00:00</span> /
-      <span id="duration">00:00</span>
-    </div>
-
-    <input type="range" id="progress" value="0">
-    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
-  </div>
-
-  <audio id="bgMusic"></audio>
-</div>
-
 <script>
 function createPetal(){
 const petal=document.createElement("div");
