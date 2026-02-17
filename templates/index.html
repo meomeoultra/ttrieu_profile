@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ah meo happy new year</title>
+<title>pro5 ah meomeo</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -157,38 +157,95 @@ text-shadow:0 0 20px red,0 0 40px red;
 /* ===== HERO ===== */
 
 .hero{
+height:65vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
 text-align:center;
-margin-top:180px;
-transition:transform 0.3s ease;
 }
 
 .hero h1{
-font-size:60px;
-background:linear-gradient(90deg,gold,orange,gold);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-text-shadow:0 0 30px gold;
+    font-size:60px;
+    font-weight:900;
+    letter-spacing:4px;
+
+    background: linear-gradient(
+        90deg,
+        #ff0000,
+        #ff7300,
+        #fffb00,
+        #48ff00,
+        #00ffd5,
+        #002bff,
+        #7a00ff,
+        #ff00c8,
+        #ff0000
+    );
+
+    background-size:400%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    animation:
+        rainbowFlow 6s linear infinite,
+        ledGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes rainbowFlow{
+    0%{ background-position:0% }
+    100%{ background-position:400% }
+}
+
+@keyframes ledGlow{
+    from{
+        filter: drop-shadow(0 0 10px #ff00ff)
+                drop-shadow(0 0 20px #00ffff);
+    }
+    to{
+        filter: drop-shadow(0 0 20px #ffffff)
+                drop-shadow(0 0 40px #ff00ff)
+                drop-shadow(0 0 60px #00ffff);
+    }
+}
+
+.hero h1::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:50%;
+    height:100%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.8),
+        transparent
+    );
+    animation: shine 3s infinite;
+    pointer-events:none;
 }
 
 .hero h1{
-animation: ledPulse 2s infinite alternate;
+    position:relative;
+    overflow:hidden;   /* QUAN TRỌNG */
 }
 
-@keyframes ledPulse{
-from{
-text-shadow:
-0 0 10px gold,
-0 0 20px orange,
-0 0 40px gold;
-}
-to{
-text-shadow:
-0 0 20px gold,
-0 0 40px orange,
-0 0 80px gold;
-}
+.hero h1{
+    text-align:center;
+    width:100%;
 }
 
+.hero{
+    position:relative;
+    display:inline-block;
+}
+
+@keyframes shine{
+    0%{ left:-100%; }
+    100%{ left:100%; }
+}
+	
 .hero p{
 margin-top:10px;
 opacity:0.8;
@@ -197,7 +254,7 @@ opacity:0.8;
 /* ===== SERVICES ===== */
 
 .services{
-margin-top:150px;
+margin-top:0;
 padding:0 8%;
 text-align:center;
 }
@@ -698,9 +755,10 @@ opacity:0;
 
 .window-text{
     font-weight:900;
-    letter-spacing:2px;
-    font-size:clamp(14px,2vw,20px);
+    letter-spacing:1px;
     white-space:nowrap;
+    text-align:center;
+}
 
     background:linear-gradient(
         90deg,
@@ -882,7 +940,7 @@ Cảm Ơn Vi Da Den...
             <div class="curtain right"></div>
 
             <div class="window-text" id="windowText">
-                ntmp 💖
+                ayeupmeo 💖
             </div>
         </div>
 
@@ -897,32 +955,32 @@ Cảm Ơn Vi Da Den...
 </div>
 
 <section class="hero">
-<h1>abcdxyz</h1>
+<h1>PMEO</h1>
 <p>Đẳng cấp cũng không diễn tả được hết trình độ của anh...!</p>
 </section>
 
 <section class="services">
-<h2 class="services-title">Những Thứ Ah Meo Làm </h2>
+<h2 class="services-title">Anh sẽ hỗ trợ em về: </h2>
 <div class="services-grid">
 <div class="service-card">
 <i class="fa-solid fa-laptop-code service-icon"></i>
 <h3>!@#$%^&*()</h3>
-<p>a meo ban di hoc</p>
+<p>Coming Soon...</p>
 </div>
 <div class="service-card">
 <i class="fa-solid fa-bolt service-icon"></i>
 <h3>!@#$%^&*()</h3>
-<p>dang di hoc ace oiii</p>
+<p>Coming Soon...</p>
 </div>
 <div class="service-card">
 <i class="fa-solid fa-gauge-high service-icon"></i>
 <h3>!@#$%^&*()</h3>
-<p>cha bit cgi caaaa</p>
+<p>Coming Soon...</p>
 </div>
 <div class="service-card">
 <i class="fa-solid fa-crown service-icon"></i>
 <h3>!@#$%^&*()</h3>
-<p>ah van dag hoc ma e cho xju di</p>
+<p>Ming Soon...</p>
 </div>
 </div>
 </section>
@@ -1021,15 +1079,6 @@ function startFloatingHearts(){
     },400);
 }
 
-const windowBox = document.getElementById("window");
-
-if(windowBox){
-    windowBox.addEventListener("click", function(e){
-        e.stopPropagation();
-        windowBox.classList.toggle("open");
-    });
-}
-
 document.addEventListener("DOMContentLoaded", function(){
 
     // ===== CHIMNEY HEARTS =====
@@ -1079,7 +1128,23 @@ document.addEventListener("DOMContentLoaded", function(){
 
 });
 
+function autoFitText() {
+    const text = document.getElementById("windowText");
+    const parent = document.getElementById("window");
 
+    if (!text || !parent) return;
+
+    let fontSize = 22; // size ban đầu
+    text.style.fontSize = fontSize + "px";
+
+    while (text.scrollWidth > parent.clientWidth - 20 && fontSize > 8) {
+        fontSize--;
+        text.style.fontSize = fontSize + "px";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", autoFitText);
+window.addEventListener("resize", autoFitText);
 
 </script>
 </body>
