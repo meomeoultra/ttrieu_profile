@@ -638,10 +638,11 @@ Cảm Ơn Vi Da Den...
 </div>
 
 <div class="top-bar">
-    <div class="glass countdown-box">
-        <span id="hourglass">⏳</span>
-        <span id="countdown">00:00:10</span>
+<div class="glass countdown-box">
+    <div class="love-container">
+        <span class="love-text">ntpm💖</span>
     </div>
+</div>
 
     <div class="name-wrapper glass" id="nameWrapper">
         👑 TTRIEU • MEO MEO 🐱
@@ -696,189 +697,32 @@ Cảm Ơn Vi Da Den...
 © 2026 TTRIEU. Yahhhh.
 </footer>
 
-
 <script>
-document.addEventListener("DOMContentLoaded", function(){
-
-  /* ===== MỐC TẾT BÍNH NGỌ ===== */
-const targetDate = new Date("2026-02-17T00:00:00+07:00").getTime();
-
-
-  const countdownEl = document.getElementById("countdown");
-  const horse = document.getElementById("horse");
-  const hero = document.querySelector(".hero h1");
-
-  let timer = null;
-  let newYearLaunched = false;
-
-  function updateCountdown(){
-
-    const now = new Date().getTime();
-    const distance = targetDate - now;
-
-    /* ===== SAU 00:10 → KHÓA VĨNH VIỄN ===== */
-    if(now > targetDate + 10000){
-      countdownEl.innerHTML = `
-<div class="love-container">
-  <span class="love-text">ntpm💖</span>
-</div>
-`;
-
-      return;
-    }
-
-    /* ===== 00:00 → 00:10 ===== */
-    if(now >= targetDate && now <= targetDate + 10000){
-
-      countdownEl.innerHTML = `
-<div class="love-container">
-  <span class="love-text">ntpm💖</span>
-</div>
-`;
-
-
-      if(!newYearLaunched){
-        newYearLaunched = true;
-        clearInterval(timer);
-        startFloatingHearts();
-
-        document.getElementById("hourglass").style.display = "none";
-
-        horse.classList.add("red-mode");
-        hero.innerText = "🔥 Chúc Mừng Năm Mới 🔥";
-
-        const highInterval = setInterval(launchHighFirework,1000);
-
-        setTimeout(()=>{
-          clearInterval(highInterval);
-        },10000);
-      }
-
-      return;
-    }
-
-    /* ===== TRƯỚC 00:00 ===== */
-    if(distance > 0){
-
-      const days = Math.floor(distance/(1000*60*60*24));
-      const hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
-      const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
-      const seconds = Math.floor((distance%(1000*60))/1000);
-
-      countdownEl.innerHTML =
-        `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-      // 10 GIÂY CUỐI → pháo thấp
-      if(distance <= 10000){
-        launchLowFireworks();
-      }
-    }
-  }
-
-  timer = setInterval(updateCountdown,1000);
-  updateCountdown();
-
-
-  /* ===== PHÁO THẤP ===== */
-  function launchLowFireworks(){
-    for(let i=0;i<30;i++){
-      const fw=document.createElement("div");
-      fw.className="firework";
-
-      fw.style.left=Math.random()*window.innerWidth+"px";
-      fw.style.top=window.innerHeight+"px";
-      fw.style.background=
-        `hsl(${Math.random()*360},100%,60%)`;
-
-      fw.style.setProperty("--x",
-        (Math.random()-0.5)*300+"px");
-      fw.style.setProperty("--y",
-        -Math.random()*300+"px");
-
-      document.body.appendChild(fw);
-      setTimeout(()=>fw.remove(),1000);
-    }
-  }
-
-
-  /* ===== PHÁO CAO ===== */
-  function launchHighFirework(){
-
-    const rocketX = Math.random() * window.innerWidth;
-    const explodeHeight = Math.random() * (window.innerHeight/2);
-
-    const rocket = document.createElement("div");
-    rocket.style.position = "fixed";
-    rocket.style.width = "4px";
-    rocket.style.height = "15px";
-    rocket.style.background = "white";
-    rocket.style.left = rocketX + "px";
-    rocket.style.top = window.innerHeight + "px";
-    rocket.style.zIndex = "9999";
-    rocket.style.transition = "top 0.8s ease-out";
-
-    document.body.appendChild(rocket);
-
-    setTimeout(()=>{
-      rocket.style.top = explodeHeight + "px";
-    },10);
-
-    setTimeout(()=>{
-      rocket.remove();
-      explodeHigh(rocketX, explodeHeight);
-    },800);
-  }
-
-  function explodeHigh(centerX,height){
-    for(let i=0;i<100;i++){
-      const particle=document.createElement("div");
-      particle.style.position="fixed";
-      particle.style.width="6px";
-      particle.style.height="6px";
-      particle.style.borderRadius="50%";
-      particle.style.background=
-        `hsl(${Math.random()*360},100%,60%)`;
-      particle.style.left=centerX+"px";
-      particle.style.top=height+"px";
-      particle.style.zIndex="9999";
-
-      const angle=Math.random()*2*Math.PI;
-      const distance=Math.random()*350;
-
-      const x=Math.cos(angle)*distance;
-      const y=Math.sin(angle)*distance;
-
-      particle.animate(
-        [
-          {transform:"translate(0,0)",opacity:1},
-          {transform:`translate(${x}px,${y}px)`,opacity:0}
-        ],
-        {duration:1200,easing:"ease-out"}
-      );
-
-      document.body.appendChild(particle);
-      setTimeout(()=>particle.remove(),1200);
-    }
-  }
-
 
   /* ===== HOA RƠI (GIỮ NGUYÊN) ===== */
-  function createPetal(){
-    const petal=document.createElement("div");
-    petal.innerHTML="🌸";
-    petal.style.position="fixed";
-    petal.style.top="-20px";
-    petal.style.left=Math.random()*window.innerWidth+"px";
-    petal.style.fontSize=Math.random()*20+20+"px";
-    petal.style.animation=`fall ${Math.random()*5+5}s linear`;
-    petal.style.zIndex="1";
-    document.body.appendChild(petal);
-    setTimeout(()=>petal.remove(),8000);
-  }
+document.addEventListener("DOMContentLoaded", function(){
 
-  setInterval(createPetal,500);
+    function createPetal(){
+        const petal = document.createElement("div");
+        petal.innerHTML = "🌸";
+        petal.style.position = "fixed";
+        petal.style.top = "-20px";
+        petal.style.left = Math.random()*window.innerWidth + "px";
+        petal.style.fontSize = Math.random()*20 + 20 + "px";
+        petal.style.animation = `fall ${Math.random()*5+5}s linear`;
+        petal.style.zIndex = "1";
+
+        document.body.appendChild(petal);
+        setTimeout(()=>petal.remove(),8000);
+    }
+
+    setInterval(createPetal, 500);
+
+    // 👉 gọi tim bay luôn
+    startFloatingHearts();
 
 });
+
 </script>
 
 <script>
