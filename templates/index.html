@@ -189,8 +189,8 @@ text-shadow:0 0 20px red,0 0 40px red;
     -webkit-text-fill-color:transparent;
 
     animation:
-        rainbowFlow 6s linear infinite,
-        ledGlow 1.5s ease-in-out infinite alternate;
+    rainbowFlow 10s linear infinite;
+
 }
 
 @keyframes rainbowFlow{
@@ -750,19 +750,11 @@ opacity:0;
                0 0 20px rgba(255,0,102,0.4);
 }
 
-.window-text{
-    font-weight:900;
-    letter-spacing:1px;
-    white-space:nowrap;
-    text-align:center;
+.window{
+    position:relative;
+    z-index:5;
 }
 
-    background:linear-gradient(
-        90deg,
-        #ff9ecb,
-        #ffc1e3,
-        #ff9ecb
-    );
     background-size:200%;
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
@@ -855,6 +847,15 @@ opacity:0;
     transform:scale(0.85);
 }
 
+.curtain{
+    z-index:1;
+}
+
+.window-text{
+    z-index:2;
+    position:relative;
+}
+
 /* ===== CHIMNEY ===== */
 
 .chimney{
@@ -925,6 +926,26 @@ opacity:0;
     opacity:0.7;
 }
 
+@media(max-width:768px){
+    body{
+        animation:none;
+    }
+
+    .hero h1{
+        animation:rainbowFlow 12s linear infinite;
+    }
+}
+
+.window-text{
+    visibility:hidden;
+    opacity:0;
+}
+
+.window.open .window-text{
+    visibility:visible;
+    opacity:1;
+}
+
 </style>
 </head>
 <body>
@@ -962,7 +983,7 @@ Cảm Ơn Vi Da Den...
 
 <section class="hero">
 <h1 id="heroTitle">PMEO</h1>
-<p>Đẳng cấp cũng không diễn tả được hết trình độ của anh...!</p>
+<p>Không hoàn hảo — nhưng luôn nâng cấp mỗi ngày.</p>
 </section>
 
 <section class="services">
@@ -992,7 +1013,7 @@ Cảm Ơn Vi Da Den...
 </section>
 
 <section class="contact">
-<a href="https://www.facebook.com/share/1SfE8dUVnu/" target="_blank">
+<a href="https://www.facebook.com/share/1SfE8dUVnu/" target="_blank"rel="noopener noreferrer">
     <i class="fa-brands fa-facebook"></i>
 </a>
 <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -1008,154 +1029,94 @@ Cảm Ơn Vi Da Den...
 </footer>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
 
-  /* ===== HOA RƠI (GIỮ NGUYÊN) ===== */
-document.addEventListener("DOMContentLoaded", function(){
-
-    function createPetal(){
-        const petal = document.createElement("div");
-        petal.innerHTML = "🌸";
-        petal.style.position = "fixed";
-        petal.style.top = "-20px";
-        petal.style.left = Math.random()*window.innerWidth + "px";
-        petal.style.fontSize = Math.random()*20 + 20 + "px";
-        petal.style.animation = `fall ${Math.random()*5+5}s linear`;
-        petal.style.zIndex = "1";
-
-        document.body.appendChild(petal);
-        setTimeout(()=>petal.remove(),8000);
-    }
-
-    setInterval(createPetal, 500);
-
-    // 👉 gọi tim bay luôn
-    startFloatingHearts();
-
-});
-
-</script>
-
-<script>
-const countdownBox = document.querySelector(".valentine-house");
-const nameWrapper = document.getElementById("nameWrapper");
-const heroTitle = document.getElementById("heroTitle");
-
-window.addEventListener("scroll", function(){
-
-  const heroTitle = document.getElementById("heroTitle");
-
-  if(!countdownBox || !nameWrapper) return;
-
-  if(window.scrollY > 50){
-    countdownBox.classList.add("shrink");
-    nameWrapper.classList.add("shrink");
-    heroTitle.classList.add("shrink");
-  }else{
-    countdownBox.classList.remove("shrink");
-    nameWrapper.classList.remove("shrink");
-    heroTitle.classList.remove("shrink");
-  }
-});
-
-
-function startFloatingHearts(){
-    const container = document.querySelector(".love-container");
-    if(!container) return;
-
-    const hearts = ["💖","💗","💓","💘","💕","💞","💝"];
-
-    setInterval(()=>{
-
-        const heart = document.createElement("div");
-        heart.className = "floating-heart";
-
-        // random emoji
-        heart.innerHTML = hearts[Math.floor(Math.random()*hearts.length)];
-
-        // spawn gần giữa chữ
-        heart.style.left = "50%";
-        heart.style.top = "50%";
-
-        // random hướng bay
-        const x = (Math.random() - 0.5) * 200;
-        const y = (Math.random() - 0.5) * 200;
-
-        heart.style.setProperty("--x", x + "px");
-        heart.style.setProperty("--y", y + "px");
-
-        container.appendChild(heart);
-
-        setTimeout(()=>heart.remove(),2500);
-
-    },400);
-}
-
-document.addEventListener("DOMContentLoaded", function(){
-
-    // ===== CHIMNEY HEARTS =====
-    function startChimneyHearts(){
-        const chimney = document.querySelector(".chimney");
-        if(!chimney) return;
-
-        const hearts = ["💖","💗","💘","💕","💓","💞"];
-
-        setInterval(()=>{
-
-            for(let i=0;i<3;i++){
-
-                const heart = document.createElement("div");
-                heart.className = "chimney-heart";
-                heart.innerHTML = hearts[Math.floor(Math.random()*hearts.length)];
-
-                heart.style.left = "50%";
-                heart.style.top = "0px";
-
-                const randomX = (Math.random() - 0.5) * 60;
-                heart.style.setProperty("--x", randomX + "px");
-
-                chimney.appendChild(heart);
-
-                setTimeout(() => {
-                    heart.remove();
-                }, 3000);
-            }
-
-        },1200);
-    }
-
-    startChimneyHearts();
-
-    // ===== OPEN CURTAIN =====
-    const windowBox = document.getElementById("window");
+    /* ========= DOM CACHE ========= */
     const house = document.getElementById("valentineHouse");
+    const windowBox = document.getElementById("window");
+    const nameWrapper = document.getElementById("nameWrapper");
+    const heroTitle = document.getElementById("heroTitle");
+    const chimney = document.querySelector(".chimney");
 
+    /* ========= SCROLL SHRINK ========= */
+    window.addEventListener("scroll", () => {
+        const shrink = window.scrollY > 50;
+
+        house.classList.toggle("shrink", shrink);
+        nameWrapper.classList.toggle("shrink", shrink);
+        heroTitle.classList.toggle("shrink", shrink);
+    });
+
+    /* ========= OPEN CURTAIN ========= */
     if(windowBox){
-        windowBox.addEventListener("click", function(e){
+        windowBox.addEventListener("click", (e)=>{
             e.stopPropagation();
             windowBox.classList.toggle("open");
             house.classList.toggle("light-on");
         });
     }
 
-});
+    /* ========= PETAL SYSTEM (TỐI ƯU) ========= */
+    function createPetal(){
+        const petal = document.createElement("div");
+        petal.textContent = "🌸";
 
-function autoFitText() {
-    const text = document.getElementById("windowText");
-    const parent = document.getElementById("window");
+        petal.style.position = "fixed";
+        petal.style.top = "-20px";
+        petal.style.left = Math.random()*window.innerWidth + "px";
+        petal.style.fontSize = (Math.random()*15 + 15) + "px";
+        petal.style.animation = `fall ${Math.random()*4+6}s linear`;
+        petal.style.pointerEvents = "none";
+        petal.style.zIndex = "1";
 
-    if (!text || !parent) return;
-
-    let fontSize = 22; // size ban đầu
-    text.style.fontSize = fontSize + "px";
-
-    while (text.scrollWidth > parent.clientWidth - 20 && fontSize > 8) {
-        fontSize--;
-        text.style.fontSize = fontSize + "px";
+        document.body.appendChild(petal);
+        setTimeout(()=>petal.remove(),9000);
     }
-}
 
-document.addEventListener("DOMContentLoaded", autoFitText);
-window.addEventListener("resize", autoFitText);
+    setTimeout(()=>{
+        setInterval(createPetal, 1200);
+    },2000);
 
+    /* ========= CHIMNEY HEART ========= */
+    function spawnChimneyHeart(){
+        if(!chimney) return;
+
+        const heart = document.createElement("div");
+        heart.className = "chimney-heart";
+        heart.textContent = "💖";
+
+        heart.style.left = "50%";
+        heart.style.top = "0px";
+
+        const randomX = (Math.random() - 0.5) * 50;
+        heart.style.setProperty("--x", randomX + "px");
+
+        chimney.appendChild(heart);
+        setTimeout(()=>heart.remove(),3000);
+    }
+
+    setInterval(spawnChimneyHeart, 2000);
+
+    /* ========= AUTO FIT TEXT ========= */
+    function autoFitText() {
+        const text = document.getElementById("windowText");
+        const parent = document.getElementById("window");
+
+        if (!text || !parent) return;
+
+        let fontSize = 22;
+        text.style.fontSize = fontSize + "px";
+
+        while (text.scrollWidth > parent.clientWidth - 20 && fontSize > 10) {
+            fontSize--;
+            text.style.fontSize = fontSize + "px";
+        }
+    }
+
+    autoFitText();
+    window.addEventListener("resize", autoFitText);
+
+});
 </script>
+
 </body>
