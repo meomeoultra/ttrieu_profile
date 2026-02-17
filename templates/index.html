@@ -628,6 +628,239 @@ opacity:0;
     }
 }
 
+/* ===== VALENTINE HOUSE ULTRA ===== */
+
+.valentine-house{
+    position:relative;
+    display:inline-block;
+    cursor:pointer;
+    transition:0.3s ease;
+}
+
+.roof{
+    width:0;
+    height:0;
+    border-left:70px solid transparent;
+    border-right:70px solid transparent;
+    border-bottom:55px solid #ff9ecb;
+    position:relative;
+    filter:drop-shadow(0 0 10px rgba(255,158,203,0.6));
+}
+
+/* tim trên mái */
+.roof::after{
+    content:"💖";
+    position:absolute;
+    top:-25px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:24px;
+    animation:heartBounce 1.2s infinite alternate;
+}
+
+@keyframes heartBounce{
+    from{ transform:translateX(-50%) translateY(0); }
+    to{ transform:translateX(-50%) translateY(-8px); }
+}
+
+.house-body{
+    width:140px;
+    height:110px;
+    background:linear-gradient(135deg,#ffd6e8,#ffb6d9);
+    border-radius:0 0 25px 25px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 0 20px rgba(255,182,217,0.5);
+}
+
+/* cửa sổ */
+.window{
+    width:100px;
+    height:60px;
+    background:linear-gradient(145deg,#fffafc,#ffeef6);
+    border-radius:12px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:
+        inset 0 0 10px rgba(255,255,255,0.8),
+        0 0 15px rgba(255,182,217,0.4);
+}
+
+
+.window{
+    box-shadow:0 0 15px rgba(255,0,102,0.5) inset,
+               0 0 20px rgba(255,0,102,0.4);
+}
+
+.window-text{
+    font-weight:900;
+    letter-spacing:2px;
+    font-size:clamp(14px,2vw,20px);
+    white-space:nowrap;
+
+    background:linear-gradient(
+        90deg,
+        #ff9ecb,
+        #ffc1e3,
+        #ff9ecb
+    );
+    background-size:200%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    animation: textSoftMove 4s linear infinite;
+    opacity:0;
+    transform:scale(0.8);
+    transition:0.4s ease;
+}
+
+@keyframes textSoftMove{
+    0%{background-position:0%}
+    100%{background-position:200%}
+}
+
+
+/* chữ bên trong */
+.window-text{
+    font-weight:900;
+    font-size:20px;
+    letter-spacing:2px;
+    background:linear-gradient(45deg,#ff0066,#ff4e9b,#ff0066);
+    background-size:200%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation: textGlow 2s infinite alternate,
+               textMove 4s linear infinite;
+    text-shadow:
+        0 0 10px rgba(255,0,102,0.6),
+        0 0 20px rgba(255,0,102,0.4);
+}
+
+@keyframes textGlow{
+    from{
+        text-shadow:
+        0 0 10px #ff0066,
+        0 0 20px #ff4e9b;
+    }
+    to{
+        text-shadow:
+        0 0 20px #ff0066,
+        0 0 40px #ff4e9b;
+    }
+}
+
+@keyframes textMove{
+    0%{background-position:0%}
+    100%{background-position:200%}
+}
+
+/* rèm */
+.curtain{
+    position:absolute;
+    width:50%;
+    height:100%;
+    background:linear-gradient(135deg,#ff1744,#ff4e9b);
+    top:0;
+    transition:0.6s ease;
+}
+
+.curtain{
+    pointer-events:none;
+}
+
+.curtain.left{
+    left:0;
+    border-right:2px solid #fff;
+}
+
+.curtain.right{
+    right:0;
+    border-left:2px solid #fff;
+}
+
+/* khi mở */
+.window.open .curtain.left{
+    transform:translateX(-100%);
+}
+
+.window.open .curtain.right{
+    transform:translateX(100%);
+}
+
+.window.open .window-text{
+    opacity:1;
+    transform:scale(1);
+}
+
+.valentine-house.shrink{
+    transform:scale(0.85);
+}
+
+/* ===== CHIMNEY ===== */
+
+.chimney{
+    position:absolute;
+    top:10px;          /* thay vì -25px */
+    right:20px;
+    width:18px;
+    height:30px;
+    background:#ffb6d9;
+    border-radius:4px;
+    box-shadow:0 0 10px rgba(255,182,217,0.6);
+}
+
+.chimney{
+    z-index:-1;
+}
+
+
+/* tim bay từ ống khói */
+.chimney-heart{
+    position:absolute;
+    font-size:16px;
+    pointer-events:none;
+    animation: chimneyFly 3s ease-out forwards;
+}
+
+@keyframes chimneyFly{
+    0%{
+        opacity:0;
+        transform:translate(-50%,0) scale(0.5);
+    }
+    20%{
+        opacity:1;
+    }
+    100%{
+        opacity:0;
+        transform:translate(var(--x), -80px) scale(1.3);
+    }
+}
+
+/* khi mở rèm */
+
+.window.open{
+    background:linear-gradient(145deg,#fff6cc,#ffe680);
+    box-shadow:
+        inset 0 0 15px rgba(255,255,200,0.9),
+        0 0 30px rgba(255,220,120,0.8);
+}
+
+/* nhà sáng lên */
+
+.valentine-house.light-on .house-body{
+    box-shadow:
+        0 0 40px rgba(255,220,120,0.7),
+        0 0 80px rgba(255,200,100,0.5);
+}
+
+.valentine-house.shrink{
+    transform:scale(0.85);
+}
+
 </style>
 </head>
 <body>
@@ -638,11 +871,24 @@ Cảm Ơn Vi Da Den...
 </div>
 
 <div class="top-bar">
-<div class="glass countdown-box">
-    <div class="love-container">
-        <span class="love-text">ntpm💖</span>
+<div class="valentine-house" id="valentineHouse">
+    <div class="roof"></div>
+    <div class="chimney"></div>
+
+    <div class="house-body">
+
+        <div class="window" id="window">
+            <div class="curtain left"></div>
+            <div class="curtain right"></div>
+
+            <div class="window-text" id="windowText">
+                ntmp 💖
+            </div>
+        </div>
+
     </div>
 </div>
+
 
     <div class="name-wrapper glass" id="nameWrapper">
         👑 TTRIEU • MEO MEO 🐱
@@ -726,7 +972,7 @@ document.addEventListener("DOMContentLoaded", function(){
 </script>
 
 <script>
-const countdownBox = document.querySelector(".countdown-box");
+const countdownBox = document.querySelector(".valentine-house");
 const nameWrapper = document.getElementById("nameWrapper");
 
 window.addEventListener("scroll", function(){
@@ -741,6 +987,7 @@ window.addEventListener("scroll", function(){
     nameWrapper.classList.remove("shrink");
   }
 });
+
 
 function startFloatingHearts(){
     const container = document.querySelector(".love-container");
@@ -773,6 +1020,64 @@ function startFloatingHearts(){
 
     },400);
 }
+
+const windowBox = document.getElementById("window");
+
+if(windowBox){
+    windowBox.addEventListener("click", function(e){
+        e.stopPropagation();
+        windowBox.classList.toggle("open");
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    // ===== CHIMNEY HEARTS =====
+    function startChimneyHearts(){
+        const chimney = document.querySelector(".chimney");
+        if(!chimney) return;
+
+        const hearts = ["💖","💗","💘","💕","💓","💞"];
+
+        setInterval(()=>{
+
+            for(let i=0;i<3;i++){
+
+                const heart = document.createElement("div");
+                heart.className = "chimney-heart";
+                heart.innerHTML = hearts[Math.floor(Math.random()*hearts.length)];
+
+                heart.style.left = "50%";
+                heart.style.top = "0px";
+
+                const randomX = (Math.random() - 0.5) * 60;
+                heart.style.setProperty("--x", randomX + "px");
+
+                chimney.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 3000);
+            }
+
+        },1200);
+    }
+
+    startChimneyHearts();
+
+    // ===== OPEN CURTAIN =====
+    const windowBox = document.getElementById("window");
+    const house = document.getElementById("valentineHouse");
+
+    if(windowBox){
+        windowBox.addEventListener("click", function(e){
+            e.stopPropagation();
+            windowBox.classList.toggle("open");
+            house.classList.toggle("light-on");
+        });
+    }
+
+});
 
 
 
