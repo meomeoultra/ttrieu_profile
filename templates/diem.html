@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tính ĐXTN 2025</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    padding:25px;
+}
+
+.container{
+    max-width:850px;
+    margin:auto;
+    background:#1e293b;
+    padding:25px;
+    border-radius:20px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:25px;
+    color:#38bdf8;
+}
+
+.section{
+    background:#0f172a;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+h2{
+    margin-bottom:15px;
+    color:#facc15;
+}
+
+.input-group{
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#334155;
+    color:white;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#38bdf8;
+    color:black;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:15px;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.result{
+    margin-top:20px;
+    padding:20px;
+    border-radius:15px;
+    background:#1e293b;
+    line-height:1.8;
+}
+
+.big{
+    font-size:30px;
+    font-weight:bold;
+    color:#4ade80;
+}
+
+.fail{
+    color:#ef4444;
+}
+
+.note{
+    margin-top:15px;
+    color:#94a3b8;
+    line-height:1.6;
+    font-size:14px;
+}
+
+hr{
+    margin:15px 0;
+    border-color:#334155;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>CÔNG CỤ TÍNH ĐXTN 2025</h1>
+
+<div class="section">
+
+<h2>1. Điểm học bạ THPT</h2>
+
+<div class="input-group">
+<label>ĐTB lớp 10</label>
+<input type="number" id="tb10" step="0.01">
+</div>
+
+<div class="input-group">
+<label>ĐTB lớp 11</label>
+<input type="number" id="tb11" step="0.01">
+</div>
+
+<div class="input-group">
+<label>ĐTB lớp 12</label>
+<input type="number" id="tb12" step="0.01">
+</div>
+
+<div class="note">
+Công thức học bạ 2025:
+<br>
+Lớp 10 ×1 + lớp 11 ×2 + lớp 12 ×3 rồi chia 6
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>2. Điểm thi tốt nghiệp</h2>
+
+<div class="input-group">
+<label>Toán (bắt buộc)</label>
+<input type="number" id="toan" step="0.01">
+</div>
+
+<div class="input-group">
+<label>Ngữ Văn (bắt buộc)</label>
+<input type="number" id="van" step="0.01">
+</div>
+
+<div class="input-group">
+<label>Môn tự chọn 1</label>
+<input type="number" id="mon1" step="0.01">
+</div>
+
+<div class="input-group">
+<label>Môn tự chọn 2</label>
+<input type="number" id="mon2" step="0.01">
+</div>
+
+<div class="input-group">
+<label>Điểm ưu tiên</label>
+<input type="number" id="uutien" value="0" step="0.01">
+</div>
+
+<div class="input-group">
+<label>Điểm khuyến khích</label>
+<input type="number" id="khuyenkhich" value="0" step="0.01">
+</div>
+
+<button onclick="tinhDXTN()">
+TÍNH ĐXTN
+</button>
+
+<div class="result" id="ketqua">
+Chưa tính.
+</div>
+
+<div class="note">
+
+<b>Công thức ĐXTN 2025:</b>
+
+<br><br>
+
+- Điểm thi = trung bình 4 môn:
+(Toán + Văn + Môn 1 + Môn 2) / 4
+
+<br><br>
+
+- Điểm học bạ:
+(TB10×1 + TB11×2 + TB12×3) / 6
+
+<br><br>
+
+- ĐXTN =
+50% điểm thi +
+50% điểm học bạ +
+điểm ưu tiên +
+điểm khuyến khích
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function tinhDXTN(){
+
+    // Học bạ
+
+    let tb10 = parseFloat(document.getElementById("tb10").value) || 0;
+    let tb11 = parseFloat(document.getElementById("tb11").value) || 0;
+    let tb12 = parseFloat(document.getElementById("tb12").value) || 0;
+
+    // Điểm thi
+
+    let toan = parseFloat(document.getElementById("toan").value) || 0;
+    let van = parseFloat(document.getElementById("van").value) || 0;
+    let mon1 = parseFloat(document.getElementById("mon1").value) || 0;
+    let mon2 = parseFloat(document.getElementById("mon2").value) || 0;
+
+    let uutien = parseFloat(document.getElementById("uutien").value) || 0;
+    let khuyenkhich = parseFloat(document.getElementById("khuyenkhich").value) || 0;
+
+    // Tính học bạ
+
+    let hocBa = (
+        (tb10 * 1) +
+        (tb11 * 2) +
+        (tb12 * 3)
+    ) / 6;
+
+    // Tính điểm thi
+
+    let diemThi = (
+        toan +
+        van +
+        mon1 +
+        mon2
+    ) / 4;
+
+    // Tính ĐXTN
+
+    let dxtn = (
+        (diemThi * 0.5) +
+        (hocBa * 0.5) +
+        uutien +
+        khuyenkhich
+    );
+
+    hocBa = hocBa.toFixed(2);
+    diemThi = diemThi.toFixed(2);
+    dxtn = dxtn.toFixed(2);
+
+    let ketQua = dxtn >= 5
+        ? "<span class='big'>ĐẬU TỐT NGHIỆP 🎉</span>"
+        : "<span class='big fail'>RỚT TỐT NGHIỆP ❌</span>";
+
+    document.getElementById("ketqua").innerHTML = `
+
+        <div>
+            <b>ĐTB học bạ:</b> ${hocBa}
+        </div>
+
+        <div>
+            <b>Điểm thi trung bình:</b> ${diemThi}
+        </div>
+
+        <hr>
+
+        <div>
+            <b>ĐIỂM XÉT TỐT NGHIỆP:</b>
+        </div>
+
+        <div class="big">
+            ${dxtn}
+        </div>
+
+        <div style="margin-top:15px;">
+            ${ketQua}
+        </div>
+
+    `;
+
+}
+
+</script>
+
+</body>
+</html>

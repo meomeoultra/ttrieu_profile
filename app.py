@@ -15,5 +15,9 @@ def profile():
 def hoa():
     return render_template("hoa.html")
 
+@app.route("/diem")
+def diem():
+    return render_template("diem.html")
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
