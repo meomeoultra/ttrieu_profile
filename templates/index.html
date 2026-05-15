@@ -321,6 +321,103 @@ body::before{
     }
 }
 
+/* ===== NAVBAR ===== */
+.navbar{
+    position:sticky;
+    top:0;
+    z-index:999;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 22px;
+    background:rgba(11,17,32,.72);
+    border-bottom:1px solid rgba(255,255,255,.06);
+    backdrop-filter:blur(8px);
+}
+
+.nav-logo{
+    font-size:17px;
+    font-weight:800;
+    color:#fff;
+    letter-spacing:1px;
+}
+
+.nav-links{
+    display:flex;
+    gap:18px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:var(--muted);
+    font-size:14px;
+    transition:.2s ease;
+}
+
+.nav-links a:hover{
+    color:#fff;
+}
+
+/* ===== DASHBOARD ===== */
+.dashboard{
+    width:100%;
+    max-width:1000px;
+    margin:0 auto 50px;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:18px;
+}
+
+.dash-card{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:22px;
+    padding:24px 20px;
+    text-align:center;
+    box-shadow:0 6px 18px rgba(0,0,0,.18);
+}
+
+.dash-card h3{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.dash-card p{
+    color:var(--muted);
+}
+
+/* ===== ABOUT ===== */
+.about{
+    max-width:850px;
+    margin:0 auto 60px;
+    padding:0 20px;
+    text-align:center;
+}
+
+.about h2{
+    font-size:30px;
+    margin-bottom:14px;
+}
+
+.about p{
+    color:var(--muted);
+    line-height:1.7;
+}
+
+/* ===== REVEAL ===== */
+.reveal{
+    opacity:0;
+    transform:translateY(30px);
+    transition:.7s ease;
+}
+
+.reveal.visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
 /* ===== RESPONSIVE ===== */
 @media(max-width:768px){
 
@@ -377,9 +474,302 @@ body::before{
         height:56px;
     }
 }
+
+.navbar{
+    padding:14px 16px;
+}
+
+.nav-links{
+    gap:12px;
+}
+
+.nav-links a{
+    font-size:13px;
+}
+
+.about h2{
+    font-size:24px;
+}
+
+/* ligth dark */
+
+#themeToggle{
+    border:none;
+    outline:none;
+    cursor:pointer;
+    padding:8px 12px;
+    border-radius:12px;
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    font-size:16px;
+    transition:.25s ease;
+}
+
+#themeToggle:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,.14);
+}
+
+body.light-mode{
+    background:#f3f4f6;
+    color:#111827;
+}
+
+body.light-mode .navbar{
+    background:rgba(255,255,255,.7);
+    border-bottom:1px solid rgba(0,0,0,.08);
+}
+
+body.light-mode .service-card,
+body.light-mode .dash-card,
+body.light-mode .contact,
+body.light-mode .about{
+    background:#ffffff;
+    border:1px solid rgba(0,0,0,.08);
+    color:#111827;
+}
+
+body.light-mode p,
+body.light-mode .nav-links a{
+    color:#4b5563;
+}
+
+body.light-mode input{
+    background:#f9fafb;
+    color:#111827;
+    border:1px solid rgba(0,0,0,.1);
+}
+
+body.light-mode #themeToggle{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+/* ===== FLOAT AI ===== */
+
+.ai-float-btn{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    cursor:pointer;
+    z-index:9999;
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    box-shadow:0 10px 30px rgba(37,99,235,.35);
+
+    transition:.25s ease;
+}
+
+.ai-float-btn:hover{
+    transform:scale(1.08);
+}
+
+/* ===== POPUP ===== */
+
+.ai-popup{
+    position:fixed;
+    right:24px;
+    bottom:100px;
+
+    width:360px;
+    height:520px;
+
+    background:rgba(15,23,42,.96);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:28px;
+
+    backdrop-filter:blur(14px);
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+
+    z-index:9999;
+
+    opacity:0;
+    pointer-events:none;
+
+    transform:translateY(20px) scale(.96);
+
+    transition:.3s ease;
+}
+
+.ai-popup.active{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0) scale(1);
+}
+
+/* ===== HEADER ===== */
+
+.ai-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px 20px;
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.ai-header h3{
+    font-size:18px;
+    margin-bottom:4px;
+}
+
+.ai-header span{
+    color:#4ade80;
+    font-size:12px;
+}
+
+.ai-header button{
+    border:none;
+    background:none;
+    color:#fff;
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* ===== CHAT ===== */
+
+.ai-chat{
+    flex:1;
+    overflow-y:auto;
+
+    padding:20px;
+
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.ai-message{
+    max-width:78%;
+
+    padding:14px 16px;
+
+    border-radius:18px;
+
+    line-height:1.6;
+
+    font-size:14px;
+}
+
+.ai-message.bot{
+    background:rgba(255,255,255,.08);
+    align-self:flex-start;
+}
+
+.ai-message.user{
+    background:#2563eb;
+    align-self:flex-end;
+}
+
+/* ===== INPUT ===== */
+
+.ai-input-box{
+    display:flex;
+    gap:10px;
+
+    padding:16px;
+
+    border-top:1px solid rgba(255,255,255,.06);
+}
+
+.ai-input-box input{
+    flex:1;
+
+    padding:14px;
+
+    border:none;
+    outline:none;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.06);
+
+    color:#fff;
+}
+
+.ai-input-box button{
+    border:none;
+
+    padding:14px 16px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    font-weight:600;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:768px){
+
+    .ai-popup{
+
+        right:12px;
+        left:12px;
+
+        bottom:90px;
+
+        width:auto;
+        height:75vh;
+
+    }
+
+    .ai-float-btn{
+
+        right:18px;
+        bottom:18px;
+
+        width:58px;
+        height:58px;
+
+    }
+
+}
+
 </style>
 </head>
 <body>
+
+<nav class="navbar">
+
+    <div class="nav-logo">
+        Trieuuu
+    
+      <button id="themeToggle">🌙</button>
+
+    </div>
+
+    <div class="nav-links">
+        <a href="#">Trang chủ</a>
+        <a href="#tools">Công cụ</a>
+        <a href="#contact">Liên hệ</a>
+    </div>
+
+</nav>
 
 <div id="loader">
     <span>👑</span>
@@ -398,7 +788,33 @@ body::before{
     <p>2008</p>
 </section>
 
-<section class="services">
+
+<section class="dashboard reveal">
+
+    <div class="dash-card">
+        <h3>0</h3>
+        <p>Tools</p>
+    </div>
+
+    <div class="dash-card">
+        <h3>24/7</h3>
+        <p>Online</p>
+    </div>
+
+    <div class="dash-card">
+        <h3>2026</h3>
+        <p>Updated</p>
+    </div>
+
+</section>
+
+<section class="about reveal">
+    <h2> •  • </h2>
+    <p>Web cá nhân chứa công cụ học tập và tiện ích.</p>
+</section>
+
+<section class="services reveal" id="tools">
+
     <h2 class="services-title">Tiện ích:</h2>
 
     <div class="services-grid">
@@ -432,7 +848,7 @@ body::before{
     </div>
 </section>
 
-<section class="contact">
+<section class="contact reveal" id="contact">
 
     <a href="https://www.facebook.com/share/1SfE8dUVnu/" target="_blank" rel="noopener noreferrer">
         <i class="fa-brands fa-facebook"></i>
@@ -451,6 +867,51 @@ body::before{
     </a>
 
 </section>
+
+<!-- AI FLOAT BUTTON -->
+
+<div class="ai-float-btn" id="openAI">
+    ✨
+</div>
+
+<!-- AI POPUP -->
+
+<div class="ai-popup" id="aiPopup">
+
+    <div class="ai-header">
+
+        <div>
+            <h3>MEOMEO  AI</h3>
+            <span>ONLINE</span>
+        </div>
+
+        <button id="closeAI">✕</button>
+
+    </div>
+
+    <div class="ai-chat" id="aiChat">
+
+        <div class="ai-message bot">
+            Xin chào 👋 Tao có thể hỗ mày hoặc không.
+        </div>
+
+    </div>
+
+    <div class="ai-input-box">
+
+        <input
+            type="text"
+            id="aiInput"
+            placeholder="Ask meomeo..."
+        >
+
+        <button onclick="sendAI()">
+            Send
+        </button>
+
+    </div>
+
+</div>
 
 <footer class="footer">
     © 2026 TTRIEU aka meomeo.
@@ -503,6 +964,161 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+/* ===== SCROLL REVEAL ===== */
+
+const reveals = document.querySelectorAll('.reveal');
+
+const observer = new IntersectionObserver((entries)=>{
+
+    entries.forEach(entry=>{
+
+        if(entry.isIntersecting){
+            entry.target.classList.add('visible');
+        }
+
+    });
+
+},{
+    threshold:0.12
+});
+
+reveals.forEach(el=>observer.observe(el));
+
+// scr dark light
+const themeToggle = document.getElementById("themeToggle");
+
+// load saved mode
+if(localStorage.getItem("theme") === "light"){
+
+    document.body.classList.add("light-mode");
+    themeToggle.innerHTML = "☀️";
+
+}
+
+themeToggle.addEventListener("click", ()=>{
+
+    document.body.classList.toggle("light-mode");
+
+    if(document.body.classList.contains("light-mode")){
+
+        localStorage.setItem("theme","light");
+        themeToggle.innerHTML = "☀️";
+
+    }else{
+
+        localStorage.setItem("theme","dark");
+        themeToggle.innerHTML = "🌙";
+
+    }
+
+});
+
+/* ===== OPEN/CLOSE ===== */
+
+const openAI = document.getElementById("openAI");
+const closeAI = document.getElementById("closeAI");
+const aiPopup = document.getElementById("aiPopup");
+
+openAI.addEventListener("click", ()=>{
+
+    aiPopup.classList.toggle("active");
+
+});
+
+closeAI.addEventListener("click", ()=>{
+
+    aiPopup.classList.remove("active");
+
+});
+
+/* ===== SEND AI ===== */
+
+function sendAI(){
+
+    const input = document.getElementById("aiInput");
+    const chat = document.getElementById("aiChat");
+
+    const text = input.value.trim();
+
+    if(text === "") return;
+
+    // USER
+
+    const userMsg = document.createElement("div");
+
+    userMsg.className = "ai-message user";
+    userMsg.innerText = text;
+
+    chat.appendChild(userMsg);
+
+    input.value = "";
+
+    chat.scrollTop = chat.scrollHeight;
+
+    // BOT
+
+    setTimeout(()=>{
+
+        const botMsg = document.createElement("div");
+
+        botMsg.className = "ai-message bot";
+
+        let reply = "meo meo chưa hiểu 🤔";
+
+        const msg = text.toLowerCase();
+
+        if(msg.includes("điểm")){
+
+            reply = "Tool tính điểm ở phía trên 👀";
+
+        }else if(msg.includes("hello") || msg.includes("hi")){
+
+            reply = "meo meo xin chào 👋";
+
+        }else if(msg.includes("thpt")){
+
+            reply = "Cố lên 💪 còn ít ngày nữa thôi.";
+
+        }else if(msg.includes("web")){
+
+            reply = "Web này build bởi TTRIEU ✨";
+
+        }else if(msg.includes("meo meo") || msg.includes("ngầu") || msg.includes("ngu")){
+        
+            reply = "meo meo là số 1, giỏi nhất";
+        
+        }else if(msg.includes("sex") || msg.includes("chat") || msg.includes("18+")){
+            reply = "hư nhá, khong được đâu";        
+
+        }else if(msg.includes("cảm ơn") || msg.includes("iu") || msg.includes("yêu")){
+            reply = "meo meo cũng vậy";
+        }else if(msg.includes("pmeo") || msg.includes("pm")){
+
+            const replies = [
+
+                     "ăn cháo đá bát",
+                     "Pi lo, ah vũ nhớ pmeo lắm",
+                     "pmeo xih gái",
+                     "pmeo dth cte ✨",
+                     "Lại là mày à😭"
+
+    ];
+
+    reply =
+        replies[Math.floor(Math.random() * replies.length)];
+
+}
+        botMsg.innerText = reply;
+
+        chat.appendChild(botMsg);
+
+        chat.scrollTop = chat.scrollHeight;
+
+    },700);
+
+}
+
 </script>
 
 </body>
