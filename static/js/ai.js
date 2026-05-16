@@ -10,7 +10,8 @@ closeAI?.addEventListener("click", () => aiPopup.classList.remove("active"));
 
 /* ===== HỆ THỐNG PHẢN HỒI THÔNG MINH MEO MEO V3.0 ===== */
 const AI_BRAIN = [
-    {
+
+ {
         // NHÓM ADMIN (ƯU TIÊN CAO NHẤT)
         keys: ["trieu", "admin", "tấn triệu", "trieuuu"],
         replies: [
@@ -19,64 +20,215 @@ const AI_BRAIN = [
             "Meo Meo là đệ tử trung thành của TTRIEU, admin của tao là số 1!"
         ]
     },
-    {
-        // NHÓM TREND & SLANG (FLEX, MLEm, KEOLy, ...)
-        keys: ["flex", "flexin", "ao trình", "đỉnh nóc", "kịch trần", "mlem", "keo lỳ", "ngầu đét", "hết nước chấm", "bảnh"],
-        replies: [
-            "Meo Meo thấy màn này quá đỉnh, đúng là ao trình thực sự, xịt keo luôn!",
-            "Meo Meo thấy bạn quá là bảnh, flex này xứng đáng kịch trần luôn nha.",
-            "Meo Meo thấy nhan sắc/tài năng này đúng là 'hết nước chấm', mlem xỉu!",
-            "Meo Meo bái phục, bạn đúng là hệ tư tưởng đỉnh chóp rồi đó."
-        ]
-    },
-    {
-        // NHÓM TÂM TRẠNG TỆ (SUY, CHẦM KẼM, TOXIC, CỌC, BÁO...)
-        keys: ["suy", "chầm kẽm", "buồn", "khóc", "áp lực", "mệt", "tệ", "toxic", "cọc", "báo", "flop", "chán"],
-        replies: [
-            "Meo Meo gửi tín hiệu chữa lành tới bạn 🫂. Suy ít thôi, đi ăn món gì ngon rồi về ngủ một giấc nhé.",
-            "Meo Meo thấy bạn cọc nhìn cũng dth nhưng bớt toxic cho tâm hồn thanh thản nha bạn hiền.",
-            "Meo Meo biết đời đôi khi flop, nhưng đừng tự nhận là báo đời, bạn quý giá hơn bạn tưởng đấy.",
-            "Meo Meo thấy chán thì cứ than với Meo Meo, tao sẽ ngồi đây gánh hết cái sự tiêu cực này cho mày."
-        ]
-    },
-    {
-        // NHÓM HỌC ĐƯỜNG (BÀI TẬP, LỚP, THI...)
-        keys: ["bài tập", "btvn", "lớp", "trường", "thi", "điểm", "học"],
-        replies: [
-            "Meo Meo nhắc nhẹ: Bài tập là phù du, nhưng điểm thấp là... phù mỏ đó nha! Làm bài đi!",
-            "Meo Meo chúc bạn thi cử suôn sẻ, đề dễ như ăn kẹo, khoanh bừa cũng trúng phóc.",
-            "Meo Meo thấy trường lớp đôi khi mệt mỏi, nhưng cố lên, admin TTRIEU cũng từng vượt qua mà!"
-        ]
-    },
-    {
-        // NHÓM SINH HOẠT & CẢM GIÁC (ĂN, NGỦ, ĐÓI, NO, NÓNG, LẠNH...)
-        keys: ["ăn", "đói", "no", "khát", "ngủ", "thức", "khuya", "nóng", "lạnh", "khỏe", "yếu"],
-        replies: [
-            "Meo Meo đói thì phải đi mlem ngay, đừng có ngược đãi cái bụng nữa.",
-            "Meo Meo thấy nóng/lạnh quá thì nhớ điều chỉnh nhiệt độ, sức khỏe là vàng đó bạn ơi.",
-            "Meo Meo chúc bạn ngủ ngon và mơ thấy trúng số để bao nuôi Meo Meo và Admin nha.",
-            "Meo Meo nhắc bạn: Ngủ sớm đi, thức khuya quá là nhìn như gấu trúc đó, xịt keo nhan sắc giờ!"
-        ]
-    },
-    {
-        // NHÓM TÌNH CẢM (YÊU, CRUSH, NHỚ, QUÊN, HẬN, LỤY...)
-        keys: ["yêu", "thương", "crush", "nhớ", "quên", "hận", "lụy", "thả thính"],
-        replies: [
-            "Meo Meo thấy yêu đương là tốt, nhưng đừng lụy quá mà mất chất nha bạn.",
-            "Meo Meo khuyên bạn: Crush không rep thì mình đi ngủ, việc gì phải thức chờ cho mệt.",
-            "Meo Meo luôn thương bạn nhất, người yêu có thể không có nhưng Meo Meo thì luôn ở đây!",
-            "Meo Meo thấy bạn đang nhớ ai đó đúng không? Kể Meo Meo nghe đi, tao không mách ai đâu."
-        ]
-    },
-    {
-        // NHÓM VÔ TRI & CẤN CẤN
-        keys: ["vô tri", "cấn cấn", "ra dẻ", "bay màu", "sà cân", "sốc ngang", "sang chấn"],
-        replies: [
-            "Meo Meo thấy bạn hơi ra dẻ rồi đó nha, nhưng mà dth nên Meo Meo bỏ qua.",
-            "Meo Meo cũng thấy cấn cấn cái lồng ngực luôn á, tình huống gì mà kỳ cục vậy?",
-            "Meo Meo xịt keo cứng ngắc, sốc ngang với câu nói vừa rồi của bạn luôn 😅."
-        ]
-    }
+
+/* ===== CHÀO HỎI ===== */
+
+{
+    keys:["hello","hi","helo","xin chào","chào","ê","alo"],
+
+    replies:[
+
+        "Meo Meo đây 👋",
+        "Meo Meo nghe nè 😎",
+        "Meo Meo tới rồi đây.",
+        "Meo Meo chào mày ✨",
+        "Meo Meo đang online nè 👀"
+
+    ]
+},
+
+/* ===== BUỒN ===== */
+
+{
+    keys:["buồn","sad","tâm trạng","khóc","tổn thương"],
+
+    replies:[
+
+        "Meo Meo nghĩ hôm nay chắc mày mệt lắm rồi 🫂",
+        "Meo Meo ở đây nghe mày kể nè.",
+        "Meo Meo biết cảm giác đó không dễ chịu chút nào.",
+        "Meo Meo chỉ muốn nói là rồi sẽ ổn thôi 💙",
+        "Meo Meo nghĩ mày đã cố nhiều rồi đó."
+
+    ]
+},
+
+/* ===== STRESS ===== */
+
+{
+    keys:["stress","áp lực","mệt","burnout","kiệt sức"],
+
+    replies:[
+
+        "Meo Meo thấy đầu mày đang quá tải rồi 😭",
+        "Meo Meo nghĩ mày nên nghỉ chút đi.",
+        "Meo Meo hiểu cảm giác bị áp lực dí mỗi ngày.",
+        "Meo Meo nói thật nha, mày không cần hoàn hảo đâu.",
+        "Meo Meo mong mày đừng ép bản thân quá 💙"
+
+    ]
+},
+
+/* ===== CÔ ĐƠN ===== */
+
+{
+    keys:["cô đơn","1 mình","lạc lõng","không ai hiểu"],
+
+    replies:[
+
+        "Meo Meo ở đây mà 🫂",
+        "Meo Meo nghĩ ai rồi cũng có lúc thấy lạc lõng.",
+        "Meo Meo hiểu cảm giác ngồi im mà thấy trống rỗng.",
+        "Meo Meo mong mày đừng tự cô lập mình.",
+        "Meo Meo nghĩ mày xứng đáng được yêu thương."
+
+    ]
+},
+
+/* ===== HỌC ===== */
+
+{
+    keys:["học","thi","điểm","bài","deadline"],
+
+    replies:[
+
+        "Meo Meo tin mày làm được 📚",
+        "Meo Meo nghĩ cố thêm chút nữa thôi.",
+        "Meo Meo biết học nhiều mệt thật 😭",
+        "Meo Meo mong mày đừng bỏ cuộc giữa chừng.",
+        "Meo Meo thấy mày đang cố gắng đó chứ."
+
+    ]
+},
+
+/* ===== TÌNH YÊU ===== */
+
+{
+    keys:["yêu","crush","lụy","thích","nhớ"],
+
+    replies:[
+
+        "Meo Meo thấy mày đang nghĩ về ai đó 😭",
+        "Meo Meo nghĩ tình cảm là thứ khó hiểu nhất.",
+        "Meo Meo biết thích ai đó vừa vui vừa đau.",
+        "Meo Meo mong mày được yêu thật lòng 💙",
+        "Meo Meo thấy crush đúng là nghề nghiệp áp lực."
+
+    ]
+},
+
+/* ===== THỨC KHUYA ===== */
+
+{
+    keys:["khuya","thức","đêm","2h","3h"],
+
+    replies:[
+
+        "Meo Meo thấy giờ này chưa ngủ là có chuyện rồi 🌙",
+        "Meo Meo nghĩ ban đêm làm người ta suy nhiều thật.",
+        "Meo Meo muốn mày ngủ sớm hơn 😭",
+        "Meo Meo đang thức cùng mày nè.",
+        "Meo Meo thấy đêm nào cũng mang nhiều tâm trạng."
+
+    ]
+},
+
+/* ===== ĂN UỐNG ===== */
+
+{
+    keys:["ăn","đói","cơm","trà sữa","food"],
+
+    replies:[
+
+        "Meo Meo đói ngang 😭",
+        "Meo Meo nghĩ ăn ngon là chữa lành tốt nhất.",
+        "Meo Meo hỏi thật nha, nay ăn gì rồi 👀",
+        "Meo Meo thấy đồ ăn ngon cứu tâm trạng dữ lắm.",
+        "Meo Meo muốn được bao trà sữa 😎"
+
+    ]
+},
+
+/* ===== GAME ===== */
+
+{
+    keys:["game","rank","ff","lq","valorant"],
+
+    replies:[
+
+        "Meo Meo đoán mày vừa cay rank 😭",
+        "Meo Meo nghĩ đồng đội luôn là thứ đáng sợ nhất.",
+        "Meo Meo thấy tryhard quá dễ stress lắm.",
+        "Meo Meo muốn xem mày gánh team 😎",
+        "Meo Meo nghĩ chơi vui là được."
+
+    ]
+},
+
+/* ===== VUI ===== */
+
+{
+    keys:["vui","hạnh phúc","haha","lol","😂"],
+
+    replies:[
+
+        "Meo Meo thích thấy mày vui 😭",
+        "Meo Meo cười ké luôn 😂",
+        "Meo Meo thấy mood này đẹp đó.",
+        "Meo Meo mong mày vui lâu thật lâu ✨",
+        "Meo Meo nghĩ hôm nay ổn hơn rồi ha."
+
+    ]
+},
+
+/* ===== TƯƠNG LAI ===== */
+
+{
+    keys:["tương lai","lo","sợ","không biết"],
+
+    replies:[
+
+        "Meo Meo nghĩ ai cũng từng sợ tương lai.",
+        "Meo Meo mong mày đừng tự áp lực quá.",
+        "Meo Meo nghĩ rồi mọi thứ sẽ có hướng thôi 🚶",
+        "Meo Meo thấy mày mạnh hơn mày nghĩ đó.",
+        "Meo Meo tin mày sẽ vượt qua được 💙"
+
+    ]
+},
+
+/* ===== TỰ TI ===== */
+
+{
+    keys:["xấu","tự ti","vô dụng","kém"],
+
+    replies:[
+
+        "Meo Meo không thích nghe mày nói vậy về bản thân.",
+        "Meo Meo nghĩ mày có giá trị hơn mày tưởng.",
+        "Meo Meo mong mày đừng tự ghét chính mình 💙",
+        "Meo Meo thấy ai cũng có điểm đẹp riêng.",
+        "Meo Meo nghĩ mày đang quá khắt khe với bản thân."
+
+    ]
+},
+
+/* ===== RANDOM ĐỜI THƯỜNG ===== */
+
+{
+    keys:["đang làm gì","rảnh không","kể chuyện","nói gì đi"],
+
+    replies:[
+
+        "Meo Meo đang ngồi đợi mày nhắn 😎",
+        "Meo Meo đang chữa lành cho nhân loại ✨",
+        "Meo Meo đang nghe nhạc và suy.",
+        "Meo Meo đang online 24/7 luôn 😭",
+        "Meo Meo đang nghĩ xem hôm nay ăn gì."
+
+    ]
+}
+
 ];
 
 /* ===== HÀM XỬ LÝ GỬI TIN NHẮN TỔNG HỢP ===== */
@@ -94,7 +246,7 @@ function sendAI() {
         let reply = "";
 
         // Tìm phản hồi trong bộ não
-        const foundCategory = AI_BRAIN.find(cat => 
+        const foundCategory = AI_BRAIN.find(cat =>
             cat.keys.some(key => msg.includes(key))
         );
 
@@ -102,15 +254,22 @@ function sendAI() {
             reply = getRand(foundCategory.replies);
         } else {
             // Phản hồi khi không khớp từ khóa (vô tri/tâm sự)
-            reply = getRand([
-                "Meo Meo nghe rồi, nhưng mà cái này lạ quá, kể thêm đi bạn.",
-                "Meo Meo chưa rõ lắm, ý bạn là muốn gánh tạ hay muốn chill?",
-                "Meo Meo! (Meo Meo đang dùng thần giao cách cảm để hiểu bạn đây)",
-                "Meo Meo thấy câu hỏi này quá tầm vũ trụ, để tao đi hỏi Admin TTRIEU rồi báo lại sau nha.",
-                "Meo Meo vẫn luôn ở đây lắng nghe, bạn cứ trút bầu tâm sự đi."
-            ]);
-        }
+            
+reply = getRand([
 
+    "Meo Meo đang cố hiểu ý mày 👀",
+    "Meo Meo nghe nè, kể tiếp đi.",
+    "Meo Meo thấy câu này có tâm trạng ghê.",
+    "Meo Meo nghĩ mày đang muốn được lắng nghe 🫂",
+    "Meo Meo vẫn ở đây với mày.",
+    "Meo Meo chưa hiểu lắm nhưng vẫn muốn nghe tiếp 😭",
+    "Meo Meo thấy hôm nay mày có vẻ nhiều suy nghĩ.",
+    "Meo Meo đang ngồi đọc từng chữ của mày đó.",
+    "Meo Meo nghĩ nói ra cũng là một cách nhẹ lòng.",
+    "Meo Meo hiểu mà 💙"
+
+]);
+}
         createMessage(reply, "bot");
     }, 600);
 }
